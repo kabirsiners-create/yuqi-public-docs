@@ -1,0 +1,159 @@
+# 余岂 AI API 文档
+
+Canonical documentation: https://docs.yuqitoken.cn/
+Machine contract: https://docs.yuqitoken.cn/api-contract.json
+Default OpenAI-compatible base URL: https://api.yuqitoken.cn/v1
+GPT Image 2 multipart synchronous edits base URL: https://direct-api.yuqitoken.cn/v1
+GPT Image 2.5 multipart synchronous edits base URL: https://direct-api.yuqitoken.cn/v1
+
+## GPT text quick start
+
+Base URL: https://api.yuqitoken.cn/v1
+Authentication: Authorization: Bearer YOUR_API_KEY
+Minimum entry: POST /v1/chat/completions with model and messages.
+Read the exact model ID and full compatibility rules from api-contract.json.
+
+## Claude Code contract
+
+Availability: available; action: allow_call.
+Base URL: https://api.yuqitoken.cn (do not append /v1).
+Environment variable: ANTHROPIC_API_KEY.
+Authentication: x-api-key: YOUR_API_KEY.
+Required headers: anthropic-version: 2023-06-01 and content-type: application/json.
+Minimum entry: POST /v1/messages with model, max_tokens, and messages.
+Exact public models: claude-fable-5, claude-opus-5, claude-opus-5-5, claude-sonnet-5.
+Unknown outcomes must not trigger an automatic second request.
+
+## Grok text family
+
+Use POST /v1/chat/completions with Bearer authentication and JSON fields model and messages. Exact current model IDs: grok-4.5, grok-4.6, grok-4.7. Read route grok_text_chat in api-contract.json. Preserve request identifiers on unknown outcomes and never automatically submit twice.
+
+## Grok video family
+
+Use JSON POST /v1/videos with model, prompt, seconds; save top-level id and poll GET /v1/videos/{task_id}. Exact current model IDs: grok-video-1.0-480p, grok-video-1.0-720p, grok-video-1.5-480p, grok-video-1.5-720p, grok-video-1.5-1080p. Model suffix fixes resolution; do not send resolution or duration. Only completed with an accessible video URL is success. Unknown outcomes must not trigger a second POST.
+
+## Kling video contract
+
+Base URL: https://api.yuqitoken.cn/v1
+Authentication: Authorization: Bearer YOUR_API_KEY
+Submit: POST /v1/videos
+Poll: GET /v1/videos/{task_id}
+
+Exact public model IDs:
+- kling-v2-6: Kling 2.6.
+- kling-3.0-turbo: Kling 3.0 Turbo fixed 720P.
+- kling-3.0-turbo-1080p: Kling 3.0 Turbo fixed 1080P.
+- kling-motion-control: motion transfer.
+
+Prices are published by each station's pricing page; do not infer or copy pricing between stations. For kling-v2-6 and both kling-3.0-turbo variants, send only model, prompt, and seconds. Do not send duration or resolution; the 720P and 1080P variants are separate model IDs. Motion transfer is a separate contract requiring image_url, video_url, character_orientation, mode, and seconds.
+
+After submission, preserve the returned top-level id and poll the same task. queued, pending, processing, running, and in_progress are intermediate states. Only completed with a video URL is success. failed, failure, or cancelled are failures. Unknown results and timeouts must not trigger a second submission.
+
+
+## GPT Image 2 authoritative client contract
+
+Availability is per exact model ID and must be read from api-contract.json $.image2_status.model_status. The current projection is:
+- gpt-image-2: available; action: allow_call.
+- gpt-image-2-1K-medium: available; action: allow_call.
+- gpt-image-2-2K: available; action: allow_call.
+- gpt-image-2-4K: available; action: allow_call.
+- image2: fail_closed; action: do_not_call.
+Do not execute a request for any model whose action is do_not_call, even if an example or price entry exists.
+
+This section applies only to these four exact, independent model names:
+- gpt-image-2
+- gpt-image-2-1K-medium
+- gpt-image-2-2K
+- gpt-image-2-4K
+
+Never delete, alias, rewrite, upgrade, downgrade, or silently substitute one model name for another.
+The separate synchronous model image2 is outside this section. It keeps its existing /v1/images/generations and /v1/images/edits contract with the single file field image; never apply the GPT Image 2 image[] rule to image2.
+
+Route decision:
+- Zero reference images: text-to-image. Send JSON POST https://api.yuqitoken.cn/v1/videos, save the top-level $.id, then poll GET https://api.yuqitoken.cn/v1/videos/{task_id}.
+- One to six local reference images: image-to-image. Send multipart POST https://direct-api.yuqitoken.cn/v1/images/edits and wait synchronously. Never send reference images to /v1/videos and never use /v1/images/generations for a GPT Image 2 tier model.
+
+Text-to-image JSON fields:
+- Required: model, prompt.
+- Optional: exactly one of size or aspect_ratio.
+- Forbidden: n, quality, response_format, resolution, detailLevel, aspectRatio, ratio, width, height, mask, all reference-image fields, and every unknown field.
+- The service fixes n=1 and URL output internally. Do not send either client field.
+- Do not send reference-image fields.
+
+Text-to-image example:
+curl -sS -X POST 'https://api.yuqitoken.cn/v1/videos' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"gpt-image-2-1K-medium","prompt":"Create a clean studio product image.","size":"1024x1024"}'
+
+Image-to-image multipart fields:
+- Required text parts: model, prompt.
+- Required file parts: repeat the exact field name image[] once per local image. The single-image field name image is rejected for GPT Image 2 tier models.
+- Optional: exactly one of size or aspect_ratio. Do not send both.
+- Optional text part: response_format=url (case-insensitive), or omit it; the response is always a URL.
+- Forbidden text parts: n, quality, response_format values other than url, resolution, detailLevel, aspectRatio, ratio, width, height, mask, background, moderation, output_format, output_compression, and every unknown field.
+- Do not manually set the multipart boundary; let the HTTP client generate Content-Type.
+- Do not send a JSON image array, Base64 string, URL, or local path string. Upload the actual file bytes.
+- Part order is preserved. The service assigns no product/model roles, so the prompt must explicitly bind Image 1, Image 2, and later positions to their intended roles.
+- Limits: 1-6 images, request body at most 10 MiB, image bytes at most 7 MiB, and only MIME types image/jpeg, image/png, and image/webp.
+- HEIC/HEIF, AVIF, GIF, BMP, TIFF, RAW, and every unlisted image type are rejected. The service does not silently transcode them.
+- If reference images have different aspect ratios, send one explicit supported aspect_ratio or the request can return HTTP 400.
+- Configure a client timeout of at least 600 seconds; 660 seconds is recommended.
+
+Complete two-local-image example, with product first and model/person reference second:
+curl --max-time 660 -sS -X POST 'https://direct-api.yuqitoken.cn/v1/images/edits' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -F 'model=gpt-image-2-1K-medium' \
+  -F 'prompt=Image 1 is the product reference. Image 2 is the model/person reference. Put the exact product from Image 1 on the person from Image 2 while preserving product identity and person identity.' \
+  -F 'aspect_ratio=4:5' \
+  -F 'image[]=@./product.png;type=image/png' \
+  -F 'image[]=@./model-reference.png;type=image/png'
+
+Route-stable exact sizes:
+- gpt-image-2-1K-medium: 1024x1024.
+- gpt-image-2-2K: 2048x2048.
+- gpt-image-2-4K: 2880x2880.
+
+Supported aspect_ratio values: 21:9, 16:9, 5:4, 4:3, 3:2, 1:1, 4:5, 3:4, 2:3, 9:16.
+
+Successful synchronous edit response: HTTP 200 with the result URL at $.data[0].url. Download it promptly.
+
+Error and recovery rules:
+- HTTP 400/413/415/422: fix the request and preserve the original error body; do not retry the unchanged request.
+- HTTP 524, 503, 504, network timeout, or any unknown result: preserve X-Image2-Trace-Id, error.task_id, Request-ID/X-Request-ID, HTTP status, and the redacted error JSON.
+- If an original task_id exists, query only GET https://api.yuqitoken.cn/v1/videos/{task_id}. Never submit a second paid request while the original outcome is unknown.
+
+## GPT Image 2.5 authoritative client contract
+
+Base URL: https://api.yuqitoken.cn
+Authentication: Authorization: Bearer YOUR_API_KEY
+
+Exact public model IDs:
+- gpt-image-2.5
+- gpt-image-2.5-flare-1k
+- gpt-image-2.5-flare-2k
+- gpt-image-2.5-flare-4k
+- gpt-image-2.5-sunburst-1k
+- gpt-image-2.5-sunburst-2k
+- gpt-image-2.5-sunburst-4k
+
+The generic names gpt-image-2.5-flare and gpt-image-2.5-sunburst are not public model IDs. Never remove the 1k, 2k, or 4k suffix.
+
+Three fixed client routes:
+1. Asynchronous text-to-image: JSON POST https://api.yuqitoken.cn/v1/videos. Save $.id or an explicitly returned $.task_id, then poll only GET https://api.yuqitoken.cn/v1/videos/{task_id}. Success requires a completed or equivalent terminal-success status and $.data[].url.
+2. Synchronous text-to-image: JSON POST https://api.yuqitoken.cn/v1/images/generations. Keep the HTTP connection open and read $.data[].url directly. Do not poll.
+3. Synchronous image-to-image: multipart POST https://direct-api.yuqitoken.cn/v1/images/edits. Repeat the exact file field image[] for 1-9 uploaded images, wait for $.data[].url directly, and do not poll.
+
+Fixed parameter rules:
+- n must equal 1. Never send n=4.
+- size and aspect_ratio are mutually exclusive. Text-to-image may omit both and use the service default.
+- aspect_ratio must be an exact ASCII WIDTH:HEIGHT string from the model-specific allowlist below. Do not send decimals, spaces, Unicode punctuation, or aliases, and do not expect the service to normalize unsupported ratios.
+- Base gpt-image-2.5 size values: 1024x1024, 1536x1024, 1536x864, 1536x1152, 1152x1536, 1280x1024, 1024x1280, 1536x656, 1024x1536, auto.
+- Base gpt-image-2.5 aspect_ratio values: 1:1, 5:4, 9:16, 21:9, 16:9, 3:2, 4:3, 4:5, 3:4, 2:3.
+- The six K-tier models support the same aspect_ratio values plus 7:6. Their size must be WIDTHxHEIGHT with positive dimensions divisible by 16, longest edge at most 3840, long-to-short ratio at most 3:1, and total pixels within 655360-1048576 for 1K, 655360-4194304 for 2K, or 655360-8294400 for 4K.
+- Image-to-image may omit both size and aspect_ratio only when all reference images have the same inspectable ratio. Otherwise the service returns HTTP 400 size_required; fix the original request and do not auto-resubmit it.
+- Square tier sizes are 1K=1024x1024, 2K=2048x2048, and 4K=2880x2880.
+- Image-to-image accepts actual multipart file uploads only. Do not send a JSON image array, Base64, image URL, or local path string.
+- Image-to-image response_format may be omitted; if present, it must equal url.
+- The separate synchronous model image2 keeps its single file field image. Never apply image[] to image2, and never apply image to GPT Image 2.5.
+- One business request permits one generation POST. On timeout, disconnect, 408, 429, 5xx, or any unknown outcome, preserve identifiers and timestamps. Poll only an existing asynchronous task; never automatically submit a second POST.

@@ -1,0 +1,525 @@
+/*
+ * 鱼鳍鳞个人站共享品牌层
+ * 只负责公开识别与视觉，不改变页面结构、接口、价格或支付行为。
+ * 正式 Logo 到位后，替换 brand-mark.svg 即可。
+ */
+:root {
+  --fish-ink: #17181b;
+  --fish-ink-soft: #24262b;
+  --fish-paper: #f5f0e8;
+  --fish-paper-soft: #eae4da;
+  --fish-coral: #f05a47;
+  --fish-coral-deep: #c94236;
+  --fish-violet: #5966e8;
+  --fish-stone: #a9a39a;
+  --fish-muted: #756f68;
+  --fish-line: rgba(23, 24, 27, 0.16);
+  --fish-line-light: rgba(245, 240, 232, 0.18);
+  --fish-shadow: 0 22px 56px rgba(23, 24, 27, 0.14);
+  --fish-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --fish-mono: "IBM Plex Mono", "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+}
+
+html {
+  background: var(--fish-ink);
+}
+
+body {
+  font-family: var(--fish-sans);
+}
+
+body.home-page {
+  color: var(--fish-ink);
+  background:
+    radial-gradient(circle at 88% 8%, rgba(240, 90, 71, 0.12), transparent 26%),
+    linear-gradient(180deg, var(--fish-paper) 0%, #f7f3ec 42%, var(--fish-paper-soft) 100%) !important;
+}
+
+body.docs-page {
+  color: var(--fish-paper);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(89, 102, 232, 0.16), transparent 28%),
+    radial-gradient(circle at 86% 4%, rgba(240, 90, 71, 0.14), transparent 24%),
+    linear-gradient(180deg, #17181b 0%, #1d1f24 52%, #24262b 100%) !important;
+}
+
+body.notice-page,
+body.pay-page,
+body.bridge-page,
+body.not-found-page {
+  color: var(--fish-ink);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(240, 90, 71, 0.16), transparent 28%),
+    linear-gradient(180deg, #f8f3eb 0%, var(--fish-paper) 52%, var(--fish-paper-soft) 100%) !important;
+}
+
+body.console-page {
+  color: var(--fish-ink);
+  background: var(--fish-paper) !important;
+}
+
+body::before {
+  opacity: 0.2;
+  background-image:
+    linear-gradient(120deg, transparent 0%, rgba(240, 90, 71, 0.05) 45%, transparent 100%),
+    repeating-linear-gradient(160deg, transparent 0, transparent 28px, rgba(23, 24, 27, 0.025) 29px);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(a, button):focus-visible {
+  outline: 3px solid rgba(89, 102, 232, 0.46);
+  outline-offset: 3px;
+}
+
+/* Shared docs-like pages */
+body.docs-page .shell {
+  max-width: 1120px;
+}
+
+body.docs-page .topbar {
+  border-bottom: 1px solid var(--fish-line-light);
+  padding-bottom: 20px;
+}
+
+body.docs-page .brand img,
+body.docs-page .brand-mark {
+  border-radius: 14px;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+body.docs-page .brand h1,
+body.docs-page .section h3,
+body.docs-page .hero h2 {
+  color: var(--fish-paper);
+}
+
+body.docs-page .brand p,
+body.docs-page .hero p,
+body.docs-page .section > p,
+body.docs-page .card p,
+body.docs-page .card li,
+body.docs-page .mini-panel p,
+body.docs-page .mini-panel li,
+body.docs-page .micro-copy,
+body.docs-page .footer-note {
+  color: #b9b2a8;
+}
+
+body.docs-page .panel {
+  border-color: rgba(245, 240, 232, 0.16);
+  border-radius: 12px;
+  background: rgba(36, 38, 43, 0.94);
+  box-shadow: var(--fish-shadow);
+  backdrop-filter: none;
+}
+
+body.docs-page .hero {
+  background:
+    linear-gradient(135deg, rgba(240, 90, 71, 0.14), transparent 42%),
+    rgba(36, 38, 43, 0.98);
+}
+
+body.docs-page .eyebrow,
+body.docs-page .section-tag {
+  border: 1px solid rgba(240, 90, 71, 0.34);
+  border-radius: 7px;
+  color: var(--fish-coral);
+  background: rgba(240, 90, 71, 0.1);
+}
+
+body.docs-page .btn {
+  min-height: 44px;
+  border-radius: 7px;
+  border-color: rgba(245, 240, 232, 0.2);
+  color: var(--fish-paper);
+  background: transparent;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+body.docs-page .btn:hover {
+  border-color: var(--fish-coral);
+  background: rgba(240, 90, 71, 0.1);
+}
+
+body.docs-page .btn-primary {
+  border-color: var(--fish-coral);
+  color: #fffaf5;
+  background: var(--fish-coral);
+  box-shadow: 0 12px 26px rgba(240, 90, 71, 0.2);
+}
+
+body.docs-page .btn-primary:hover {
+  background: var(--fish-coral-deep);
+}
+
+body.docs-page .btn-secondary,
+body.docs-page .doc-nav a {
+  color: var(--fish-paper);
+  border-color: rgba(245, 240, 232, 0.2);
+  background: rgba(245, 240, 232, 0.04);
+}
+
+body.docs-page .card,
+body.docs-page .mini-panel,
+body.docs-page .tutorial-step,
+body.docs-page .check-list div {
+  border-color: rgba(245, 240, 232, 0.14);
+  border-radius: 10px;
+  background: rgba(245, 240, 232, 0.04);
+}
+
+body.docs-page .tip-list span,
+body.docs-page .callout,
+body.docs-page .cta-strip {
+  border-color: rgba(240, 90, 71, 0.26);
+  border-radius: 8px;
+  color: var(--fish-paper);
+  background: rgba(240, 90, 71, 0.1);
+}
+
+body.docs-page .code-block {
+  border-color: rgba(89, 102, 232, 0.42);
+  border-radius: 9px;
+  background: #111216;
+}
+
+body.docs-page .code-block code,
+body.docs-page code {
+  color: #e6e1d9;
+  font-family: var(--fish-mono);
+}
+
+/* Home */
+body.home-page .brand img,
+body.home-page .hero-badge {
+  content: url("./brand-mark.svg");
+  border-radius: 14px;
+}
+
+body.home-page .brand strong,
+body.home-page .hero-title,
+body.home-page .poster-line,
+body.home-page .final-title,
+body.home-page .metric-headline {
+  color: var(--fish-ink);
+}
+
+body.home-page .topbar {
+  border-bottom-color: var(--fish-line);
+  backdrop-filter: blur(12px);
+}
+
+body.home-page .nav a,
+body.home-page .btn {
+  border-color: var(--fish-line);
+  border-radius: 7px;
+  color: var(--fish-ink);
+  background: rgba(245, 240, 232, 0.64);
+}
+
+body.home-page .nav a:hover,
+body.home-page .btn:hover {
+  border-color: rgba(240, 90, 71, 0.54);
+  background: rgba(240, 90, 71, 0.08);
+  box-shadow: 0 12px 24px rgba(23, 24, 27, 0.08);
+}
+
+body.home-page .btn-primary,
+body.home-page .package-action {
+  border-color: var(--fish-coral);
+  color: #fffaf5;
+  background: var(--fish-coral);
+  box-shadow: 0 14px 28px rgba(240, 90, 71, 0.2);
+}
+
+body.home-page .btn-primary:hover,
+body.home-page .package-action:hover {
+  background: var(--fish-coral-deep);
+}
+
+body.home-page .eyebrow,
+body.home-page .section-kicker,
+body.home-page .marquee-line,
+body.home-page .metric-label,
+body.home-page .realtime-kicker em,
+body.home-page .section-kicker em {
+  color: var(--fish-coral);
+}
+
+body.home-page .proof-strip,
+body.home-page .trust-grid,
+body.home-page .package-card,
+body.home-page .trial-topup {
+  border-color: var(--fish-line);
+}
+
+body.home-page .card,
+body.home-page .package-card {
+  border-radius: 10px;
+  border-color: var(--fish-line);
+  background: rgba(245, 240, 232, 0.72);
+  box-shadow: 0 14px 30px rgba(23, 24, 27, 0.06);
+}
+
+body.home-page .package-card.recommended {
+  border-color: var(--fish-coral);
+  box-shadow: 0 18px 38px rgba(240, 90, 71, 0.14);
+}
+
+body.home-page .badge-stage {
+  min-height: 540px;
+}
+
+body.home-page .badge-stage::before {
+  border-color: rgba(240, 90, 71, 0.24);
+}
+
+body.home-page .badge-stage::after {
+  border-color: rgba(89, 102, 232, 0.28);
+}
+
+body.home-page .badge-caption {
+  border-color: rgba(240, 90, 71, 0.34);
+  border-radius: 7px;
+  color: var(--fish-coral-deep);
+  background: rgba(245, 240, 232, 0.86);
+}
+
+body.home-page .marquee-section {
+  border-color: var(--fish-line-light);
+  background: var(--fish-ink);
+}
+
+body.home-page .marquee-line span::after {
+  color: var(--fish-coral);
+}
+
+body.home-page .realtime-number,
+body.home-page .realtime-rate strong,
+body.home-page .token-number,
+body.home-page .gold {
+  color: var(--fish-coral);
+}
+
+body.home-page .token-flow span {
+  border-color: var(--fish-line);
+  border-radius: 7px;
+  background: rgba(245, 240, 232, 0.7);
+}
+
+body.home-page .topbar {
+  border-bottom-color: var(--fish-line);
+}
+
+body.home-page .poster-sub,
+body.home-page .realtime-label,
+body.home-page .realtime-rate,
+body.home-page .realtime-subline,
+body.home-page .realtime-kicker {
+  color: var(--fish-muted);
+}
+
+body.home-page .realtime-kicker::before,
+body.home-page .realtime-kicker::after {
+  background: var(--fish-line);
+}
+
+body.home-page .realtime-statement {
+  color: rgba(23, 24, 27, 0.72);
+}
+
+body.home-page .token-flow span::after {
+  background: linear-gradient(90deg, transparent, rgba(240, 90, 71, 0.2), transparent);
+}
+
+body.home-page .site-footer {
+  color: var(--fish-muted);
+}
+
+/* Notice */
+body.notice-page .notice-modal {
+  border-color: var(--fish-line);
+  border-radius: 12px;
+  background: var(--fish-paper);
+  box-shadow: var(--fish-shadow);
+}
+
+body.notice-page .brand img {
+  content: url("./brand-mark.svg");
+  border-radius: 12px;
+}
+
+body.notice-page .notice-card,
+body.notice-page .report-item,
+body.notice-page .support-note,
+body.notice-page .status {
+  border-color: var(--fish-line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+body.notice-page .notice-card.report {
+  border-color: rgba(240, 90, 71, 0.36);
+  border-left-color: var(--fish-coral);
+  background: rgba(240, 90, 71, 0.06);
+}
+
+body.notice-page .tabs .active,
+body.notice-page .pill.primary {
+  color: #fffaf5;
+  background: var(--fish-coral);
+}
+
+body.notice-page .pill,
+body.notice-page .copy-url {
+  border-color: var(--fish-line);
+  border-radius: 7px;
+}
+
+body.notice-page .pill.primary {
+  border-color: var(--fish-coral);
+}
+
+body.notice-page .label,
+body.notice-page .copy-url .path,
+body.notice-page .support-note strong {
+  color: var(--fish-coral-deep);
+}
+
+/* Payment and bridge pages */
+body.pay-page .brand img {
+  content: url("./brand-mark.svg");
+  border-radius: 12px;
+}
+
+body.pay-page .card,
+body.pay-page .summary-item,
+body.pay-page .tip,
+body.pay-page .action-card,
+body.bridge-page .panel,
+body.not-found-page main {
+  border-color: var(--fish-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--fish-shadow);
+}
+
+body.pay-page .btn-primary,
+body.bridge-page .button {
+  border-color: var(--fish-coral);
+  background: var(--fish-coral);
+  box-shadow: 0 14px 28px rgba(240, 90, 71, 0.2);
+}
+
+body.pay-page .btn-primary:hover,
+body.bridge-page .button:hover {
+  background: var(--fish-coral-deep);
+}
+
+body.pay-page .btn-secondary,
+body.pay-page .btn-ghost,
+body.bridge-page .button.secondary,
+body.not-found-page a.secondary {
+  border-color: var(--fish-line);
+  color: var(--fish-ink);
+  background: rgba(255, 255, 255, 0.54);
+}
+
+body.pay-page .eyebrow,
+body.bridge-page .eyebrow,
+body.not-found-page .eyebrow {
+  border-radius: 7px;
+  color: var(--fish-coral-deep);
+  background: rgba(240, 90, 71, 0.1);
+}
+
+body.pay-page .qr-wrap,
+body.pay-page .code-line,
+body.bridge-page .summary,
+body.bridge-page .status {
+  border-color: rgba(240, 90, 71, 0.24);
+  background: rgba(240, 90, 71, 0.06);
+}
+
+body.not-found-page a {
+  border-radius: 7px;
+  background: var(--fish-coral);
+}
+
+body.not-found-page a:hover {
+  background: var(--fish-coral-deep);
+}
+
+@media (max-width: 680px) {
+  body.home-page .badge-stage {
+    min-height: 360px;
+  }
+
+  body.home-page .hero-badge {
+    width: min(280px, 72vw);
+  }
+
+  body.notice-page .notice-top,
+  body.notice-page .notice-body {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Final light premium pass shared by the docs and console shells. */
+:root {
+  --fish-ink: #1d2633;
+  --fish-ink-soft: #ffffff;
+  --fish-paper: #f8fafc;
+  --fish-paper-soft: #edf1f5;
+  --fish-coral: #c96752;
+  --fish-coral-deep: #a64c3e;
+  --fish-violet: #6358c9;
+  --fish-stone: #667386;
+  --fish-line: rgba(29,38,51,.14);
+  --fish-line-light: rgba(29,38,51,.12);
+  --fish-shadow: 0 22px 56px rgba(29,38,51,.12);
+}
+html { background: #f4f6f8; }
+body.docs-page, body.console-page {
+  color: var(--fish-ink) !important;
+  background: linear-gradient(180deg,#f9fbfd 0%,#f1f4f7 100%) !important;
+}
+body.docs-page .topbar, body.docs-page .panel, body.docs-page .hero,
+body.docs-page .card, body.docs-page .mini-panel, body.docs-page .tutorial-step,
+body.docs-page .check-list div, body.docs-page .cta-strip {
+  background: rgba(255,255,255,.86);
+  border-color: var(--fish-line);
+  box-shadow: 0 14px 38px rgba(29,38,51,.07);
+}
+body.docs-page .brand h1, body.docs-page .section h3, body.docs-page .hero h2,
+body.docs-page .btn, body.docs-page .btn-secondary, body.docs-page .doc-nav a,
+body.docs-page .tip-list span, body.docs-page .callout, body.docs-page .cta-strip { color: var(--fish-ink); }
+body.docs-page .brand p, body.docs-page .hero p, body.docs-page .section > p,
+body.docs-page .card p, body.docs-page .card li, body.docs-page .mini-panel p,
+body.docs-page .mini-panel li, body.docs-page .micro-copy, body.docs-page .footer-note { color: var(--fish-stone); }
+body.docs-page .code-block { background: #202a38; box-shadow: 0 16px 34px rgba(29,38,51,.16); }
+body.docs-page .code-block code, body.docs-page code { color: #e9eef5; }
+body.docs-page .btn-primary { color: #fff; background: var(--fish-coral); border-color: var(--fish-coral); }

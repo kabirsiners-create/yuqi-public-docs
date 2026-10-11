@@ -1,0 +1,2486 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AI 中转服务 API 接入文档" />
+  <title>开发者文档 | 鱼鳍鳞 AI 中转服务</title>
+  <link rel="icon" type="image/png" href="./favicon-tab-fish.png?v=docs-yukilin-20260914-r2" sizes="32x32" />
+  <link rel="shortcut icon" type="image/png" href="./favicon-tab-fish.png?v=docs-yukilin-20260914-r2" />
+  <link rel="apple-touch-icon" href="./favicon-tab-fish.png?v=docs-yukilin-20260914-r2" />
+  <style>
+    :root { --ink:#172033; --muted:#667085; --line:#e4e7ec; --brand:#087f74; --soft:#f5fbfa; --code:#101828; --page:#fbfcfd; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; color:var(--ink); background:var(--page); font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    header { height:64px; background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; } .bar { max-width:1180px; height:100%; display:flex; align-items:center; justify-content:space-between; margin:auto; padding:0 24px; } .brand { display:flex; align-items:center; gap:10px; color:var(--ink); font-weight:700; text-decoration:none; font-size:17px; } .brand img { width:32px; height:32px; object-fit:contain; } .bar nav { display:flex; align-items:center; gap:18px; } a { color:var(--brand); text-underline-offset:3px; } .bar nav a { color:var(--muted); text-decoration:none; } .bar .button { color:#fff; background:var(--brand); border-radius:6px; padding:6px 12px; }
+    .layout { max-width:1180px; margin:0 auto; padding:44px 24px 80px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:44px; } aside { position:sticky; top:94px; align-self:start; } aside strong { display:block; margin-bottom:10px; font-size:13px; color:var(--muted); } aside a { display:block; padding:5px 0; color:#475467; text-decoration:none; font-size:14px; } aside a:hover { color:var(--brand); }
+    main { min-width:0; max-width:850px; } .eyebrow { color:var(--brand); font-weight:700; letter-spacing:0; } h1 { font-size:34px; line-height:1.25; margin:8px 0 12px; letter-spacing:0; } h2 { font-size:23px; line-height:1.35; padding-top:34px; margin:0 0 14px; border-top:1px solid var(--line); } h3 { font-size:17px; margin:25px 0 8px; } p { margin:8px 0 14px; } .lead { font-size:17px; color:var(--muted); } .callout { border:1px solid #bce8e0; border-radius:6px; background:var(--soft); padding:16px 18px; margin:20px 0 28px; } .callout b { display:block; color:#05665d; margin-bottom:3px; }
+    code { font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:.9em; background:#eef2f6; padding:1px 5px; border-radius:4px; overflow-wrap:anywhere; } pre { position:relative; overflow:auto; margin:12px 0 20px; padding:17px 18px; background:var(--code); border-radius:7px; color:#d0d5dd; line-height:1.58; font-size:13px; } pre code { padding:0; color:inherit; background:transparent; white-space:pre; } .copy { position:absolute; right:9px; top:8px; color:#d0d5dd; background:#344054; border:0; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:12px; }
+    table { width:100%; border-collapse:collapse; margin:12px 0 20px; background:#fff; border:1px solid var(--line); border-radius:6px; overflow:hidden; } th,td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; } th { font-size:13px; background:#f8fafc; color:#475467; } tr:last-child td { border-bottom:0; } .badge { display:inline-block; color:#05665d; background:#dff4f0; border-radius:999px; padding:1px 8px; font-size:12px; font-weight:600; } ul,ol { padding-left:22px; margin:8px 0 18px; } li { margin:5px 0; } .muted { color:var(--muted); } .footer { color:var(--muted); font-size:13px; margin-top:48px; }
+    .ai-entry { border:2px solid var(--brand); border-radius:12px; background:linear-gradient(135deg,#ecfdf9 0%,#f8fffd 100%); padding:25px 26px 22px; margin:0 0 30px; box-shadow:0 8px 24px rgba(8,127,116,.08); } .ai-entry-kicker { color:#05665d; font-size:13px; font-weight:800; letter-spacing:.08em; } .ai-entry-title { margin:6px 0 10px; font-size:30px; line-height:1.3; font-weight:850; color:#103c38; } .ai-entry p { margin:7px 0 12px; color:#344054; } .ai-entry pre { margin-bottom:8px; } .ai-entry .muted { font-size:13px; }
+    .payment-announcement[hidden] { display:none; } .payment-announcement { position:fixed; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(16,24,40,.56); } .payment-announcement-card { width:min(100%,520px); background:#fff; border:1px solid #f0b6b6; border-radius:8px; padding:28px 28px 24px; box-shadow:0 18px 48px rgba(16,24,40,.24); } .payment-announcement-kicker { margin:0 0 8px; color:#b42318; font-size:13px; font-weight:800; letter-spacing:.04em; } .payment-announcement-title { margin:0 0 12px; color:#7a271a; font-size:24px; line-height:1.35; } .payment-announcement-text { margin:0 0 20px; color:#344054; font-size:16px; } .payment-announcement-text strong { color:#b42318; } .payment-announcement-close { display:block; width:100%; border:0; border-radius:6px; padding:10px 16px; color:#fff; background:#b42318; font:inherit; font-weight:700; cursor:pointer; } .payment-announcement-close:hover { background:#912018; } body.announcement-open { overflow:hidden; }
+    @media (max-width:800px) { header { height:58px; } .bar { padding:0 16px; } .bar nav a:not(.button) { display:none; } .layout { display:block; padding:28px 16px 56px; } aside { display:none; } h1 { font-size:28px; } h2 { font-size:21px; } table { font-size:13px; } th,td { padding:8px; } }
+  </style>
+<link rel="stylesheet" href="./fish-scale-brand.css?v=docs-yukilin-20260914-r2" />
+<style>
+  /* Personal docs visual language: bright surfaces, copper accent, quiet depth. */
+  :root { --brand:#b85f4d; --soft:#fff8f4; --code:#202a38; --page:#f4f6f8; --line:#d9e0e8; }
+  body { background:linear-gradient(180deg,#f9fbfd 0%,#f1f4f7 100%); color:#1d2633; }
+  header { background:rgba(255,255,255,.9); box-shadow:0 8px 24px rgba(29,38,51,.06); backdrop-filter:blur(14px); }
+  .brand img { filter:drop-shadow(0 6px 12px rgba(29,38,51,.14)); }
+  .ai-entry { border-color:#b85f4d; background:linear-gradient(135deg,#fff8f4 0%,#f7f9fc 100%); box-shadow:0 16px 36px rgba(29,38,51,.10); }
+  .ai-entry-kicker, .callout b, .eyebrow { color:#9d4d3d; }
+  .ai-entry-title { color:#1d2633; }
+  .callout { border-color:#efc8bd; background:#fff8f4; box-shadow:0 10px 26px rgba(29,38,51,.05); }
+  pre { background:#202a38; box-shadow:0 12px 26px rgba(29,38,51,.12); }
+  .bar .button { background:#b85f4d; box-shadow:0 8px 18px rgba(184,95,77,.22); }
+</style></head>
+<body>
+  <div class="payment-announcement" id="payment-announcement" data-valid-date="2026-08-26" role="dialog" aria-modal="true" aria-labelledby="payment-announcement-title" aria-describedby="payment-announcement-text" hidden>
+    <div class="payment-announcement-card">
+      <p class="payment-announcement-kicker">今日公告 · 2026-08-26</p>
+      <h2 class="payment-announcement-title" id="payment-announcement-title">支付暂时出了问题</h2>
+      <p class="payment-announcement-text" id="payment-announcement-text">如遇<strong>支付相关问题</strong>，请加微信：<strong>wocqut</strong>。</p>
+      <button class="payment-announcement-close" type="button" aria-label="关闭公告">知道了</button>
+    </div>
+  </div>
+  <header><div class="bar"><a class="brand" href="https://yuqitoken.cn/"><img src="./favicon-tab-fish.png?v=docs-yukilin-20260914-r2" alt="鱼鳍鳞 AI 中转服务" />鱼鳍鳞 AI 中转服务</a><nav><a href="https://console.yuqitoken.cn/pricing">模型广场</a><a href="#quickstart">快速开始</a><a href="#images">图像</a><a class="button" href="https://console.yuqitoken.cn/sign-in">登录控制台</a></nav></div></header>
+  <div class="layout">
+    <aside><strong>开发者文档</strong><a href="#ai-entry">直接发给 AI</a><a href="#quickstart">快速开始</a><a href="#models">全部模型与接口</a><a href="#chat">文字、代码与 Codex</a><a href="#claude-code">Claude Code</a><a href="#images">Image2 与 GPT Image 2</a><a href="#qwen-image">千问图像 3.0</a><a href="#nano">Nano Banana 异步生图</a><a href="#video">可灵视频</a><a href="#sdk">SDK 与客户端</a><a href="#troubleshooting">排查与安全</a></aside>
+    <main>
+      <section class="ai-entry" id="ai-entry">
+        <div class="ai-entry-kicker">最简单的接入方式</div>
+        <div class="ai-entry-title">把这个网页链接直接发给 AI，它就能按文档完成中转站配置</div>
+        <p>复制本页链接 <code>https://docs.yuqitoken.cn</code> 给 ChatGPT、Codex、Claude 或其他能读取网页的 AI，再告诉它你使用的客户端和模型。本服务使用独立域名体系，只使用 <code>yuqitoken.cn</code>，不得使用任何其他中转站域名。普通 OpenAI 兼容与异步接口默认使用 <code>https://api.yuqitoken.cn/v1</code>；仅 GPT Image 2 multipart 同步图生图 <code>POST /v1/images/edits</code> 使用 <code>https://direct-api.yuqitoken.cn/v1</code>；Claude Code / Anthropic Messages 使用不带 <code>/v1</code> 的 <code>https://api.yuqitoken.cn</code>。</p>
+        <pre><button class="copy">复制给 AI</button><code>请阅读并严格遵循：
+https://docs.yuqitoken.cn
+普通 OpenAI 兼容与异步接口默认使用这个 Base URL：
+https://api.yuqitoken.cn/v1
+仅 GPT Image 2 multipart 同步图生图 POST /v1/images/edits 使用这个 Base URL：
+https://direct-api.yuqitoken.cn/v1
+该同步图生图请求的客户端 timeout 必须至少 600 秒；524、网络超时或结果未知时不得自动重提，必须保留 X-Image2-Trace-Id、error.task_id 与 Request-ID/X-Request-ID，并只查询原任务。
+Claude Code / Anthropic Messages 只使用这个不带 /v1 的 Base URL：
+https://api.yuqitoken.cn
+按文档为对应客户端配置认证、精确模型名和同步/异步接口，并检查所有实际 API 请求域名都属于 yuqitoken.cn。</code></pre>
+        <p>交给 AI 时必须同时要求：先按本页 machine contract 的精确模型列表和状态选择端点；模型名只能逐字读取 contract，不能从价格页、历史记录或第三方资料猜测；异步任务只轮询提交响应返回的原任务 ID；失败时不得自动补提第二单。</p>
+        <p class="muted">不要把完整 API Key 发到公开聊天、截图或代码仓库。让 AI 指导你把 Key 填入客户端的私密凭据区或环境变量即可。</p>
+      </section>
+      <div class="eyebrow">API 中转服务 · 独立接入文档</div><h1>完成中转服务配置</h1>
+      <p class="lead">使用一把在控制台生成的 API Key，按本页公开合同配置已明确放行的模型。未完成同刻回读的模型会明确标为 pending/do_not_call；<code>image2</code> 使用同步图片接口；千问图像 3.0、Nano Banana 与可灵视频走异步 <code>/v1/videos</code>；GPT Image 2 文生图也走异步接口，上传参考图编辑走 <code>/v1/images/edits</code>。</p>
+      <div class="callout"><b>本服务域名体系</b>普通 OpenAI 兼容与异步 API：<code>https://api.yuqitoken.cn/v1</code><br />仅 GPT Image 2 multipart 同步图生图：<code>https://direct-api.yuqitoken.cn/v1</code>，客户端 timeout 至少 <code>600</code> 秒<br />Claude Code / Anthropic Base URL：<code>https://api.yuqitoken.cn</code>（不带 <code>/v1</code>）<br />控制台：<code>https://console.yuqitoken.cn</code> · 文档：<code>https://docs.yuqitoken.cn</code><br /><span class="muted">OpenAI 兼容接口使用 <code>Authorization: Bearer YOUR_API_KEY</code>；Anthropic Messages 使用 <code>x-api-key: YOUR_API_KEY</code>。配置中只允许出现 <code>yuqitoken.cn</code> 域名体系，请勿公开密钥。</span></div>
+
+      <h2 id="quickstart">快速开始</h2>
+        <ol><li>注册并登录控制台。</li><li>进入“令牌”，新建一个 API Key 并立即妥善保存。</li><li>先读取本页机器合同，确认目标模型的 <code>availability=available</code> 与 <code>call_action=allow_call</code>；pending/do_not_call 只能停下登记。</li><li>按机器合同选择接口：文字使用 Chat Completions 或 Responses；<code>image2</code> 使用同步图片接口；其它异步能力使用合同列出的提交与轮询路径。</li></ol>
+      <pre><button class="copy">复制</button><code>curl -fsS https://docs.yuqitoken.cn/api-contract.json
+# 仅当目标模型状态为 available/allow_call 时，才执行合同中的 POST 示例</code></pre>
+
+      <h2 id="models">模型与接口</h2>
+      <p>模型名必须与本页 machine contract 完全一致，大小写、下划线和连字符不可改写。模型广场只用于查看客户价格；模型是否可调用只能以本页 contract 的 <code>availability</code> 与 <code>call_action</code> 为准。</p>
+      <table><thead><tr><th>场景</th><th>实际模型示例</th><th>接口</th></tr></thead><tbody>
+        <tr><td>GPT 文字、代码、推理</td><td><code>gpt-5.5</code>、<code>gpt-5.6-luna</code>、<code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code>、<code>gpt-6-astra</code>、<code>gpt-6-sol</code>（当前 configuration_ready）</td><td><code>POST /v1/chat/completions</code> 或 <code>POST /v1/responses</code></td></tr>
+        <tr><td>Grok 文字</td><td>按 <code>grok_text_chat</code> 家族合同选择精确模型</td><td><code>POST /v1/chat/completions</code></td></tr>
+        <tr><td>Claude Code 与 Anthropic Messages（4）</td><td><code>claude-fable-5</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code></td><td><code>POST /v1/messages</code></td></tr>
+        <tr><td>Image2 同步图片（1）</td><td><code>image2</code></td><td><code>POST /v1/images/generations</code>；编辑用 <code>POST /v1/images/edits</code></td></tr>
+        <tr><td>GPT Image 2（4）</td><td><code>gpt-image-2</code>、<code>gpt-image-2-1K-medium</code>、<code>gpt-image-2-2K</code>、<code>gpt-image-2-4K</code></td><td>文生图：<code>POST /v1/videos</code> 并轮询；图生图：multipart <code>POST /v1/images/edits</code></td></tr>
+        <!-- gpt-image-2.5:model-row:start -->
+        <tr><td>GPT Image 2.5（7）</td><td><code>gpt-image-2.5</code>、<code>gpt-image-2.5-flare-1k</code>、<code>gpt-image-2.5-flare-2k</code>、<code>gpt-image-2.5-flare-4k</code>、<code>gpt-image-2.5-sunburst-1k</code>、<code>gpt-image-2.5-sunburst-2k</code>、<code>gpt-image-2.5-sunburst-4k</code></td><td>异步文生图：<code>POST /v1/videos</code> 并轮询；同步文生图：<code>POST /v1/images/generations</code>；同步图生图：multipart <code>POST /v1/images/edits</code></td></tr>
+        <!-- gpt-image-2.5:model-row:end -->
+        <tr><td>千问图像 3.0 异步图片（3）</td><td><code>qwen-image-3.0</code>、<code>qwen-image-3.0-pro-1K</code>、<code>qwen-image-3.0-pro</code></td><td><code>POST /v1/videos</code>，再用 <code>GET /v1/videos/{task_id}</code> 轮询</td></tr>
+        <tr><td>Nano Banana 异步图片（6）</td><td><code>nano_banana_2</code>、<code>nano_banana_2-2K</code>、<code>nano_banana_2-4K</code>、<code>nano_banana_pro-1K</code>、<code>nano_banana_pro-2K</code>、<code>nano_banana_pro-4K</code></td><td><code>POST /v1/videos</code>，再用 <code>GET /v1/videos/{task_id}</code> 轮询</td></tr>
+        <tr><td>可灵异步视频（4 个公开模型 ID / 3 条能力链）</td><td><code>kling-v2-6</code>、<code>kling-3.0-turbo</code>、<code>kling-3.0-turbo-1080p</code>、<code>kling-motion-control</code></td><td><code>POST /v1/videos</code>，再用 <code>GET /v1/videos/{task_id}</code> 轮询</td></tr>
+        <tr><td>Grok 视频</td><td>按 <code>grok_video_async</code> 家族合同选择带分辨率后缀的型号</td><td><code>POST /v1/videos</code>，再用 <code>GET /v1/videos/{task_id}</code> 轮询</td></tr>
+      </tbody></table>
+      <div class="callout"><b>异步任务统一规则</b>提交成功必须保存响应中的顶层 <code>id</code>；只查询 <code>GET /v1/videos/{task_id}</code> 的原任务。<code>queued</code> 配合 <code>progress=0</code> 是正常排队状态，<code>progress</code> 只用于展示，不能单独判定成功或失败；以终态和结果 URL 为准：终态为 <code>completed</code> 且存在结果 URL 即成功，即使进度仍为 0 也不要重复提交。图片首次等待 5 秒，之后每 5–10 秒查询；视频首次等待 5 秒，之后每 10 秒查询。客户端安全上限：图片 30 分钟、视频 45 分钟；达到上限、状态未知或网络超时，保留 <code>task_id</code>、<code>request_id</code>、HTTP 状态和原始错误，停止自动动作，稍后继续查询原任务。遇到 429 时遵循 <code>Retry-After</code> 并加入随机抖动；除 Qwen 明确支持的同键重放外，不得自动重试或补提第二单。</div>
+      <p class="muted"><strong>提交响应与重试安全：</strong>所有异步提交均应收到 JSON 对象并从顶层 <code>id</code> 取得任务 ID；没有 <code>id</code> 的 2xx、网络超时、503/504 或 429 都属于结果未知，不得猜 <code>data.id</code>、不得换端点或自动重提。保存响应头中的 <code>Request-Id</code>/<code>X-Request-ID</code>（若存在）以及完整脱敏错误 JSON。只有千问合同支持用同一个 <code>Idempotency-Key</code> 重放完全相同的请求；Nano、GPT Image 2 文生图和可灵没有公开幂等重放合同，未知结果只能查询原任务或人工核对。</p>
+
+      <h2 id="chat">GPT 文字模型：Chat Completions 与 Responses</h2>
+      <div class="callout"><b>一条 URL + 一个 Key</b>先把站点 Base URL 配成 <code>https://api.yuqitoken.cn/v1</code>，再在私密环境变量中放入用户 API Key。这里是 OpenAI 兼容入口；精确模型 ID 和完整机器合同见 <a href="https://docs.yuqitoken.cn/api-contract.json"><code>api-contract.json</code></a>。</div>
+      <p>认证头固定为 <code>Authorization: Bearer YOUR_API_KEY</code>。模型名必须原样读取机器合同，不要自行猜别名。</p>
+      <h3>最小示例</h3>
+      <pre><code>curl https://api.yuqitoken.cn/v1/chat/completions \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"EXACT_MODEL_ID","messages":[{"role":"user","content":"你好"}]}'</code></pre>
+      <p class="muted">Responses、流式事件、错误语义和未知结果处理留在机器合同；结果未知时保留请求标识并停止，不自动补提。</p>
+
+      <h2 id="codex">代码客户端与 Codex</h2>
+      <p><code>/v1/chat/completions</code> 与 <code>/v1/responses</code> 的路径固定，但 GPT 当前状态为 <code>configuration_ready/configure_and_validate</code>。普通 OpenAI 兼容客户端使用 Chat Completions；Codex 或明确要求 Responses API 的客户端使用 Responses。Base URL 是 <code>https://api.yuqitoken.cn/v1</code>；模型名只能从本页 machine contract 读取，不能从价格页、历史记录或第三方资料猜测。</p>
+      <p>Codex 配置必须写入用户级 <code>~/.codex/config.toml</code>；项目目录里的 <code>.codex/config.toml</code> 会忽略自定义 provider。下面使用独立 provider 和环境变量，避免与 OpenAI 官方配置混用。</p>
+      <pre><button class="copy">复制</button><code># ~/.codex/config.toml
+model_provider = "relay"
+model = "EXACT_MODEL_ID_FROM_CONTRACT"
+
+[model_providers.relay]
+name = "API 中转服务"
+base_url = "https://api.yuqitoken.cn/v1"
+env_key = "RELAY_API_KEY"
+wire_api = "responses"</code></pre>
+      <p class="muted">在系统私密环境中设置 <code>RELAY_API_KEY</code>，不要把真实 Key 写进 TOML 或项目仓库。配置规则以 <a href="https://developers.openai.com/codex/config-reference/">Codex 官方配置参考</a>为准。</p>
+
+      <h2 id="claude-code">Claude Code</h2>
+      <div class="callout"><b>配置合同：complete</b>四个精确模型为 <code>claude-fable-5</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code>。本文给出 Claude Code 所需的完整 Base URL、认证头、请求字段、SSE 事件和错误处理；不要求客户 AI 猜测或查第三方资料。</div>
+      <p>Claude Code 使用 Anthropic Messages：Base URL 不带 <code>/v1</code>，请求为 <code>POST https://api.yuqitoken.cn/v1/messages</code>，认证头为 <code>x-api-key: YOUR_API_KEY</code>，并固定发送 <code>anthropic-version: 2023-06-01</code> 与 <code>Content-Type: application/json</code>。把真实 Key 放入 <code>ANTHROPIC_API_KEY</code> 私密环境变量，不要写入文件、日志或聊天。</p>
+      <table><thead><tr><th>模型 ID</th><th>状态</th><th>动作</th></tr></thead><tbody><tr><td><code>claude-fable-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-opus-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-opus-5-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-sonnet-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr></tbody></table>
+      <h3>直接配置与最小验证</h3>
+      <pre><code>export ANTHROPIC_BASE_URL="https://api.yuqitoken.cn"
+export ANTHROPIC_API_KEY="YOUR_API_KEY"
+curl -fsS https://docs.yuqitoken.cn/api-contract.json
+# 将真实 Key 保存在私密环境变量；不要写入文件、日志或聊天</code></pre>
+      <h3>Messages 最小请求</h3>
+      <pre><code>POST https://api.yuqitoken.cn/v1/messages
+x-api-key: YOUR_API_KEY
+anthropic-version: 2023-06-01
+content-type: application/json
+{"model":"EXACT_MODEL_ID","max_tokens":64,"messages":[{"role":"user","content":"..."}]}</code></pre>
+      <p>必填字段是 <code>model</code>、<code>max_tokens</code>、<code>messages</code>。只发送本页 contract 明确列出的字段；收到 2xx 后按非流式响应或 SSE 终止事件判断，收到错误或未知结果则保留 request ID 并停止自动补提。</p>
+      <p class="muted">本文是客户接入配置合同，不公开供应商、渠道、价格或内部拓扑。运行时若返回 401/403/404/429/5xx，按错误表定位，不要猜新域名、模型别名或替代字段。</p>
+
+      <h2 id="grok-text">Grok 文字模型</h2>
+      <p>当前精确型号为 <code>grok-4.5</code>、<code>grok-4.6</code>、<code>grok-4.7</code>，共用同一份 OpenAI 兼容 Chat 合同。Base URL 为 <code>https://api.yuqitoken.cn/v1</code>，使用 <code>Authorization: Bearer YOUR_API_KEY</code>，请求 <code>POST /v1/chat/completions</code>，JSON 必填 <code>model</code> 和 <code>messages</code>。新型号若出现在价格页，先查机器合同所属家族和状态。</p>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/chat/completions" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"grok-4.7","messages":[{"role":"user","content":"你好"}]}'</code></pre>
+      <p class="muted">遇到超时、429、5xx 或响应结果未知，保留请求标识和错误信息，停止自动补提；不要根据相似名称改模型或猜测另一个接口。</p>
+
+      <h2 id="images">Image2 与 GPT Image 2</h2>
+      <div class="callout"><b>Image2 当前公开状态</b><code>gpt-image-2</code>: <code>available/allow_call</code>；<code>gpt-image-2-1K-medium</code>: <code>available/allow_call</code>；<code>gpt-image-2-2K</code>: <code>available/allow_call</code>；<code>gpt-image-2-4K</code>: <code>available/allow_call</code>；<code>image2</code>: <code>fail_closed/do_not_call</code></div>
+      <h3><code>image2</code>：同步文生图与图生图</h3><p><code>image2</code> 的公开合同仍固定为同步 Images 形状：文生图使用 <code>POST /v1/images/generations</code>；参考图编辑使用 multipart <code>POST /v1/images/edits</code>，文件字段为 <code>image</code>。只有 machine contract 标为 <code>available/allow_call</code> 时才可执行；当前状态下不要发送请求。</p>
+      <p class="muted"><strong>当前不可执行：</strong><code>image2</code> 为 <code>fail_closed/do_not_call</code>。客户端只保留既有配置，不发送请求、不改成相似模型，也不从价格页推断可用性。</p>
+      <h3>GPT Image 2 四款：文生图与图生图</h3>
+      <p><strong>逐模型状态：</strong><code>gpt-image-2</code>: <code>available/allow_call</code>；<code>gpt-image-2-1K-medium</code>: <code>available/allow_call</code>；<code>gpt-image-2-2K</code>: <code>available/allow_call</code>；<code>gpt-image-2-4K</code>: <code>available/allow_call</code></p><p>以下 4 个精确、区分大小写的 GPT Image 2 模型名分别独立生效。文生图走默认异步任务入口；上传参考图编辑固定走同步兼容的 multipart <code>POST /v1/images/edits</code>，并使用专用 Base URL <code>https://direct-api.yuqitoken.cn/v1</code>。客户端请求超时必须设置为至少 <code>600</code> 秒。这个地址仍然进入本站中转、使用同一 API Key 和计费，只是为长同步请求使用不同公网入口；不要把图生图请求发到 <code>/v1/videos</code>，也不要把文生图发到 <code>/v1/images/generations</code>。</p>
+      <p><strong>图生图结果未知时：</strong>HTTP 524、网络超时、503/504 或其它结果未知都不能作为自动重提依据。保存响应头 <code>X-Image2-Trace-Id</code>、错误体 <code>error.task_id</code>、<code>Request-ID</code>/<code>X-Request-ID</code>、HTTP 状态与脱敏错误 JSON；存在原任务 ID 时，只使用默认 API 入口 <code>https://api.yuqitoken.cn/v1</code> 的 <code>GET /v1/videos/{task_id}</code> 查询这个原任务。只有确认原任务没有创建上游任务、没有产生结果后才能人工重新提交。</p>
+      <pre><button class="copy">复制图生图</button><code>curl --max-time 600 https://direct-api.yuqitoken.cn/v1/images/edits \
+  -H "Authorization: Bearer $API_KEY" \
+  -F "model=gpt-image-2-1K-medium" \
+  -F "image[]=@./reference.png;type=image/png" \
+  -F "prompt=保留主体，把背景改成简洁的办公场景" \
+  -F "size=1024x1024"</code></pre>
+      <table><thead><tr><th>模型</th><th>图生图 multipart</th><th>异步文生图 JSON</th><th>说明</th></tr></thead><tbody>
+        <tr><td><code>gpt-image-2</code></td><td><code>-F "size=1024x1024"</code>、<code>-F "size=1536x1024"</code>、<code>-F "size=1024x1536"</code></td><td><code>"size": "1024x1024"</code>、<code>"size": "1536x1024"</code>、<code>"size": "1024x1536"</code></td><td>基础款</td></tr>
+        <tr><td><code>gpt-image-2-1K-medium</code></td><td><code>-F "size=1024x1024"</code></td><td><code>"size": "1024x1024"</code></td><td>1K medium 档</td></tr>
+        <tr><td><code>gpt-image-2-2K</code></td><td><code>-F "size=2048x2048"</code></td><td><code>"size": "2048x2048"</code></td><td>2K 档</td></tr>
+        <tr><td><code>gpt-image-2-4K</code></td><td><code>-F "size=2880x2880"</code></td><td><code>"size": "2880x2880"</code></td><td>4K 档</td></tr>
+      </tbody></table>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-2-2K",
+    "prompt": "一张干净的鱼鳍鳞 AI 工作台等距插画，暖红色点缀，白色背景",
+    "size": "2048x2048"
+  }'</code></pre>
+      <p class="muted"><code>size</code> 与 <code>aspect_ratio</code> 最多只能传一个；两者都不传时由适配器使用默认值或参考图比例，同时传入即拒绝。这组规则同时适用于异步文生图 JSON 与图生图 multipart。4K 正方形示例使用 <code>"size": "2880x2880"</code>；其他比例只能改传公开支持的顶层 <code>aspect_ratio</code>。</p>
+      <p class="muted"><strong>GPT Image 2 严格输入边界：</strong>文本字段只允许 <code>model</code>、<code>prompt</code>，以及最多一个 <code>size</code> 或 <code>aspect_ratio</code>；图生图文件字段只允许重复的精确 <code>image[]</code>。图生图的 <code>response_format</code> 可省略，或发送 <code>url</code>（大小写不敏感）；<code>b64_json</code> 和其他值都会被拒绝。<code>n</code>、<code>quality</code>、<code>resolution</code>、<code>detailLevel</code>、<code>aspectRatio</code>、<code>ratio</code>、<code>width</code>、<code>height</code>、<code>mask</code> 和所有未知字段都会被拒绝；服务内部固定单图和 URL 结果。单次请求体最大 10 MiB，最多 6 张参考图，图片合计最大 7 MiB。只接受 JPEG、PNG、WebP；HEIC/HEIF、AVIF、GIF、BMP、TIFF、RAW 直接拒绝，不做静默转码。</p>
+      <p class="muted"><strong>合同隔离：</strong>同步模型 <code>image2</code> 继续使用本节上方既有的 <code>image</code> 文件字段与同步端点；它不经过这三个 GPT Image 2 适配器，也不得套用 <code>image[]</code> 规则。反过来，GPT Image 2 三档不接受单数 <code>image</code>。</p>
+      <p class="muted">验收分辨率时同时核对原请求模型名与返回的 <code>size</code>；1K、2K、4K 正方形分别应为 <code>1024x1024</code>、<code>2048x2048</code>、<code>2880x2880</code>。</p>
+      <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
+  -H "Authorization: Bearer $API_KEY"</code></pre>
+      <p class="muted">GPT Image 2 异步文生图完成后，以 <code>status=completed</code> 且存在顶层 <code>url</code> 或 <code>image_url</code> 为成功条件；<code>progress</code> 仅展示，<code>progress=0</code> 不能触发重复提交。失败时读取 <code>error</code> 并停止。</p>
+
+      
+
+<!-- gpt-image-2.5:section:start -->
+      <h2 id="gpt-image-2-5">GPT Image 2.5：七个精确型号与三种固定接法</h2>
+      <div class="callout"><b>只使用精确型号</b><code>gpt-image-2.5</code>、<code>gpt-image-2.5-flare-1k</code>、<code>gpt-image-2.5-flare-2k</code>、<code>gpt-image-2.5-flare-4k</code>、<code>gpt-image-2.5-sunburst-1k</code>、<code>gpt-image-2.5-sunburst-2k</code>、<code>gpt-image-2.5-sunburst-4k</code>。不存在公开泛型号 <code>gpt-image-2.5-flare</code> 或 <code>gpt-image-2.5-sunburst</code>，不得删掉分辨率后缀。</div>
+      <p>两站使用同一套客户合同，只替换当前站点的 API Base URL。所有请求都使用 <code>Authorization: Bearer YOUR_API_KEY</code>；一次业务请求只允许一次生成 POST，超时、连接中断或结果未知时不得自动重复提交。</p>
+      <h3>接法 A：异步文生图</h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-2.5-flare-4k",
+    "prompt": "一只白色陶瓷杯放在木桌上",
+    "size": "2880x2880",
+    "n": 1
+  }'</code></pre>
+      <p>保存响应中的 <code>id</code> 或明确返回的 <code>task_id</code>，然后只查询原任务：<code>GET https://api.yuqitoken.cn/v1/videos/{task_id}</code>。只有最终状态为 <code>completed</code> 或等价成功状态，并且存在 <code>data[].url</code>，才算成功；排队、运行中、提交成功或进度数值都不代表已出图。</p>
+      <h3>接法 B：同步文生图</h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/images/generations" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-2.5-sunburst-2k",
+    "prompt": "月光下的湖面，真实摄影风格",
+    "size": "2048x2048",
+    "n": 1
+  }'</code></pre>
+      <p>保持 HTTP 连接并直接等待 <code>data[].url</code>；这条接法不需要客户轮询。</p>
+      <h3>接法 C：同步图生图</h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://direct-api.yuqitoken.cn/v1/images/edits" \
+  -H "Authorization: Bearer $API_KEY" \
+  -F "model=gpt-image-2.5-flare-2k" \
+  -F "prompt=保留人物和构图，改成水彩插画" \
+  -F "image[]=@./reference-1.png;type=image/png" \
+  -F "image[]=@./reference-2.png;type=image/png" \
+  -F "response_format=url"</code></pre>
+      <p>最多上传 9 张参考图，每张都必须重复使用 multipart 文件字段 <code>image[]</code>。直接等待同步响应中的 <code>data[].url</code>；不要调用 <code>/v1/videos</code>，也不要轮询。</p>
+      <table><thead><tr><th>规则</th><th>GPT Image 2.5 固定合同</th></tr></thead><tbody>
+        <tr><td>输出数量</td><td><code>n=1</code>；不得传 <code>n=4</code></td></tr>
+        <tr><td>尺寸与比例</td><td><code>size</code> 与 <code>aspect_ratio</code> 最多传一个，不得同时发送；文生图可两者都省略</td></tr>
+        <tr><td>比例格式</td><td><code>aspect_ratio</code> 必须是精确的 ASCII <code>宽:高</code> 字符串，并且命中对应型号白名单；不得传小数、空格、中文冒号、别名或未公开比例，也不得依赖服务自动归一化</td></tr>
+        <tr><td>比例白名单</td><td>基础型号支持 <code>1:1</code>、<code>5:4</code>、<code>9:16</code>、<code>21:9</code>、<code>16:9</code>、<code>3:2</code>、<code>4:3</code>、<code>4:5</code>、<code>3:4</code>、<code>2:3</code>；六个 K 档型号额外支持 <code>7:6</code></td></tr>
+        <tr><td>基础型号尺寸</td><td><code>1024x1024</code>、<code>1536x1024</code>、<code>1536x864</code>、<code>1536x1152</code>、<code>1152x1536</code>、<code>1280x1024</code>、<code>1024x1280</code>、<code>1536x656</code>、<code>1024x1536</code>、<code>auto</code></td></tr>
+        <tr><td>K 档尺寸格式</td><td><code>宽x高</code>，宽高必须是正整数且均为 16 的倍数；最长边不超过 3840，长短边比例不超过 3:1；总像素范围：1K 为 655,360–1,048,576，2K 为 655,360–4,194,304，4K 为 655,360–8,294,400</td></tr>
+        <tr><td>默认正方形档位</td><td>1K：<code>1024x1024</code>；2K：<code>2048x2048</code>；4K：<code>2880x2880</code></td></tr>
+        <tr><td>图生图输入</td><td>1–9 个真实上传文件；不接受 JSON 图片数组、Base64、图片 URL 或本地路径字符串</td></tr>
+        <tr><td>图生图结果格式</td><td><code>response_format</code> 可省略；如发送，只允许 <code>url</code></td></tr>
+        <tr><td>结果未知</td><td>保存请求时间、请求标识和已返回的任务标识；异步只查原任务，同步不得重新 POST</td></tr>
+      </tbody></table>
+      <p class="muted">图生图也允许同时省略 <code>size</code> 与 <code>aspect_ratio</code>，但只有全部参考图比例一致且服务能够识别时才会自动推断；比例不一致或无法识别时返回 HTTP 400 <code>size_required</code>，此时应修正原请求，不得自动重复提交。</p>
+      <p class="muted"><strong>与 <code>image2</code> 隔离：</strong><code>image2</code> 继续使用单数文件字段 <code>image</code>；GPT Image 2.5 只接受重复字段 <code>image[]</code>。两份合同不得互相套用。</p>
+      <!-- gpt-image-2.5:section:end -->
+
+      <h2 id="qwen-image">千问图像 3.0 异步生图</h2>
+      <p><code>qwen-image-3.0</code>、<code>qwen-image-3.0-pro-1K</code> 与 <code>qwen-image-3.0-pro</code> 都使用异步任务接口。提交后读取响应中的 <code>id</code>，只轮询这个原任务 ID。任务查询记录与成品临时地址仅保证 24 小时，请及时下载保存。</p>
+      <table><thead><tr><th>模型</th><th>公开调用规格</th></tr></thead><tbody>
+        <tr><td>千问 Image 3.0<br><code>qwen-image-3.0</code></td><td>文生图/图生图；支持 1K/2K</td></tr>
+        <tr><td>千问 Image 3.0 Pro 1K<br><code>qwen-image-3.0-pro-1K</code></td><td>文生图/图生图；固定 1K 档</td></tr>
+        <tr><td>千问 Image 3.0 Pro 2K<br><code>qwen-image-3.0-pro</code></td><td>文生图/图生图；固定 2K 档</td></tr>
+      </tbody></table>
+      <pre><button class="copy">复制</button><code>IDEMPOTENCY_KEY="qwen-$(uuidgen)"
+curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: $IDEMPOTENCY_KEY" \
+  -d '{
+    "model": "qwen-image-3.0",
+    "prompt": "一张干净的余岂 AI 工作台等距插画，青绿色点缀，白色背景",
+    "size": "1024x1024"
+  }'</code></pre>
+      <h3>提交图生图任务</h3>
+      <p class="muted">在同一个请求中传入顶层 <code>images</code> 数组，提供 1–3 张有序参考图；服务会按数组顺序传给千问。元素可为公网 HTTPS URL，或完整的 <code>data:image/...;base64,</code> Data URI；不接收 HTTP、裸 Base64、带账号密码或片段的 URL。单张 Data URI 解码后不得超过 10 MB，整个请求体不得超过 14 MiB：JPEG、PNG、WebP、GIF、BMP、TIFF、HEIC/HEIF 与 AVIF 会在受限进程中校验并归一化，SVG、PDF、PSD 与 RAW 默认拒绝。<code>prompt_extend_mode</code> 使用 <code>direct</code>，图生图不支持 <code>agent</code>。</p>
+      <pre><button class="copy">复制</button><code>IDEMPOTENCY_KEY="qwen-$(uuidgen)"
+curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: $IDEMPOTENCY_KEY" \
+  -d '{
+    "model": "qwen-image-3.0-pro-1K",
+    "prompt": "保留人物主体，把背景改为简洁的企业办公场景",
+    "images": [
+      "https://example.com/person.png",
+      "https://example.com/style.png",
+      "https://example.com/background.png"
+    ],
+    "size": "1024x1024",
+    "prompt_extend_mode": "direct"
+  }'</code></pre>
+      <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
+  -H "Authorization: Bearer $API_KEY"</code></pre>
+      <p>当 <code>status=completed</code> 且顶层存在 <code>url</code> 或 <code>image_url</code> 时读取成品地址；<code>queued</code>、<code>processing</code> 时继续查询。<code>progress</code> 只作展示，<code>queued + progress=0</code> 正常；<code>failed</code> 时读取 <code>error</code> 并停止。若返回 <code>submission_outcome_unknown</code>，从同一响应的 <code>task_id</code> 或 <code>error.task_id</code> 取原任务 ID；没有原任务 ID 时也必须停单并保留 <code>request_id</code>，不得猜 ID 或补单。</p>
+      <p class="muted">标准版只传本站已验证的 <code>size</code>（<code>1024x1024</code>、<code>2048x2048</code>）或省略使用默认值；不要猜测未列出的比例或尺寸。Pro 1K 固定 <code>1024x1024</code>，Pro 2K 固定 <code>2048x2048</code>；任何跨档尺寸都会被拒绝。</p>
+      <p class="muted">图生图只接受顶层 <code>images</code> 数组；<code>image</code>、<code>image_url</code>、<code>input_image</code>、<code>reference_image_url</code> 与消息内容中的嵌套图片字段会被拒绝。Data URI 会校验真实文件签名、声明 MIME、像素数与体积；公网 HTTPS URL 由图像生成服务校验。允许字段为 <code>model</code>、<code>prompt</code>、<code>images</code>、<code>n</code>、<code>size</code>/<code>resolution</code>、<code>aspect_ratio</code>/<code>aspectRatio</code>、<code>prompt_extend</code>、<code>watermark</code>、<code>negative_prompt</code>、<code>prompt_extend_mode</code>、<code>seed</code>、<code>idempotency_key</code>；其中 <code>n</code> 固定为 <code>1</code>，需要多张结果时提交多个独立任务。客户优先使用请求头 <code>Idempotency-Key</code>；请求体同名字段是兼容写法，两处同时发送时必须一致。</p>
+      <p class="muted">每个新的逻辑任务必须生成新的 8–128 位 <code>Idempotency-Key</code>；只有重试完全相同的请求体时才复用原键。客户端和 AI 不得把示例键固化为全局常量。同键同请求返回原任务，同键不同请求返回 409。收到 429 时按 <code>Retry-After</code> 等待；若响应包含 <code>submission_outcome_unknown</code>，从响应中的 <code>task_id</code> 或 <code>error.task_id</code> 继续轮询原任务；没有任务 ID 时停单并保留 <code>request_id</code>，不要猜 ID 或自动补单。</p>
+
+      <h2 id="nano">Nano Banana 异步图片生成</h2>
+      <div class="callout"><b>Nano Banana 可直接调用</b>使用异步任务接口提交图片生成请求，再查询同一个任务直到完成。文生图和图生图都使用 <code>POST /v1/videos</code>；提交响应顶层的 <code>id</code> 是任务 ID。</div>
+      <p>可用模型：<code>nano_banana_2</code>、<code>nano_banana_2-2K</code>、<code>nano_banana_2-4K</code>、<code>nano_banana_pro-1K</code>、<code>nano_banana_pro-2K</code>、<code>nano_banana_pro-4K</code>。请求体只使用本节列出的字段；分辨率由完整模型名决定，不要另外传 <code>size</code> 或 <code>resolution</code>。</p>
+      <h3>文生图</h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "nano_banana_2",
+    "prompt": "一只橘猫坐在窗边晒太阳，写实摄影风格"
+  }'</code></pre>
+      <h3>图生图</h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "nano_banana_2",
+    "prompt": "保留人物主体，把背景改成日落海边",
+    "images": ["https://example.com/input.png"]
+  }'</code></pre>
+      <p>图生图的 <code>images</code> 只能放一张无需登录即可访问的公网 HTTPS 图片。不要传 HTTP、Data URI、裸 Base64、本地路径或多张图片。</p>
+      <h3>查询任务</h3>
+      <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
+  -H "Authorization: Bearer $API_KEY"</code></pre>
+      <p>提交后保存顶层 <code>id</code>，只查询 <code>GET /v1/videos/{task_id}</code>。<code>queued</code>、<code>processing</code> 时继续查询；只有 <code>status=completed</code> 且返回 <code>url</code> 或 <code>image_url</code> 才算成功。<code>progress=0</code> 可能只是排队，不能因此重复提交。</p>
+
+      <h2 id="video">可灵视频与动作迁移</h2>
+      <div class="callout"><b>可灵不是 Chat 模型</b>可灵提供 3 条能力链、4 个精确公开模型 ID，全部使用异步视频任务：<code>POST /v1/videos</code> 提交，再用 <code>GET /v1/videos/{task_id}</code> 轮询。通用 OpenAI Chat 客户端若只会调用 <code>/v1/chat/completions</code> 或 <code>/v1/responses</code>，不能直接调用可灵。</div>
+      <p><b>先按目标选择精确模型：</b>可灵 2.6 使用 <code>kling-v2-6</code>；可灵 3.0 Turbo 的 720P 与 1080P 是两个独立模型，分别使用 <code>kling-3.0-turbo</code> 与 <code>kling-3.0-turbo-1080p</code>；动作迁移使用独立的 <code>kling-motion-control</code>。不要用 <code>resolution</code> 参数切换 3.0 分辨率。</p>
+      <table><thead><tr><th>模型 ID</th><th>规格</th><th>价格</th><th>公开请求</th></tr></thead><tbody>
+        <tr><td><code>kling-v2-6</code></td><td>可灵 2.6</td><td>¥0.3333/秒</td></tr><tr><td><code>kling-3.0-turbo</code></td><td>可灵 3.0 Turbo（固定 720P）</td><td>¥0.8889/秒</td></tr><tr><td><code>kling-3.0-turbo-1080p</code></td><td>可灵 3.0 Turbo（固定 1080P）</td><td>¥1.1111/秒</td></tr><tr><td><code>kling-motion-control</code></td><td>可灵动作迁移</td><td>¥0.5556/秒</td></tr>
+      </tbody></table>
+      <table><thead><tr><th>能力</th><th>模型</th><th>公开请求字段</th></tr></thead><tbody>
+        <tr><td>可灵 2.6 文生视频</td><td><code>kling-v2-6</code></td><td><code>model</code>、<code>prompt</code>、<code>seconds</code></td></tr>
+        <tr><td>可灵 3.0 Turbo 720P 文生视频</td><td><code>kling-3.0-turbo</code></td><td><code>model</code>、<code>prompt</code>、<code>seconds</code></td></tr>
+        <tr><td>可灵 3.0 Turbo 1080P 文生视频</td><td><code>kling-3.0-turbo-1080p</code></td><td><code>model</code>、<code>prompt</code>、<code>seconds</code></td></tr>
+        <tr><td>人物动作迁移</td><td><code>kling-motion-control</code></td><td><code>model</code>、<code>image_url</code>、<code>video_url</code>、<code>character_orientation</code>、<code>mode</code>、<code>seconds</code>，可选 <code>keep_original_sound</code></td></tr>
+      </tbody></table>
+      <p>三种文生视频模型的客户字段固定为 <code>model</code>、<code>prompt</code>、<code>seconds</code>；示例使用 5 秒，按秒计费。不要发送上游字段 <code>duration</code>、<code>resolution</code>，也不要提交供应商名称或内部渠道编号。</p>
+      <h3><code>kling-v2-6</code></h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v2-6",
+    "prompt": "对需要生成的画面和动作的明确描述",
+    "seconds": 5
+  }'</code></pre>
+      <h3><code>kling-3.0-turbo</code></h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-3.0-turbo",
+    "prompt": "对需要生成的画面和动作的明确描述",
+    "seconds": 5
+  }'</code></pre>
+      <h3><code>kling-3.0-turbo-1080p</code></h3>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-3.0-turbo-1080p",
+    "prompt": "对需要生成的画面和动作的明确描述",
+    "seconds": 5
+  }'</code></pre>
+      <p class="muted">提交后只轮询返回的原任务 ID：<code>GET /v1/videos/{task_id}</code>。失败、取消、超时或结果未知时保留原任务 ID、错误信息和请求时间，不要自动补提第二单。</p>
+      <h3><code>kling-motion-control</code></h3>
+      <p>使用参考图片确定人物与画面，再迁移动作视频中的动作。<code>seconds</code> 是本站必填的任务时长字段，必须与本次采用的参考视频时长一致：至少 3 秒；<code>character_orientation=image</code> 时最多 10 秒，设为 <code>video</code> 时最多 30 秒。本站内部负责转换私有字段，客户只发送本页列出的公开字段。</p>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-motion-control",
+    "image_url": "https://example.com/person.jpg",
+    "video_url": "https://example.com/motion.mp4",
+    "character_orientation": "image",
+    "mode": "std",
+    "seconds": 5,
+    "keep_original_sound": "no"
+  }'</code></pre>
+      <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
+  -H "Authorization: Bearer $API_KEY"</code></pre>
+      <p class="muted"><code>image_url</code> 必须是公网可直接访问的 HTTPS 图片直链，只接受真实 MIME 为 <code>image/jpeg</code> 或 <code>image/png</code> 的 JPG/JPEG/PNG；HEIC、WEBP、AVIF 等必须先转换，不能只改后缀。URL 若需要登录、已过期、返回 HTML 或响应 MIME 不匹配，均应在提交前判为输入错误。</p>
+      <p class="muted"><code>video_url</code> 必须是公网可直接访问的参考视频直链；本站当前不公开推断其它视频格式字段。<code>keep_original_sound</code> 是可选字段，只允许 <code>yes</code> 或 <code>no</code>；当前公开稳定模式固定为 <code>mode=std</code>。图片应清晰包含完整上半身或全身，动作视频只能有一个清晰人物。</p>
+      <h3>提交、轮询与终态响应</h3>
+      <p>提交成功后保存响应中的顶层 <code>id</code>，它就是后续唯一允许轮询的 <code>task_id</code>。任务处于 <code>queued</code>、<code>pending</code>、<code>processing</code>、<code>running</code> 或 <code>in_progress</code> 时继续轮询；<code>progress=0</code> 不是失败。只在 <code>completed</code> 且结果中存在视频 URL 时判定成功；达到客户端安全上限后停单并保留原任务信息，不自动补单。</p>
+      <pre><button class="copy">提交响应</button><code>{
+  "id": "task_example_123",
+  "object": "generation.task",
+  "model": "kling-v2-6",
+  "status": "queued",
+  "progress": 0,
+  "created_at": 1787000000
+}</code></pre>
+      <pre><button class="copy">处理中</button><code>{
+  "id": "task_example_123",
+  "object": "generation.task",
+  "model": "kling-v2-6",
+  "status": "processing",
+  "progress": 42,
+  "created_at": 1787000000
+}</code></pre>
+      <pre><button class="copy">完成响应</button><code>{
+  "id": "task_example_123",
+  "object": "generation.task",
+  "model": "kling-v2-6",
+  "status": "completed",
+  "progress": 100,
+  "completed_at": 1787000120,
+  "result": {
+    "type": "video",
+    "data": [{"url": "https://example.com/result.mp4", "format": "mp4"}]
+  }
+}</code></pre>
+      <pre><button class="copy">失败响应</button><code>{
+  "id": "task_example_123",
+  "object": "generation.task",
+  "model": "kling-v2-6",
+  "status": "failed",
+  "progress": 100,
+  "error": {"code": "generation_failed", "message": "具体失败原因"}
+}</code></pre>
+      <p class="muted">HTTP 401 表示当前站点 API Key 无效；HTTP 402/429 表示余额或限额；HTTP 503 表示服务暂时不可用。客户端不得把这些错误统一改写成“模型服务额度不足”，应保留 HTTP 状态、<code>error.code</code>、<code>error.message</code> 与 Request ID。</p>
+      <p class="muted">四个公开模型都按请求中的真实 <code>seconds</code> 计费，公开每秒价格见上表，实际最终扣费以控制台账单/使用记录为准。失败不等于自动退款；在原 <code>task_id</code> 的终态、视频 URL 和最终账单未核清前，不得自动补单，也不得用静态价格反推实际扣费。</p>
+
+      <h2 id="grok-video">Grok 视频五个规格</h2>
+      <p>两站使用同一套客户接口。1.0 提供 <code>grok-video-1.0-480p</code>、<code>grok-video-1.0-720p</code>；1.5 提供 <code>grok-video-1.5-480p</code>、<code>grok-video-1.5-720p</code>、<code>grok-video-1.5-1080p</code>。分辨率由完整模型名确定；基础名与 <code>grok-video-1.0-1080p</code> 不属于公开型号。</p>
+      <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"grok-video-1.5-720p","prompt":"一只纸飞机穿过晴朗的城市上空","seconds":5}'
+
+curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
+  -H "Authorization: Bearer $API_KEY"</code></pre>
+      <p>提交后保存响应顶层 <code>id</code>，只查询这个任务。<code>queued</code>、<code>pending</code>、<code>processing</code>、<code>running</code>、<code>in_progress</code> 继续等待；只有 <code>completed</code> 且存在可访问的视频 URL 才算成功。<code>progress=100</code>、HTTP 200 和任务 ID 都不能单独作为成功依据。失败或结果未知时保留原任务 ID、请求时间和错误信息，不自动提交第二单。按 <code>seconds</code> 计费，查询不重复计费；不要传 <code>duration</code> 或 <code>resolution</code>。</p>
+
+      <h2 id="sdk">Python 与 OpenAI SDK</h2>
+      <pre><button class="copy">复制</button><code>from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.yuqitoken.cn/v1",
+)
+
+completion = client.chat.completions.create(
+    model="gpt-5.6-terra",
+    messages=[{"role": "user", "content": "写一段产品更新说明。"}],
+)
+print(completion.choices[0].message.content)</code></pre>
+      <p>Node.js、Postman、Cherry Studio、LobeChat 等客户端可复用相同的 Base URL 与 Bearer Key；文字模型可使用 OpenAI Chat/Responses 兼容调用。可灵不属于 Chat 模型，客户端必须额外支持异步 <code>/v1/videos</code> 提交与轮询。密钥建议以环境变量或客户端的私密凭据区保存。</p>
+
+      <h2 id="troubleshooting">错误排查与安全</h2>
+      <table><thead><tr><th>现象</th><th>优先检查</th></tr></thead><tbody>
+        <tr><td><code>401 Invalid token</code></td><td>确认使用控制台新建的 Key，鉴权头为 <code>Bearer </code> 加密钥，且没有多余空格。</td></tr>
+        <tr><td><code>401 Incorrect API key provided</code>，错误信息出现 <code>api.openai.com</code> 或 <code>platform.openai.com</code></td><td>请求仍发往 OpenAI 官方，本服务 Key 不会被官方接受。不要反复更换 Key；把客户端 Base URL 精确设置为 <code>https://api.yuqitoken.cn/v1</code>，并确认实际请求 Host 只属于 <code>yuqitoken.cn</code>。</td></tr>
+        <tr><td><code>404</code>，实际路径出现 <code>/v1/v1/...</code></td><td>OpenAI 兼容 SDK 的 Base URL 已经以 <code>/v1</code> 结尾，SDK 会继续追加资源路径，不要再手工追加第二个 <code>/v1</code>。直接 HTTP 请求则使用本页给出的完整 <code>/v1/...</code> 路径。Claude Code 的 Base URL 不带 <code>/v1</code>。</td></tr>
+        <tr><td><code>503</code> 服务暂时不可用</td><td>先到模型广场核对完整模型名并保存 Request ID；只有确认原请求没有创建任务后才能重新提交，不得换错误端点或盲目重试。</td></tr>
+        <tr><td>客户端显示“模型服务额度不足”，但服务端没有可灵请求</td><td>这是客户端的泛化错误，不代表真实余额不足。确认实际请求为 <code>POST https://api.yuqitoken.cn/v1/videos</code>，模型名为本页列出的可灵型号，并让客户端保留原始 HTTP 状态、错误 JSON 与 Request ID；若只调用 Chat/Responses，必须改造为异步视频任务流程。</td></tr>
+        <tr><td>给 2.6/3.0 增加 <code>image_url</code> 后失败</td><td>当前公开合同只保证 5 秒文生视频，图生视频扩展未开放。删除未公开字段；不要把其它能力的字段套入这两个模型。</td></tr>
+        <tr><td>动作迁移提示图片格式或无法获取素材</td><td>确认 <code>image_url</code> 是无需登录的公网 HTTPS 直链，响应真实 MIME 为 <code>image/jpeg</code> 或 <code>image/png</code>；HEIC/WEBP/AVIF 先转换。输入校验失败不代表上游余额不足。</td></tr>
+        <tr><td>GPT Image 请求路径错误</td><td><code>GPT Image 2 tier models</code> 文生图使用异步 <code>/v1/videos</code> 并轮询；上传参考图的图生图使用 multipart <code>/v1/images/edits</code>，每张文件都必须使用精确字段 <code>image[]</code>。单数 <code>image</code> 只属于独立的同步 <code>image2</code> 合同。</td></tr>
+        <tr><td>千问 Pro 提示尺寸与计费档不匹配</td><td><code>qwen-image-3.0-pro-1K</code> 固定使用 1K 档，<code>qwen-image-3.0-pro</code> 固定使用 2K 档。请保持 <code>size</code> 与精确模型名一致，或改用标准版 <code>qwen-image-3.0</code>。</td></tr>
+        <tr><td>Nano 请求立即报错或路径错误</td><td>确认提交地址是 <code>POST /v1/videos</code>，查询地址是 <code>GET /v1/videos/{task_id}</code>。</td></tr>
+        <tr><td>图片或视频结果无法显示</td><td>先保存响应中的结果数据或 URL；确认客户端没有拦截大响应体，并保存响应头或 JSON 中的 Request ID。结果 URL 可能是临时地址，应立即下载。</td></tr>
+        <tr><td>GPT Image 2 图生图出现 524、网络超时或结果未知</td><td>仅适用于 GPT Image 2 tier models multipart 同步图生图：确认 Base URL 为 <code>https://direct-api.yuqitoken.cn/v1</code>、客户端 timeout 至少 600 秒；保存响应头 <code>X-Image2-Trace-Id</code>、错误体 <code>error.task_id</code> 与 <code>Request-ID</code>/<code>X-Request-ID</code>。用默认 API 入口的 <code>GET /v1/videos/{task_id}</code> 查询原任务，不得自动补提第二单。同步 <code>image2</code> 不使用这条异步回查规则。</td></tr>
+        <tr><td>额度消耗异常</td><td>核对模型、分辨率、质量、并发和重试策略。图片/视频失败重试前应先确认是否已创建任务。</td></tr>
+      </tbody></table>
+      <ul><li>每个应用或环境使用独立 Key，便于随时单独停用。</li><li>禁止把 Key 放在浏览器前端、移动端安装包、公开仓库和截图中。</li><li>服务端记录接口返回的请求 ID，提交工单时提供请求时间、模型名、接口和请求 ID，不要发送完整 Key。</li><li>模型广场用于确认型号与客户价格；生产可用性还必须结合鉴权、服务状态和真实请求的 Request ID 判断，不能只看“已上架”。</li></ul>
+<script type="application/json" id="api-contract">{
+  "schema_version": "relay_api_contract_v1.2",
+  "last_verified_at": "2026-09-28",
+  "service": "API 中转服务",
+  "docs": "https://docs.yuqitoken.cn",
+  "origin": "https://api.yuqitoken.cn",
+  "base_urls": {
+    "openai_compatible": "https://api.yuqitoken.cn/v1",
+    "gpt_image_2_sync_edits": "https://direct-api.yuqitoken.cn/v1",
+    "gpt_image_2_5_sync_edits": "https://direct-api.yuqitoken.cn/v1",
+    "anthropic": "https://api.yuqitoken.cn"
+  },
+  "url_composition": {
+    "direct_http": "default origin + route.path unless the route declares base_url",
+    "sdk_configuration": "use the selected base_url exactly and do not append another /v1",
+    "route_paths_are_origin_relative": true,
+    "route_base_url_override_supported": true,
+    "double_v1_forbidden": true
+  },
+  "authentication": {
+    "default_protocol": "openai_compatible",
+    "header": "Authorization",
+    "scheme": "Bearer",
+    "token": "control panel API key",
+    "applies_to": [
+      "chat",
+      "responses",
+      "images",
+      "videos"
+    ],
+    "exceptions": {
+      "anthropic_messages": {
+        "header": "x-api-key",
+        "scheme": "raw",
+        "base_url_has_v1_suffix": false
+      }
+    }
+  },
+  "clients": {
+    "codex": {
+      "config_file": "~/.codex/config.toml",
+      "project_config_supported": false,
+      "model_provider": "relay",
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "base_url_has_v1_suffix": true,
+      "env_key": "RELAY_API_KEY",
+      "wire_api": "responses"
+    },
+    "claude_code": {
+      "base_url": "https://api.yuqitoken.cn",
+      "base_url_has_v1_suffix": false,
+      "env_key": "ANTHROPIC_API_KEY",
+      "wire_api": "anthropic_messages"
+    }
+  },
+  "claude_status": {
+    "availability": "available",
+    "status_action": "allow_call",
+    "model_status": {
+      "claude-fable-5": "available",
+      "claude-opus-5": "available",
+      "claude-opus-5-5": "available",
+      "claude-sonnet-5": "available"
+    },
+    "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
+    "family_id": "claude_code",
+    "generated_model_set": [
+      "claude-fable-5",
+      "claude-opus-5",
+      "claude-opus-5-5",
+      "claude-sonnet-5"
+    ],
+    "runtime_availability": "available",
+    "configuration_contract": "complete"
+  },
+  "gpt_image_2_routing": {
+    "models": [
+      "gpt-image-2",
+      "gpt-image-2-1K-medium",
+      "gpt-image-2-2K",
+      "gpt-image-2-4K"
+    ],
+    "exact_model_name_required": true,
+    "silent_model_substitution_allowed": false,
+    "decision": {
+      "reference_image_count_0": {
+        "mode": "text_to_image",
+        "base_url": "https://api.yuqitoken.cn/v1",
+        "method": "POST",
+        "path": "/v1/videos",
+        "content_type": "application/json",
+        "result_mode": "asynchronous"
+      },
+      "reference_image_count_1_to_6": {
+        "mode": "image_to_image",
+        "base_url": "https://direct-api.yuqitoken.cn/v1",
+        "method": "POST",
+        "path": "/v1/images/edits",
+        "content_type": "multipart/form-data",
+        "result_mode": "synchronous_with_original_task_recovery"
+      }
+    },
+    "route_stable_exact_sizes_by_model": {
+      "gpt-image-2": [
+        "1024x1024",
+        "1536x1024",
+        "1024x1536"
+      ],
+      "gpt-image-2-1K-medium": [
+        "1024x1024"
+      ],
+      "gpt-image-2-2K": [
+        "2048x2048"
+      ],
+      "gpt-image-2-4K": [
+        "2880x2880"
+      ]
+    },
+    "supported_aspect_ratios": [
+      "21:9",
+      "16:9",
+      "5:4",
+      "4:3",
+      "3:2",
+      "1:1",
+      "4:5",
+      "3:4",
+      "2:3",
+      "9:16"
+    ],
+    "available_models": [
+      "gpt-image-2",
+      "gpt-image-2-1K-medium",
+      "gpt-image-2-2K",
+      "gpt-image-2-4K"
+    ],
+    "fail_closed_models": [],
+    "call_action": "follow_model_status"
+  },
+  "gpt_image_2_5_routing": {
+    "models": [
+      "gpt-image-2.5",
+      "gpt-image-2.5-flare-1k",
+      "gpt-image-2.5-flare-2k",
+      "gpt-image-2.5-flare-4k",
+      "gpt-image-2.5-sunburst-1k",
+      "gpt-image-2.5-sunburst-2k",
+      "gpt-image-2.5-sunburst-4k"
+    ],
+    "forbidden_generic_models": [
+      "gpt-image-2.5-flare",
+      "gpt-image-2.5-sunburst"
+    ],
+    "exact_model_name_required": true,
+    "silent_model_substitution_allowed": false,
+    "output_count": 1,
+    "n": {
+      "required_value": 1,
+      "other_values_allowed": false
+    },
+    "square_sizes_by_tier": {
+      "1k": "1024x1024",
+      "2k": "2048x2048",
+      "4k": "2880x2880"
+    },
+    "base_model_exact_sizes": [
+      "1024x1024",
+      "1536x1024",
+      "1536x864",
+      "1536x1152",
+      "1152x1536",
+      "1280x1024",
+      "1024x1280",
+      "1536x656",
+      "1024x1536",
+      "auto"
+    ],
+    "base_model_supported_aspect_ratios": [
+      "1:1",
+      "5:4",
+      "9:16",
+      "21:9",
+      "16:9",
+      "3:2",
+      "4:3",
+      "4:5",
+      "3:4",
+      "2:3"
+    ],
+    "k_tier_supported_aspect_ratios": [
+      "1:1",
+      "5:4",
+      "9:16",
+      "21:9",
+      "16:9",
+      "3:2",
+      "4:3",
+      "4:5",
+      "3:4",
+      "2:3",
+      "7:6"
+    ],
+    "aspect_ratio_wire_format": {
+      "type": "string",
+      "syntax": "WIDTH:HEIGHT",
+      "pattern": "^[1-9][0-9]*:[1-9][0-9]*$",
+      "ascii_only": true,
+      "whitespace_allowed": false,
+      "decimal_values_allowed": false,
+      "unicode_punctuation_allowed": false,
+      "aliases_allowed": false,
+      "automatic_normalization_allowed": false,
+      "exact_model_allowlist_required": true,
+      "base_model_values_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+      "k_tier_values_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+    },
+    "k_tier_size_rules": {
+      "format": "WIDTHxHEIGHT",
+      "dimensions": "positive integers divisible by 16",
+      "max_long_edge": 3840,
+      "max_long_to_short_ratio": "3:1",
+      "total_pixels_by_tier": {
+        "1k": {
+          "min": 655360,
+          "max": 1048576
+        },
+        "2k": {
+          "min": 655360,
+          "max": 4194304
+        },
+        "4k": {
+          "min": 655360,
+          "max": 8294400
+        }
+      }
+    },
+    "route_selection": {
+      "async_text_to_image": "$.routes.gpt_image_2_5_async_generation",
+      "sync_text_to_image": "$.routes.gpt_image_2_5_sync_generation",
+      "sync_image_to_image": "$.routes.gpt_image_2_5_sync_edits"
+    }
+  },
+  "async_polling": {
+    "initial_delay_seconds": 5,
+    "image_interval_seconds": [
+      5,
+      10
+    ],
+    "video_interval_seconds": 10,
+    "on_429": "honor Retry-After and add jitter",
+    "success_rule": "terminal status completed AND result URL exists; progress is display-only",
+    "queued_progress_zero_is_normal": true,
+    "client_safety_timeout_seconds": {
+      "image": 1800,
+      "video": 2700
+    },
+    "stalled_progress_action": "continue polling original task until safety timeout; never resubmit",
+    "local_timeout_is_terminal_failure": false,
+    "auto_resubmit": false
+  },
+  "routes": {
+    "chat": {
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "content_type": "application/json",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "environment_placeholder": "RELAY_API_KEY"
+      },
+      "availability": "configuration_ready",
+      "call_action": "configure_and_validate",
+      "models": [
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-6-astra",
+        "gpt-6-sol"
+      ],
+      "model_status": {
+        "gpt-5.5": "documented",
+        "gpt-5.6-luna": "documented",
+        "gpt-5.6-sol": "documented",
+        "gpt-5.6-terra": "documented",
+        "gpt-6-astra": "documented",
+        "gpt-6-sol": "documented"
+      },
+      "field_status": "documented_minimum_contract",
+      "defaults": "no unpublished default may be guessed",
+      "mutual_exclusion": "send the documented required fields; omit all fields not listed in this route",
+      "rejected_fields": [
+        "every field not listed in the promoted route contract"
+      ],
+      "response": {
+        "status": "documented_projection",
+        "projected_shape_preserved": true,
+        "raw_upstream_fields_exposed": false
+      },
+      "streaming": {
+        "protocol": "SSE when stream=true",
+        "support": "documented",
+        "termination": "message completed event or connection close"
+      },
+      "errors": {
+        "official_semantics": {
+          "400": "invalid request; fix documented fields and do not retry unchanged",
+          "401": "authentication rejected; check the private station key and stop",
+          "403": "permission or region restriction; preserve the response and stop",
+          "404": "route or model not found; do not invent an alternative path",
+          "409": "conflict; preserve identifiers and stop",
+          "413": "request too large; reduce the request only after reading the published limit",
+          "429": "rate or quota limit; honor Retry-After when present; billing failures are not retryable",
+          "500": "temporary server error; outcome may be unknown",
+          "502": "gateway error; outcome may be unknown",
+          "503": "service unavailable; outcome may be unknown",
+          "504": "timeout; preserve identifiers and stop"
+        },
+        "relay_projection": "documented_projection"
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "preserve": [
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message",
+          "Request-ID",
+          "X-Request-ID"
+        ],
+        "idempotency": {
+          "status": "not_published",
+          "action": "never retry an outcome-unknown request"
+        },
+        "retry": {
+          "status": "pending_adapter_verification",
+          "action": "do not retry automatically"
+        }
+      },
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "optional_official_fields": [
+        "stream",
+        "stream_options",
+        "temperature",
+        "top_p",
+        "max_tokens",
+        "max_completion_tokens",
+        "stop",
+        "tools",
+        "tool_choice",
+        "response_format",
+        "reasoning_effort",
+        "service_tier",
+        "verbosity",
+        "metadata"
+      ],
+      "optional_client_fields": [],
+      "limits": "use only the published minimum fields and server response limits",
+      "request_example_status": "executable_configuration"
+    },
+    "responses": {
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "content_type": "application/json",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "environment_placeholder": "RELAY_API_KEY"
+      },
+      "availability": "configuration_ready",
+      "call_action": "configure_and_validate",
+      "models": [
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-6-astra",
+        "gpt-6-sol"
+      ],
+      "model_status": {
+        "gpt-5.5": "documented",
+        "gpt-5.6-luna": "documented",
+        "gpt-5.6-sol": "documented",
+        "gpt-5.6-terra": "documented",
+        "gpt-6-astra": "documented",
+        "gpt-6-sol": "documented"
+      },
+      "field_status": "documented_minimum_contract",
+      "defaults": "no unpublished default may be guessed",
+      "mutual_exclusion": "send the documented required fields; omit all fields not listed in this route",
+      "rejected_fields": [
+        "every field not listed in the promoted route contract"
+      ],
+      "response": {
+        "status": "documented_projection",
+        "projected_shape_preserved": true,
+        "raw_upstream_fields_exposed": false
+      },
+      "streaming": {
+        "protocol": "SSE when stream=true",
+        "support": "documented",
+        "termination": "message completed event or connection close"
+      },
+      "errors": {
+        "official_semantics": {
+          "400": "invalid request; fix documented fields and do not retry unchanged",
+          "401": "authentication rejected; check the private station key and stop",
+          "403": "permission or region restriction; preserve the response and stop",
+          "404": "route or model not found; do not invent an alternative path",
+          "409": "conflict; preserve identifiers and stop",
+          "413": "request too large; reduce the request only after reading the published limit",
+          "429": "rate or quota limit; honor Retry-After when present; billing failures are not retryable",
+          "500": "temporary server error; outcome may be unknown",
+          "502": "gateway error; outcome may be unknown",
+          "503": "service unavailable; outcome may be unknown",
+          "504": "timeout; preserve identifiers and stop"
+        },
+        "relay_projection": "documented_projection"
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "preserve": [
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message",
+          "Request-ID",
+          "X-Request-ID"
+        ],
+        "idempotency": {
+          "status": "not_published",
+          "action": "never retry an outcome-unknown request"
+        },
+        "retry": {
+          "status": "pending_adapter_verification",
+          "action": "do not retry automatically"
+        }
+      },
+      "method": "POST",
+      "path": "/v1/responses",
+      "required": [
+        "model",
+        "input"
+      ],
+      "optional_official_fields": [
+        "conversation",
+        "include",
+        "instructions",
+        "max_output_tokens",
+        "reasoning",
+        "stream",
+        "store",
+        "text",
+        "tool_choice",
+        "tools",
+        "truncation",
+        "service_tier",
+        "metadata"
+      ],
+      "optional_client_fields": [],
+      "limits": "use only the published minimum fields and server response limits",
+      "request_example_status": "executable_configuration"
+    },
+    "anthropic_messages": {
+      "method": "POST",
+      "path": "/v1/messages",
+      "base_url": "https://api.yuqitoken.cn",
+      "base_url_has_v1_suffix": false,
+      "content_type": "application/json",
+      "auth": {
+        "accepted_header": "x-api-key",
+        "scheme": "raw",
+        "environment_placeholder": "ANTHROPIC_API_KEY"
+      },
+      "required_headers": {
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+        "anthropic-beta": "forward only when a future station contract explicitly lists it"
+      },
+      "required": [
+        "model",
+        "max_tokens",
+        "messages"
+      ],
+      "models": [
+        "claude-fable-5",
+        "claude-opus-5",
+        "claude-opus-5-5",
+        "claude-sonnet-5"
+      ],
+      "model_status": {
+        "claude-fable-5": "available",
+        "claude-opus-5": "available",
+        "claude-opus-5-5": "available",
+        "claude-sonnet-5": "available"
+      },
+      "availability": "available",
+      "call_action": "allow_call",
+      "official_optional_fields": [
+        "cache_control",
+        "container",
+        "inference_geo",
+        "metadata",
+        "output_config",
+        "service_tier",
+        "stop_sequences",
+        "stream",
+        "system",
+        "thinking",
+        "tool_choice",
+        "tools",
+        "temperature",
+        "top_k",
+        "top_p"
+      ],
+      "optional_client_fields": [],
+      "defaults": {
+        "max_tokens": "required; no default published by this station",
+        "stream": "false for a non-streaming request; set true only when the client consumes SSE",
+        "temperature": "no station default published"
+      },
+      "rejected_fields": [
+        "every field not listed in the promoted station contract"
+      ],
+      "response": {
+        "non_streaming": {
+          "status": "documented_projection",
+          "fields": [
+            "id",
+            "type",
+            "role",
+            "model",
+            "content",
+            "stop_reason",
+            "stop_sequence",
+            "usage"
+          ]
+        },
+        "streaming": {
+          "protocol": "SSE",
+          "events": [
+            "message_start",
+            "content_block_start",
+            "content_block_delta",
+            "content_block_stop",
+            "message_delta",
+            "message_stop",
+            "ping",
+            "error"
+          ],
+          "status": "documented",
+          "keep_alive_ping_required": true
+        }
+      },
+      "errors": {
+        "official_types": {
+          "400": "invalid_request_error",
+          "401": "authentication_error",
+          "402": "billing_error",
+          "403": "permission_error",
+          "404": "not_found_error",
+          "409": "conflict_error",
+          "413": "request_too_large",
+          "429": "rate_limit_error",
+          "500": "api_error",
+          "504": "timeout_error",
+          "529": "overloaded_error"
+        },
+        "response_shape": {
+          "top_level_fields": [
+            "type",
+            "error",
+            "request_id"
+          ],
+          "redacted_error_shape_preserved": true,
+          "raw_upstream_fields_exposed": false
+        },
+        "station_projection": "documented_projection"
+      },
+      "gateway_headers": {
+        "forwarded_unchanged_when_supported": [
+          "anthropic-version",
+          "anthropic-beta",
+          "x-claude-code-session-id",
+          "x-claude-code-agent-name",
+          "x-claude-code-parent-agent-name"
+        ],
+        "status": "verified_station_contract"
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "preserve": [
+          "request_id",
+          "HTTP status",
+          "error.type",
+          "error.message",
+          "Request-ID",
+          "X-Request-ID"
+        ],
+        "retry": {
+          "official_default": "SDK may retry connection/429/5xx with bounded exponential backoff",
+          "station_policy": "honor Retry-After; never retry an outcome-unknown request"
+        },
+        "idempotency": {
+          "status": "not_published",
+          "action": "never retry an outcome-unknown request"
+        },
+        "timeout": {
+          "client": "set an explicit client timeout appropriate for the request",
+          "on_timeout": "preserve identifiers and stop"
+        }
+      },
+      "request_example_status": "executable_configuration",
+      "safe_next_action": "send_only_the_documented_minimum_request_and_follow_the_published_response_contract"
+    },
+    "image2_sync_generation": {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "response": "OpenAI Images data[].url",
+      "models": [
+        "image2"
+      ]
+    },
+    "image2_sync_edits": {
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "content_type": "multipart/form-data",
+      "required": [
+        "model",
+        "prompt",
+        "image"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "image"
+      ],
+      "additional_fields_allowed": false,
+      "image_input": {
+        "max_items": 6,
+        "request_max_bytes": 10485760,
+        "mimes": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ]
+      },
+      "response": "OpenAI Images data[].url",
+      "models": [
+        "image2"
+      ]
+    },
+    "gpt_image_2_edits": {
+      "purpose": "image_to_image_with_one_to_six_local_reference_images",
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "base_url": "https://direct-api.yuqitoken.cn/v1",
+      "client_timeout_seconds_minimum": 600,
+      "content_type": "multipart/form-data",
+      "required": [
+        "model",
+        "prompt",
+        "image[]"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "image[]",
+        "size",
+        "aspect_ratio",
+        "response_format"
+      ],
+      "additional_fields_allowed": false,
+      "response": {
+        "http_status": 200,
+        "format": "OpenAI Images",
+        "url_path": "$.data[0].url",
+        "download_immediately": true
+      },
+      "result_format": "url",
+      "response_format": {
+        "optional": true,
+        "allowed_values": [
+          "url"
+        ],
+        "case_normalization": "lowercase",
+        "omitted_default": "url",
+        "rejected_values": [
+          "b64_json",
+          "other"
+        ]
+      },
+      "output_count": 1,
+      "forbidden_client_fields": [
+        "n",
+        "quality",
+        "resolution",
+        "detailLevel",
+        "aspectRatio",
+        "ratio",
+        "width",
+        "height",
+        "mask",
+        "background",
+        "moderation",
+        "output_format",
+        "output_compression"
+      ],
+      "image_input": {
+        "canonical_file_field": "image[]",
+        "accepted_file_fields": [
+          "image[]"
+        ],
+        "rejected_file_fields": [
+          "image",
+          "images",
+          "image[0]",
+          "mask"
+        ],
+        "array_transport": "repeat one multipart image[] file part per image; do not send a JSON array, Base64 string, URL, or local path string",
+        "min_items": 1,
+        "max_items": 6,
+        "preserves_part_order": true,
+        "role_semantics": "the service preserves order but assigns no product/model roles; bind Image 1, Image 2, and later positions explicitly in prompt",
+        "request_max_bytes": 10485760,
+        "normalized_images_max_bytes": 7340032,
+        "guaranteed_mimes": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ],
+        "rejected_mimes": [
+          "image/heic",
+          "image/heif",
+          "image/avif",
+          "image/gif",
+          "image/bmp",
+          "image/tiff",
+          "image/raw"
+        ],
+        "silent_transcoding": false
+      },
+      "unsupported": [
+        "mask",
+        "background",
+        "moderation",
+        "output_format",
+        "output_compression"
+      ],
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "infer only when all reference images have the same inspectable aspect ratio; otherwise the request can return HTTP 400",
+        "different_reference_aspect_ratios": "send one explicit supported aspect_ratio",
+        "exact_sizes_by_model_ref": "$.gpt_image_2_routing.route_stable_exact_sizes_by_model",
+        "supported_aspect_ratios_ref": "$.gpt_image_2_routing.supported_aspect_ratios"
+      },
+      "two_local_image_example": {
+        "ordered_file_parts": [
+          {
+            "field": "image[]",
+            "position": 1,
+            "example_file": "./product.png",
+            "prompt_role": "product reference"
+          },
+          {
+            "field": "image[]",
+            "position": 2,
+            "example_file": "./model-reference.png",
+            "prompt_role": "model/person reference"
+          }
+        ],
+        "prompt_must_bind_positions": true
+      },
+      "client_error": {
+        "http_status": [
+          400,
+          413,
+          415,
+          422
+        ],
+        "action": "fix the request and preserve the original error body; do not retry the unchanged request"
+      },
+      "unknown_outcome": {
+        "triggers": [
+          "HTTP 524",
+          "network timeout",
+          "HTTP 503",
+          "HTTP 504",
+          "result unknown"
+        ],
+        "trace_header": "X-Image2-Trace-Id",
+        "error_field": "error.task_id",
+        "same_task_identifier": true,
+        "preserve": [
+          "X-Image2-Trace-Id",
+          "error.task_id",
+          "Request-ID",
+          "X-Request-ID",
+          "HTTP status",
+          "redacted error JSON"
+        ],
+        "poll": {
+          "method": "GET",
+          "base_url": "https://api.yuqitoken.cn/v1",
+          "path": "/v1/videos/{task_id}"
+        },
+        "auto_resubmit": false,
+        "action": "query original task only; do not resubmit"
+      },
+      "models": [
+        "gpt-image-2",
+        "gpt-image-2-1K-medium",
+        "gpt-image-2-2K",
+        "gpt-image-2-4K"
+      ]
+    },
+    "gpt_image_2_async": {
+      "purpose": "text_to_image_without_reference_images",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "size",
+        "aspect_ratio"
+      ],
+      "additional_fields_allowed": false,
+      "result_format": "url",
+      "output_count": 1,
+      "forbidden_client_fields": [
+        "n",
+        "quality",
+        "response_format",
+        "resolution",
+        "detailLevel",
+        "aspectRatio",
+        "ratio",
+        "width",
+        "height",
+        "mask",
+        "image",
+        "images",
+        "image_url"
+      ],
+      "reference_images_allowed": false,
+      "models": [
+        "gpt-image-2",
+        "gpt-image-2-1K-medium",
+        "gpt-image-2-2K",
+        "gpt-image-2-4K"
+      ],
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "auto",
+        "exact_sizes_by_model_ref": "$.gpt_image_2_routing.route_stable_exact_sizes_by_model",
+        "supported_aspect_ratios_ref": "$.gpt_image_2_routing.supported_aspect_ratios"
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "processing",
+          "in_progress"
+        ],
+        "success": "completed",
+        "failure": "failed",
+        "success_requires": [
+          "url or image_url"
+        ],
+        "result_url_paths": [
+          "$.data[0].url",
+          "$.result.data[0].url",
+          "$.url",
+          "$.image_url"
+        ],
+        "progress_is_display_only": true
+      },
+      "model_substitution": {
+        "allowed": false,
+        "action_on_unsupported_model": "return the original error; never rewrite to another GPT Image 2 model"
+      }
+    },
+    "gpt_image_2_5_async_generation": {
+      "purpose": "asynchronous_text_to_image",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt",
+        "n"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "n",
+        "size",
+        "aspect_ratio"
+      ],
+      "additional_fields_allowed": false,
+      "n": {
+        "required_value": 1,
+        "other_values_allowed": false
+      },
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "allowed; use the service default",
+        "aspect_ratio_wire_format_ref": "$.gpt_image_2_5_routing.aspect_ratio_wire_format",
+        "base_model_exact_sizes_ref": "$.gpt_image_2_5_routing.base_model_exact_sizes",
+        "base_model_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+        "k_tier_size_rules_ref": "$.gpt_image_2_5_routing.k_tier_size_rules",
+        "k_tier_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "alternate_id_paths": [
+          "$.task_id"
+        ],
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "pending",
+          "processing",
+          "running",
+          "in_progress"
+        ],
+        "success": [
+          "completed",
+          "SUCCESS"
+        ],
+        "failure": [
+          "failed",
+          "failure",
+          "cancelled"
+        ],
+        "success_requires": [
+          "$.data[].url"
+        ],
+        "progress_is_display_only": true
+      },
+      "unknown_outcome": {
+        "auto_resubmit": false,
+        "poll_original_task_only": true,
+        "preserve": [
+          "request_id",
+          "task_id",
+          "sent_at",
+          "HTTP status",
+          "redacted error JSON"
+        ]
+      },
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ]
+    },
+    "gpt_image_2_5_sync_generation": {
+      "purpose": "synchronous_text_to_image",
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt",
+        "n"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "n",
+        "size",
+        "aspect_ratio"
+      ],
+      "additional_fields_allowed": false,
+      "n": {
+        "required_value": 1,
+        "other_values_allowed": false
+      },
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "allowed; use the service default",
+        "aspect_ratio_wire_format_ref": "$.gpt_image_2_5_routing.aspect_ratio_wire_format",
+        "base_model_exact_sizes_ref": "$.gpt_image_2_5_routing.base_model_exact_sizes",
+        "base_model_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+        "k_tier_size_rules_ref": "$.gpt_image_2_5_routing.k_tier_size_rules",
+        "k_tier_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+      },
+      "response": {
+        "http_status": 200,
+        "format": "OpenAI Images",
+        "url_path": "$.data[].url"
+      },
+      "polling_required": false,
+      "unknown_outcome": {
+        "auto_resubmit": false,
+        "preserve": [
+          "request_id",
+          "sent_at",
+          "HTTP status",
+          "redacted error JSON"
+        ]
+      },
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ]
+    },
+    "gpt_image_2_5_sync_edits": {
+      "purpose": "synchronous_image_to_image_with_one_to_nine_local_reference_images",
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "base_url": "https://direct-api.yuqitoken.cn/v1",
+      "content_type": "multipart/form-data",
+      "required": [
+        "model",
+        "prompt",
+        "image[]"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "image[]",
+        "n",
+        "size",
+        "aspect_ratio",
+        "response_format"
+      ],
+      "additional_fields_allowed": false,
+      "n": {
+        "optional": true,
+        "omitted_default": 1,
+        "allowed_values": [
+          1
+        ]
+      },
+      "image_input": {
+        "canonical_file_field": "image[]",
+        "min_items": 1,
+        "max_items": 9,
+        "transport": "repeat multipart image[] file parts",
+        "rejected_transports": [
+          "JSON image array",
+          "Base64",
+          "image URL",
+          "local path string"
+        ]
+      },
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "infer only when all reference images have the same inspectable aspect ratio; otherwise return HTTP 400 size_required",
+        "aspect_ratio_wire_format_ref": "$.gpt_image_2_5_routing.aspect_ratio_wire_format",
+        "base_model_exact_sizes_ref": "$.gpt_image_2_5_routing.base_model_exact_sizes",
+        "base_model_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+        "k_tier_size_rules_ref": "$.gpt_image_2_5_routing.k_tier_size_rules",
+        "k_tier_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+      },
+      "response_format": {
+        "optional": true,
+        "allowed_values": [
+          "url"
+        ],
+        "other_values_allowed": false
+      },
+      "response": {
+        "http_status": 200,
+        "format": "OpenAI Images",
+        "url_path": "$.data[].url"
+      },
+      "polling_required": false,
+      "unknown_outcome": {
+        "auto_resubmit": false,
+        "preserve": [
+          "request_id",
+          "sent_at",
+          "HTTP status",
+          "redacted error JSON"
+        ]
+      },
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ]
+    },
+    "nano_async_image": {
+      "availability": "available",
+      "call_action": "allow_call",
+      "request_example_status": "executable",
+      "safe_next_action": "submit_the_documented_request_and_poll_the_original_task",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "optional": [
+        "aspect_ratio"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "aspect_ratio",
+        "images"
+      ],
+      "additional_fields_allowed": false,
+      "image_input": {
+        "field": "images",
+        "text_to_image_items": 0,
+        "image_to_image_items": 1,
+        "format": "public_https_url",
+        "http_allowed": false,
+        "data_uri_allowed": false,
+        "bare_base64_allowed": false,
+        "multiple_images_allowed": false
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "processing"
+        ],
+        "success": "completed",
+        "failure": "failed",
+        "success_requires": [
+          "url or image_url"
+        ],
+        "progress_is_display_only": true
+      },
+      "models": [
+        "nano_banana_2",
+        "nano_banana_2-2K",
+        "nano_banana_2-4K",
+        "nano_banana_pro-1K",
+        "nano_banana_pro-2K",
+        "nano_banana_pro-4K"
+      ],
+      "model_status": {
+        "nano_banana_2": "available",
+        "nano_banana_2-2K": "available",
+        "nano_banana_2-4K": "available",
+        "nano_banana_pro-1K": "available",
+        "nano_banana_pro-2K": "available",
+        "nano_banana_pro-4K": "available"
+      },
+      "rejected_fields": [
+        "size",
+        "resolution",
+        "image",
+        "image_url",
+        "input_image",
+        "reference_image_url",
+        "data",
+        "messages"
+      ],
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "poll_original_task_only": true,
+        "progress_zero_is_not_failure": true
+      }
+    },
+    "qwen_image_3_async": {
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "models": [
+        "qwen-image-3.0",
+        "qwen-image-3.0-pro-1K",
+        "qwen-image-3.0-pro"
+      ],
+      "display_names": {
+        "qwen-image-3.0": "千问 Image 3.0",
+        "qwen-image-3.0-pro-1K": "千问 Image 3.0 Pro 1K",
+        "qwen-image-3.0-pro": "千问 Image 3.0 Pro 2K"
+      },
+      "image_input": {
+        "enabled": true,
+        "field": "images",
+        "min_items": 1,
+        "max_items": 3,
+        "preserves_order": true,
+        "formats": [
+          "https_url",
+          "data_uri"
+        ],
+        "data_uri_mimes": [
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+          "image/gif",
+          "image/bmp",
+          "image/tiff",
+          "image/heic",
+          "image/heif",
+          "image/avif"
+        ],
+        "max_decoded_bytes": 10485760,
+        "max_request_bytes": 14680064,
+        "max_pixels": 16000000,
+        "fail_closed_formats": [
+          "svg",
+          "pdf",
+          "psd",
+          "raw"
+        ]
+      },
+      "pro_billing_tiers": {
+        "qwen-image-3.0-pro-1K": "1K",
+        "qwen-image-3.0-pro": "2K"
+      },
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "images",
+        "n",
+        "size",
+        "resolution",
+        "aspect_ratio",
+        "aspectRatio",
+        "prompt_extend",
+        "watermark",
+        "negative_prompt",
+        "prompt_extend_mode",
+        "seed",
+        "idempotency_key"
+      ],
+      "n": 1,
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "processing"
+        ],
+        "success": "completed",
+        "failure": "failed",
+        "success_requires": [
+          "url or image_url"
+        ],
+        "progress_is_display_only": true
+      },
+      "idempotency": {
+        "header": "Idempotency-Key",
+        "new_logical_request": "generate a new 8-128 character key",
+        "retry_identical_request": "reuse original key",
+        "static_global_key_forbidden": true,
+        "same_key_same_request": "replay original task",
+        "same_key_different_request": 409,
+        "body_alias": "optional; when both header and body are sent their values must match; prefer Idempotency-Key header"
+      },
+      "capacity": {
+        "status": 429,
+        "retry_header": "Retry-After"
+      },
+      "unknown_submission": {
+        "code": "submission_outcome_unknown",
+        "task_id_paths": [
+          "$.task_id",
+          "$.error.task_id"
+        ],
+        "missing_task_id_action": "preserve request_id and stop; do not guess",
+        "action": "poll same task; do not resubmit"
+      },
+      "task_query_ttl_seconds": 86400,
+      "result_url_ttl_seconds": 86400
+    },
+    "kling_async": {
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "capability_selection": {
+        "text_to_video": {
+          "models": [
+            "kling-v2-6",
+            "kling-3.0-turbo",
+            "kling-3.0-turbo-1080p"
+          ],
+          "supported": true
+        },
+        "image_to_video": {
+          "models": [],
+          "supported": false,
+          "action": "stop and request a site-verified contract; do not guess image_url or reuse motion-control fields"
+        },
+        "motion_transfer": {
+          "models": [
+            "kling-motion-control"
+          ],
+          "supported": true
+        }
+      },
+      "public_minimum_contract": {
+        "kling-v2-6": {
+          "required": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "allowed_fields": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "additional_fields_allowed": false,
+          "seconds": [
+            5
+          ],
+          "mode": "text_to_video",
+          "image_to_video_supported": false
+        },
+        "kling-3.0-turbo": {
+          "required": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "allowed_fields": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "additional_fields_allowed": false,
+          "seconds": [
+            5
+          ],
+          "mode": "text_to_video",
+          "resolution": "720p",
+          "image_to_video_supported": false
+        },
+        "kling-3.0-turbo-1080p": {
+          "required": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "allowed_fields": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "additional_fields_allowed": false,
+          "seconds": [
+            5
+          ],
+          "mode": "text_to_video",
+          "resolution": "1080p",
+          "image_to_video_supported": false
+        },
+        "kling-motion-control": {
+          "required": [
+            "model",
+            "image_url",
+            "video_url",
+            "character_orientation",
+            "mode",
+            "seconds"
+          ],
+          "optional": [
+            "keep_original_sound"
+          ],
+          "allowed_fields": [
+            "model",
+            "image_url",
+            "video_url",
+            "character_orientation",
+            "mode",
+            "seconds",
+            "keep_original_sound"
+          ],
+          "additional_fields_allowed": false,
+          "image_url": {
+            "transport": "public_https_direct_url",
+            "mimes": [
+              "image/jpeg",
+              "image/png"
+            ],
+            "extensions": [
+              "jpg",
+              "jpeg",
+              "png"
+            ],
+            "login_required_allowed": false,
+            "mime_must_match_content": true
+          },
+          "video_url": {
+            "transport": "public_https_direct_url",
+            "mime_and_codec": "not part of the public contract; validate direct accessibility"
+          },
+          "character_orientation": [
+            "image",
+            "video"
+          ],
+          "mode": [
+            "std"
+          ],
+          "keep_original_sound": [
+            "yes",
+            "no"
+          ],
+          "seconds": {
+            "minimum": 3,
+            "maximum_by_orientation": {
+              "image": 10,
+              "video": 30
+            },
+            "must_match_reference_video": true
+          }
+        }
+      },
+      "client_compatibility": {
+        "chat_clients_supported": false,
+        "requires_async_submit_and_poll": true
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "pending",
+          "processing",
+          "running",
+          "in_progress"
+        ],
+        "success": "completed",
+        "failure": [
+          "failed",
+          "failure",
+          "cancelled"
+        ],
+        "success_requires": [
+          "result URL"
+        ],
+        "progress_is_display_only": true,
+        "result_paths": [
+          "result.data[0].url",
+          "output.video_url",
+          "video_url"
+        ]
+      },
+      "billing": {
+        "unit": "second",
+        "requested_seconds_field": "seconds",
+        "published_price_source": "customer pricing page",
+        "actual_charge_source": "control panel billing or usage record",
+        "failed_task_implies_refund": false,
+        "static_price_is_actual_charge_evidence": false
+      },
+      "recovery": {
+        "preserve": [
+          "task_id",
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message"
+        ],
+        "poll_original_task_only": true,
+        "auto_resubmit": false,
+        "retry_requires_proof_no_task_was_created": true
+      },
+      "models": [
+        "kling-v2-6",
+        "kling-3.0-turbo",
+        "kling-3.0-turbo-1080p",
+        "kling-motion-control"
+      ]
+    },
+    "grok_text_chat": {
+      "family_id": "grok_text",
+      "availability": "available",
+      "call_action": "allow_call",
+      "models": [
+        "grok-4.5",
+        "grok-4.6",
+        "grok-4.7"
+      ],
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer"
+      },
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_id_and_error_then_stop"
+      }
+    },
+    "grok_video_async": {
+      "family_id": "grok_video",
+      "availability": "available",
+      "call_action": "allow_call",
+      "models": [
+        "grok-video-1.0-480p",
+        "grok-video-1.0-720p",
+        "grok-video-1.5-480p",
+        "grok-video-1.5-720p",
+        "grok-video-1.5-1080p"
+      ],
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer"
+      },
+      "content_type": "application/json",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos",
+        "required": [
+          "model",
+          "prompt",
+          "seconds"
+        ],
+        "allowed_fields": [
+          "model",
+          "prompt",
+          "seconds"
+        ],
+        "seconds": {
+          "minimum": 1,
+          "maximum": 15
+        }
+      },
+      "submit_response": {
+        "id_path": "$.id",
+        "id_required": true
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}",
+        "task_id_path": "$.id"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "pending",
+          "processing",
+          "running",
+          "in_progress"
+        ],
+        "success": "completed",
+        "failure": [
+          "failed",
+          "cancelled",
+          "canceled"
+        ],
+        "success_requires": [
+          "accessible video URL"
+        ],
+        "progress_is_display_only": true
+      },
+      "billing": {
+        "unit": "second",
+        "requested_seconds_field": "seconds",
+        "query_billed_again": false
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "poll_original_task_only": true,
+        "preserve": [
+          "task_id",
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message"
+        ]
+      },
+      "resolution_selected_by_model_name": true,
+      "client_resolution_field": false,
+      "client_duration_field": false
+    }
+  },
+  "constraints": {
+    "gpt_image_2": "zero reference images: strict JSON fields model,prompt and at most one of size/aspect_ratio to POST /v1/videos, then poll the original task; one to six local JPEG/PNG/WebP references: the same text fields plus ordered repeated multipart image[] file parts to POST /v1/images/edits; reject aliases, unknown fields and silent transcoding; never use /v1/images/generations, never send local paths in JSON, and never substitute or invent model names; the separate synchronous image2 contract remains unchanged",
+    "gpt_image_2_5": "seven exact public model IDs and three fixed routes; n must equal one; size and aspect_ratio are mutually exclusive but may both be omitted for text-to-image; aspect_ratio must be an exact ASCII WIDTH:HEIGHT string from the model-specific allowlist, with no spaces, decimals, Unicode punctuation, aliases, or automatic normalization; image-to-image omission is allowed only when all references have one inspectable ratio, otherwise HTTP 400 size_required; the base model uses an exact size allowlist and ten aspect ratios, while K-tier models use divisible-by-16 bounded pixel dimensions and add 7:6; personal-site synchronous edits use the dedicated long-request base URL; never auto-resubmit an unknown outcome",
+    "qwen_image_3": "async text-to-image and image-to-image; images accepts one to three ordered public HTTPS URLs or strict Base64 Data URIs; n remains fixed at one; Pro tier is fixed by exact model name and size cannot cross tiers",
+    "nano_banana": "async only; submit with model and prompt to /v1/videos and poll the returned top-level id; optional aspect_ratio is supported; image-to-image uses one public HTTPS URL in the top-level images array; resolution is selected by exact model suffix; do not send Data URI, bare Base64, HTTP, multiple images, size, resolution, or unlisted fields",
+    "kling": "async /v1/videos only; generic Chat/Responses clients are unsupported; public models are kling-v2-6, kling-3.0-turbo (fixed 720p), kling-3.0-turbo-1080p (fixed 1080p), and kling-motion-control; use seconds, never duration or resolution; preserve original IDs, HTTP status, error JSON, and billing record"
+  },
+  "gpt_text_status": {
+    "availability": "configuration_ready",
+    "status_action": "configure_and_validate",
+    "model_status": {
+      "gpt-5.5": "documented",
+      "gpt-5.6-luna": "documented",
+      "gpt-5.6-sol": "documented",
+      "gpt-5.6-terra": "documented",
+      "gpt-6-astra": "documented",
+      "gpt-6-sol": "documented"
+    },
+    "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
+    "family_id": "gpt_text",
+    "candidate_model_set": [
+      "gpt-5.5",
+      "gpt-5.6-luna",
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-6-astra",
+      "gpt-6-sol"
+    ],
+    "runtime_availability": "not_claimed",
+    "configuration_contract": "complete"
+  },
+  "grok_text_status": {
+    "family_id": "grok_text",
+    "availability": "available",
+    "call_action": "allow_call",
+    "model_status": {
+      "grok-4.5": "available",
+      "grok-4.6": "available",
+      "grok-4.7": "available"
+    }
+  },
+  "grok_video_status": {
+    "family_id": "grok_video",
+    "availability": "available",
+    "call_action": "allow_call",
+    "model_status": {
+      "grok-video-1.0-480p": "available",
+      "grok-video-1.0-720p": "available",
+      "grok-video-1.5-480p": "available",
+      "grok-video-1.5-720p": "available",
+      "grok-video-1.5-1080p": "available"
+    }
+  },
+  "image2_status": {
+    "configuration_contract": "verified",
+    "live_availability": "partially_available",
+    "available_models": [
+      "gpt-image-2",
+      "gpt-image-2-1K-medium",
+      "gpt-image-2-2K",
+      "gpt-image-2-4K"
+    ],
+    "fail_closed_models": [
+      "image2"
+    ],
+    "model_status": {
+      "gpt-image-2": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "gpt-image-2-1K-medium": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "gpt-image-2-2K": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "gpt-image-2-4K": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "image2": {
+        "configuration_contract": "verified",
+        "live_availability": "fail_closed",
+        "call_action": "do_not_call"
+      }
+    },
+    "verification": "current_production_route_and_ability_readback"
+  },
+  "image2_documentation_gate": {
+    "configuration_contract": "verified",
+    "availability_mode": "per_exact_model_id",
+    "call_action": "follow_model_status",
+    "guess_count": 0,
+    "safe_next_action": "call only an exact model whose live_availability is available and call_action is allow_call"
+  },
+  "image2_error_contracts": {
+    "400": {
+      "meaning": "invalid request fields or values",
+      "action": "fix the documented request and do not retry it unchanged",
+      "retry_allowed": false
+    },
+    "401": {
+      "meaning": "station authentication failed",
+      "action": "check the key privately and stop",
+      "retry_allowed": false
+    },
+    "403": {
+      "meaning": "permission or model availability rejected",
+      "action": "preserve the request fingerprint and stop",
+      "retry_allowed": false
+    },
+    "404": {
+      "meaning": "documented route, exact model, or original task not found",
+      "action": "verify the published values and never invent a replacement",
+      "retry_allowed": false
+    },
+    "409": {
+      "meaning": "request reconciliation conflict",
+      "action": "preserve the original task and request identifiers; never duplicate the unresolved request",
+      "retry_allowed": false
+    },
+    "413": {
+      "meaning": "request body too large",
+      "action": "reduce the request within the published limit",
+      "retry_allowed": false
+    },
+    "415": {
+      "meaning": "unsupported media type",
+      "action": "use only a documented MIME type",
+      "retry_allowed": false
+    },
+    "422": {
+      "meaning": "validation or moderation rejected",
+      "action": "fix the input and do not retry it unchanged",
+      "retry_allowed": false
+    },
+    "429": {
+      "meaning": "capacity or rate limit",
+      "action": "honor Retry-After with jitter; never duplicate an unknown outcome",
+      "retry_allowed": "only_when_the_original_outcome_is_known_not_created"
+    },
+    "500": {
+      "meaning": "internal failure; the outcome may be unknown",
+      "action": "preserve identifiers and stop",
+      "retry_allowed": false
+    },
+    "502": {
+      "meaning": "gateway failure; the outcome may be unknown",
+      "action": "preserve identifiers and stop",
+      "retry_allowed": false
+    },
+    "503": {
+      "meaning": "temporarily unavailable; the outcome may be unknown",
+      "action": "query only the original task when a task_id exists",
+      "retry_allowed": false
+    },
+    "504": {
+      "meaning": "gateway timeout; the outcome is unknown",
+      "action": "query only the original task when a task_id exists",
+      "retry_allowed": false
+    },
+    "524": {
+      "meaning": "long synchronous request timed out at the edge; the outcome is unknown",
+      "action": "preserve X-Image2-Trace-Id and error.task_id; query only the original task",
+      "retry_allowed": false
+    }
+  },
+  "image2_safe_rollback": {
+    "client_contract_change_count": 0,
+    "restore": "the previously recorded client configuration",
+    "preserve": [
+      "endpoint",
+      "HTTP method",
+      "Authorization Bearer header",
+      "request fields",
+      "response shape",
+      "defaults",
+      "error handling"
+    ],
+    "disable_calls": "affected_exact_model_only",
+    "forbidden": [
+      "switch host",
+      "rename model",
+      "send undocumented fields",
+      "auto resubmit",
+      "require a client change without an exact diff, compatibility window, and rollback"
+    ],
+    "reactivation_requires": [
+      "live_availability=available",
+      "call_action=allow_call",
+      "successful documented validation"
+    ]
+  },
+  "public_redaction": {
+    "allowlist_projection": true,
+    "forbidden_categories": [
+      "internal origin names",
+      "private route IDs",
+      "raw private URLs",
+      "secrets",
+      "costs",
+      "balances",
+      "topology"
+    ]
+  },
+  "model_families": {
+    "gpt_text": {
+      "models": [
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-6-astra",
+        "gpt-6-sol"
+      ],
+      "routes": [
+        "chat",
+        "responses"
+      ]
+    },
+    "grok_text": {
+      "models": [
+        "grok-4.5",
+        "grok-4.6",
+        "grok-4.7"
+      ],
+      "routes": [
+        "grok_text_chat"
+      ]
+    },
+    "claude_code": {
+      "models": [
+        "claude-fable-5",
+        "claude-opus-5",
+        "claude-opus-5-5",
+        "claude-sonnet-5"
+      ],
+      "routes": [
+        "anthropic_messages"
+      ]
+    },
+    "image2": {
+      "models": [
+        "image2"
+      ],
+      "routes": [
+        "image2_sync_generation",
+        "image2_sync_edits"
+      ]
+    },
+    "gpt_image_2": {
+      "models": [
+        "gpt-image-2",
+        "gpt-image-2-1K-medium",
+        "gpt-image-2-2K",
+        "gpt-image-2-4K"
+      ],
+      "routes": [
+        "gpt_image_2_async",
+        "gpt_image_2_edits"
+      ]
+    },
+    "gpt_image_2_5": {
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ],
+      "routes": [
+        "gpt_image_2_5_async_generation",
+        "gpt_image_2_5_sync_generation",
+        "gpt_image_2_5_sync_edits"
+      ]
+    },
+    "qwen_image_3": {
+      "models": [
+        "qwen-image-3.0",
+        "qwen-image-3.0-pro-1K",
+        "qwen-image-3.0-pro"
+      ],
+      "routes": [
+        "qwen_image_3_async"
+      ]
+    },
+    "nano_banana": {
+      "models": [
+        "nano_banana_2",
+        "nano_banana_2-2K",
+        "nano_banana_2-4K",
+        "nano_banana_pro-1K",
+        "nano_banana_pro-2K",
+        "nano_banana_pro-4K"
+      ],
+      "routes": [
+        "nano_async_image"
+      ]
+    },
+    "kling": {
+      "models": [
+        "kling-v2-6",
+        "kling-3.0-turbo",
+        "kling-3.0-turbo-1080p",
+        "kling-motion-control"
+      ],
+      "routes": [
+        "kling_async"
+      ]
+    },
+    "grok_video": {
+      "models": [
+        "grok-video-1.0-480p",
+        "grok-video-1.0-720p",
+        "grok-video-1.5-480p",
+        "grok-video-1.5-720p",
+        "grok-video-1.5-1080p"
+      ],
+      "routes": [
+        "grok_video_async"
+      ]
+    }
+  }
+}</script>
+      <p class="footer">中转服务开发者文档。API 地址以本页列出的域名为准。</p>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var notice = document.getElementById('payment-announcement');
+      var close = notice.querySelector('.payment-announcement-close');
+      var dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+      var dateValues = {};
+      dateParts.forEach(function (part) { if (part.type !== 'literal') dateValues[part.type] = part.value; });
+      var today = dateValues.year + '-' + dateValues.month + '-' + dateValues.day;
+      function dismiss() { notice.hidden = true; document.body.classList.remove('announcement-open'); }
+      if (today === notice.getAttribute('data-valid-date')) {
+        notice.hidden = false;
+        document.body.classList.add('announcement-open');
+        close.focus();
+      }
+      close.addEventListener('click', dismiss);
+      notice.addEventListener('click', function (event) { if (event.target === notice) dismiss(); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !notice.hidden) dismiss(); });
+    }());
+    document.querySelectorAll('.copy').forEach(function(button){button.addEventListener('click',function(){navigator.clipboard.writeText(button.nextElementSibling.textContent).then(function(){button.textContent='已复制';setTimeout(function(){button.textContent='复制'},1200)})})})
+  </script>
+</body>
+</html>

@@ -1,0 +1,2018 @@
+{
+  "schema_version": "relay_api_contract_v1.2",
+  "last_verified_at": "2026-09-28",
+  "service": "API 中转服务",
+  "docs": "https://docs.yuqitoken.cn",
+  "origin": "https://api.yuqitoken.cn",
+  "base_urls": {
+    "openai_compatible": "https://api.yuqitoken.cn/v1",
+    "gpt_image_2_sync_edits": "https://direct-api.yuqitoken.cn/v1",
+    "gpt_image_2_5_sync_edits": "https://direct-api.yuqitoken.cn/v1",
+    "anthropic": "https://api.yuqitoken.cn"
+  },
+  "url_composition": {
+    "direct_http": "default origin + route.path unless the route declares base_url",
+    "sdk_configuration": "use the selected base_url exactly and do not append another /v1",
+    "route_paths_are_origin_relative": true,
+    "route_base_url_override_supported": true,
+    "double_v1_forbidden": true
+  },
+  "authentication": {
+    "default_protocol": "openai_compatible",
+    "header": "Authorization",
+    "scheme": "Bearer",
+    "token": "control panel API key",
+    "applies_to": [
+      "chat",
+      "responses",
+      "images",
+      "videos"
+    ],
+    "exceptions": {
+      "anthropic_messages": {
+        "header": "x-api-key",
+        "scheme": "raw",
+        "base_url_has_v1_suffix": false
+      }
+    }
+  },
+  "clients": {
+    "codex": {
+      "config_file": "~/.codex/config.toml",
+      "project_config_supported": false,
+      "model_provider": "relay",
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "base_url_has_v1_suffix": true,
+      "env_key": "RELAY_API_KEY",
+      "wire_api": "responses"
+    },
+    "claude_code": {
+      "base_url": "https://api.yuqitoken.cn",
+      "base_url_has_v1_suffix": false,
+      "env_key": "ANTHROPIC_API_KEY",
+      "wire_api": "anthropic_messages"
+    }
+  },
+  "claude_status": {
+    "availability": "available",
+    "status_action": "allow_call",
+    "model_status": {
+      "claude-fable-5": "available",
+      "claude-opus-5": "available",
+      "claude-opus-5-5": "available",
+      "claude-sonnet-5": "available"
+    },
+    "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
+    "family_id": "claude_code",
+    "generated_model_set": [
+      "claude-fable-5",
+      "claude-opus-5",
+      "claude-opus-5-5",
+      "claude-sonnet-5"
+    ],
+    "runtime_availability": "available",
+    "configuration_contract": "complete"
+  },
+  "gpt_image_2_routing": {
+    "models": [
+      "gpt-image-2",
+      "gpt-image-2-1K-medium",
+      "gpt-image-2-2K",
+      "gpt-image-2-4K"
+    ],
+    "exact_model_name_required": true,
+    "silent_model_substitution_allowed": false,
+    "decision": {
+      "reference_image_count_0": {
+        "mode": "text_to_image",
+        "base_url": "https://api.yuqitoken.cn/v1",
+        "method": "POST",
+        "path": "/v1/videos",
+        "content_type": "application/json",
+        "result_mode": "asynchronous"
+      },
+      "reference_image_count_1_to_6": {
+        "mode": "image_to_image",
+        "base_url": "https://direct-api.yuqitoken.cn/v1",
+        "method": "POST",
+        "path": "/v1/images/edits",
+        "content_type": "multipart/form-data",
+        "result_mode": "synchronous_with_original_task_recovery"
+      }
+    },
+    "route_stable_exact_sizes_by_model": {
+      "gpt-image-2": [
+        "1024x1024",
+        "1536x1024",
+        "1024x1536"
+      ],
+      "gpt-image-2-1K-medium": [
+        "1024x1024"
+      ],
+      "gpt-image-2-2K": [
+        "2048x2048"
+      ],
+      "gpt-image-2-4K": [
+        "2880x2880"
+      ]
+    },
+    "supported_aspect_ratios": [
+      "21:9",
+      "16:9",
+      "5:4",
+      "4:3",
+      "3:2",
+      "1:1",
+      "4:5",
+      "3:4",
+      "2:3",
+      "9:16"
+    ],
+    "available_models": [
+      "gpt-image-2",
+      "gpt-image-2-1K-medium",
+      "gpt-image-2-2K",
+      "gpt-image-2-4K"
+    ],
+    "fail_closed_models": [],
+    "call_action": "follow_model_status"
+  },
+  "gpt_image_2_5_routing": {
+    "models": [
+      "gpt-image-2.5",
+      "gpt-image-2.5-flare-1k",
+      "gpt-image-2.5-flare-2k",
+      "gpt-image-2.5-flare-4k",
+      "gpt-image-2.5-sunburst-1k",
+      "gpt-image-2.5-sunburst-2k",
+      "gpt-image-2.5-sunburst-4k"
+    ],
+    "forbidden_generic_models": [
+      "gpt-image-2.5-flare",
+      "gpt-image-2.5-sunburst"
+    ],
+    "exact_model_name_required": true,
+    "silent_model_substitution_allowed": false,
+    "output_count": 1,
+    "n": {
+      "required_value": 1,
+      "other_values_allowed": false
+    },
+    "square_sizes_by_tier": {
+      "1k": "1024x1024",
+      "2k": "2048x2048",
+      "4k": "2880x2880"
+    },
+    "base_model_exact_sizes": [
+      "1024x1024",
+      "1536x1024",
+      "1536x864",
+      "1536x1152",
+      "1152x1536",
+      "1280x1024",
+      "1024x1280",
+      "1536x656",
+      "1024x1536",
+      "auto"
+    ],
+    "base_model_supported_aspect_ratios": [
+      "1:1",
+      "5:4",
+      "9:16",
+      "21:9",
+      "16:9",
+      "3:2",
+      "4:3",
+      "4:5",
+      "3:4",
+      "2:3"
+    ],
+    "k_tier_supported_aspect_ratios": [
+      "1:1",
+      "5:4",
+      "9:16",
+      "21:9",
+      "16:9",
+      "3:2",
+      "4:3",
+      "4:5",
+      "3:4",
+      "2:3",
+      "7:6"
+    ],
+    "aspect_ratio_wire_format": {
+      "type": "string",
+      "syntax": "WIDTH:HEIGHT",
+      "pattern": "^[1-9][0-9]*:[1-9][0-9]*$",
+      "ascii_only": true,
+      "whitespace_allowed": false,
+      "decimal_values_allowed": false,
+      "unicode_punctuation_allowed": false,
+      "aliases_allowed": false,
+      "automatic_normalization_allowed": false,
+      "exact_model_allowlist_required": true,
+      "base_model_values_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+      "k_tier_values_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+    },
+    "k_tier_size_rules": {
+      "format": "WIDTHxHEIGHT",
+      "dimensions": "positive integers divisible by 16",
+      "max_long_edge": 3840,
+      "max_long_to_short_ratio": "3:1",
+      "total_pixels_by_tier": {
+        "1k": {
+          "min": 655360,
+          "max": 1048576
+        },
+        "2k": {
+          "min": 655360,
+          "max": 4194304
+        },
+        "4k": {
+          "min": 655360,
+          "max": 8294400
+        }
+      }
+    },
+    "route_selection": {
+      "async_text_to_image": "$.routes.gpt_image_2_5_async_generation",
+      "sync_text_to_image": "$.routes.gpt_image_2_5_sync_generation",
+      "sync_image_to_image": "$.routes.gpt_image_2_5_sync_edits"
+    }
+  },
+  "async_polling": {
+    "initial_delay_seconds": 5,
+    "image_interval_seconds": [
+      5,
+      10
+    ],
+    "video_interval_seconds": 10,
+    "on_429": "honor Retry-After and add jitter",
+    "success_rule": "terminal status completed AND result URL exists; progress is display-only",
+    "queued_progress_zero_is_normal": true,
+    "client_safety_timeout_seconds": {
+      "image": 1800,
+      "video": 2700
+    },
+    "stalled_progress_action": "continue polling original task until safety timeout; never resubmit",
+    "local_timeout_is_terminal_failure": false,
+    "auto_resubmit": false
+  },
+  "routes": {
+    "chat": {
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "content_type": "application/json",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "environment_placeholder": "RELAY_API_KEY"
+      },
+      "availability": "configuration_ready",
+      "call_action": "configure_and_validate",
+      "models": [
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-6-astra",
+        "gpt-6-sol"
+      ],
+      "model_status": {
+        "gpt-5.5": "documented",
+        "gpt-5.6-luna": "documented",
+        "gpt-5.6-sol": "documented",
+        "gpt-5.6-terra": "documented",
+        "gpt-6-astra": "documented",
+        "gpt-6-sol": "documented"
+      },
+      "field_status": "documented_minimum_contract",
+      "defaults": "no unpublished default may be guessed",
+      "mutual_exclusion": "send the documented required fields; omit all fields not listed in this route",
+      "rejected_fields": [
+        "every field not listed in the promoted route contract"
+      ],
+      "response": {
+        "status": "documented_projection",
+        "projected_shape_preserved": true,
+        "raw_upstream_fields_exposed": false
+      },
+      "streaming": {
+        "protocol": "SSE when stream=true",
+        "support": "documented",
+        "termination": "message completed event or connection close"
+      },
+      "errors": {
+        "official_semantics": {
+          "400": "invalid request; fix documented fields and do not retry unchanged",
+          "401": "authentication rejected; check the private station key and stop",
+          "403": "permission or region restriction; preserve the response and stop",
+          "404": "route or model not found; do not invent an alternative path",
+          "409": "conflict; preserve identifiers and stop",
+          "413": "request too large; reduce the request only after reading the published limit",
+          "429": "rate or quota limit; honor Retry-After when present; billing failures are not retryable",
+          "500": "temporary server error; outcome may be unknown",
+          "502": "gateway error; outcome may be unknown",
+          "503": "service unavailable; outcome may be unknown",
+          "504": "timeout; preserve identifiers and stop"
+        },
+        "relay_projection": "documented_projection"
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "preserve": [
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message",
+          "Request-ID",
+          "X-Request-ID"
+        ],
+        "idempotency": {
+          "status": "not_published",
+          "action": "never retry an outcome-unknown request"
+        },
+        "retry": {
+          "status": "pending_adapter_verification",
+          "action": "do not retry automatically"
+        }
+      },
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "optional_official_fields": [
+        "stream",
+        "stream_options",
+        "temperature",
+        "top_p",
+        "max_tokens",
+        "max_completion_tokens",
+        "stop",
+        "tools",
+        "tool_choice",
+        "response_format",
+        "reasoning_effort",
+        "service_tier",
+        "verbosity",
+        "metadata"
+      ],
+      "optional_client_fields": [],
+      "limits": "use only the published minimum fields and server response limits",
+      "request_example_status": "executable_configuration"
+    },
+    "responses": {
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "content_type": "application/json",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "environment_placeholder": "RELAY_API_KEY"
+      },
+      "availability": "configuration_ready",
+      "call_action": "configure_and_validate",
+      "models": [
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-6-astra",
+        "gpt-6-sol"
+      ],
+      "model_status": {
+        "gpt-5.5": "documented",
+        "gpt-5.6-luna": "documented",
+        "gpt-5.6-sol": "documented",
+        "gpt-5.6-terra": "documented",
+        "gpt-6-astra": "documented",
+        "gpt-6-sol": "documented"
+      },
+      "field_status": "documented_minimum_contract",
+      "defaults": "no unpublished default may be guessed",
+      "mutual_exclusion": "send the documented required fields; omit all fields not listed in this route",
+      "rejected_fields": [
+        "every field not listed in the promoted route contract"
+      ],
+      "response": {
+        "status": "documented_projection",
+        "projected_shape_preserved": true,
+        "raw_upstream_fields_exposed": false
+      },
+      "streaming": {
+        "protocol": "SSE when stream=true",
+        "support": "documented",
+        "termination": "message completed event or connection close"
+      },
+      "errors": {
+        "official_semantics": {
+          "400": "invalid request; fix documented fields and do not retry unchanged",
+          "401": "authentication rejected; check the private station key and stop",
+          "403": "permission or region restriction; preserve the response and stop",
+          "404": "route or model not found; do not invent an alternative path",
+          "409": "conflict; preserve identifiers and stop",
+          "413": "request too large; reduce the request only after reading the published limit",
+          "429": "rate or quota limit; honor Retry-After when present; billing failures are not retryable",
+          "500": "temporary server error; outcome may be unknown",
+          "502": "gateway error; outcome may be unknown",
+          "503": "service unavailable; outcome may be unknown",
+          "504": "timeout; preserve identifiers and stop"
+        },
+        "relay_projection": "documented_projection"
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "preserve": [
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message",
+          "Request-ID",
+          "X-Request-ID"
+        ],
+        "idempotency": {
+          "status": "not_published",
+          "action": "never retry an outcome-unknown request"
+        },
+        "retry": {
+          "status": "pending_adapter_verification",
+          "action": "do not retry automatically"
+        }
+      },
+      "method": "POST",
+      "path": "/v1/responses",
+      "required": [
+        "model",
+        "input"
+      ],
+      "optional_official_fields": [
+        "conversation",
+        "include",
+        "instructions",
+        "max_output_tokens",
+        "reasoning",
+        "stream",
+        "store",
+        "text",
+        "tool_choice",
+        "tools",
+        "truncation",
+        "service_tier",
+        "metadata"
+      ],
+      "optional_client_fields": [],
+      "limits": "use only the published minimum fields and server response limits",
+      "request_example_status": "executable_configuration"
+    },
+    "anthropic_messages": {
+      "method": "POST",
+      "path": "/v1/messages",
+      "base_url": "https://api.yuqitoken.cn",
+      "base_url_has_v1_suffix": false,
+      "content_type": "application/json",
+      "auth": {
+        "accepted_header": "x-api-key",
+        "scheme": "raw",
+        "environment_placeholder": "ANTHROPIC_API_KEY"
+      },
+      "required_headers": {
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+        "anthropic-beta": "forward only when a future station contract explicitly lists it"
+      },
+      "required": [
+        "model",
+        "max_tokens",
+        "messages"
+      ],
+      "models": [
+        "claude-fable-5",
+        "claude-opus-5",
+        "claude-opus-5-5",
+        "claude-sonnet-5"
+      ],
+      "model_status": {
+        "claude-fable-5": "available",
+        "claude-opus-5": "available",
+        "claude-opus-5-5": "available",
+        "claude-sonnet-5": "available"
+      },
+      "availability": "available",
+      "call_action": "allow_call",
+      "official_optional_fields": [
+        "cache_control",
+        "container",
+        "inference_geo",
+        "metadata",
+        "output_config",
+        "service_tier",
+        "stop_sequences",
+        "stream",
+        "system",
+        "thinking",
+        "tool_choice",
+        "tools",
+        "temperature",
+        "top_k",
+        "top_p"
+      ],
+      "optional_client_fields": [],
+      "defaults": {
+        "max_tokens": "required; no default published by this station",
+        "stream": "false for a non-streaming request; set true only when the client consumes SSE",
+        "temperature": "no station default published"
+      },
+      "rejected_fields": [
+        "every field not listed in the promoted station contract"
+      ],
+      "response": {
+        "non_streaming": {
+          "status": "documented_projection",
+          "fields": [
+            "id",
+            "type",
+            "role",
+            "model",
+            "content",
+            "stop_reason",
+            "stop_sequence",
+            "usage"
+          ]
+        },
+        "streaming": {
+          "protocol": "SSE",
+          "events": [
+            "message_start",
+            "content_block_start",
+            "content_block_delta",
+            "content_block_stop",
+            "message_delta",
+            "message_stop",
+            "ping",
+            "error"
+          ],
+          "status": "documented",
+          "keep_alive_ping_required": true
+        }
+      },
+      "errors": {
+        "official_types": {
+          "400": "invalid_request_error",
+          "401": "authentication_error",
+          "402": "billing_error",
+          "403": "permission_error",
+          "404": "not_found_error",
+          "409": "conflict_error",
+          "413": "request_too_large",
+          "429": "rate_limit_error",
+          "500": "api_error",
+          "504": "timeout_error",
+          "529": "overloaded_error"
+        },
+        "response_shape": {
+          "top_level_fields": [
+            "type",
+            "error",
+            "request_id"
+          ],
+          "redacted_error_shape_preserved": true,
+          "raw_upstream_fields_exposed": false
+        },
+        "station_projection": "documented_projection"
+      },
+      "gateway_headers": {
+        "forwarded_unchanged_when_supported": [
+          "anthropic-version",
+          "anthropic-beta",
+          "x-claude-code-session-id",
+          "x-claude-code-agent-name",
+          "x-claude-code-parent-agent-name"
+        ],
+        "status": "verified_station_contract"
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "preserve": [
+          "request_id",
+          "HTTP status",
+          "error.type",
+          "error.message",
+          "Request-ID",
+          "X-Request-ID"
+        ],
+        "retry": {
+          "official_default": "SDK may retry connection/429/5xx with bounded exponential backoff",
+          "station_policy": "honor Retry-After; never retry an outcome-unknown request"
+        },
+        "idempotency": {
+          "status": "not_published",
+          "action": "never retry an outcome-unknown request"
+        },
+        "timeout": {
+          "client": "set an explicit client timeout appropriate for the request",
+          "on_timeout": "preserve identifiers and stop"
+        }
+      },
+      "request_example_status": "executable_configuration",
+      "safe_next_action": "send_only_the_documented_minimum_request_and_follow_the_published_response_contract"
+    },
+    "image2_sync_generation": {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "response": "OpenAI Images data[].url",
+      "models": [
+        "image2"
+      ]
+    },
+    "image2_sync_edits": {
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "content_type": "multipart/form-data",
+      "required": [
+        "model",
+        "prompt",
+        "image"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "image"
+      ],
+      "additional_fields_allowed": false,
+      "image_input": {
+        "max_items": 6,
+        "request_max_bytes": 10485760,
+        "mimes": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ]
+      },
+      "response": "OpenAI Images data[].url",
+      "models": [
+        "image2"
+      ]
+    },
+    "gpt_image_2_edits": {
+      "purpose": "image_to_image_with_one_to_six_local_reference_images",
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "base_url": "https://direct-api.yuqitoken.cn/v1",
+      "client_timeout_seconds_minimum": 600,
+      "content_type": "multipart/form-data",
+      "required": [
+        "model",
+        "prompt",
+        "image[]"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "image[]",
+        "size",
+        "aspect_ratio",
+        "response_format"
+      ],
+      "additional_fields_allowed": false,
+      "response": {
+        "http_status": 200,
+        "format": "OpenAI Images",
+        "url_path": "$.data[0].url",
+        "download_immediately": true
+      },
+      "result_format": "url",
+      "response_format": {
+        "optional": true,
+        "allowed_values": [
+          "url"
+        ],
+        "case_normalization": "lowercase",
+        "omitted_default": "url",
+        "rejected_values": [
+          "b64_json",
+          "other"
+        ]
+      },
+      "output_count": 1,
+      "forbidden_client_fields": [
+        "n",
+        "quality",
+        "resolution",
+        "detailLevel",
+        "aspectRatio",
+        "ratio",
+        "width",
+        "height",
+        "mask",
+        "background",
+        "moderation",
+        "output_format",
+        "output_compression"
+      ],
+      "image_input": {
+        "canonical_file_field": "image[]",
+        "accepted_file_fields": [
+          "image[]"
+        ],
+        "rejected_file_fields": [
+          "image",
+          "images",
+          "image[0]",
+          "mask"
+        ],
+        "array_transport": "repeat one multipart image[] file part per image; do not send a JSON array, Base64 string, URL, or local path string",
+        "min_items": 1,
+        "max_items": 6,
+        "preserves_part_order": true,
+        "role_semantics": "the service preserves order but assigns no product/model roles; bind Image 1, Image 2, and later positions explicitly in prompt",
+        "request_max_bytes": 10485760,
+        "normalized_images_max_bytes": 7340032,
+        "guaranteed_mimes": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ],
+        "rejected_mimes": [
+          "image/heic",
+          "image/heif",
+          "image/avif",
+          "image/gif",
+          "image/bmp",
+          "image/tiff",
+          "image/raw"
+        ],
+        "silent_transcoding": false
+      },
+      "unsupported": [
+        "mask",
+        "background",
+        "moderation",
+        "output_format",
+        "output_compression"
+      ],
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "infer only when all reference images have the same inspectable aspect ratio; otherwise the request can return HTTP 400",
+        "different_reference_aspect_ratios": "send one explicit supported aspect_ratio",
+        "exact_sizes_by_model_ref": "$.gpt_image_2_routing.route_stable_exact_sizes_by_model",
+        "supported_aspect_ratios_ref": "$.gpt_image_2_routing.supported_aspect_ratios"
+      },
+      "two_local_image_example": {
+        "ordered_file_parts": [
+          {
+            "field": "image[]",
+            "position": 1,
+            "example_file": "./product.png",
+            "prompt_role": "product reference"
+          },
+          {
+            "field": "image[]",
+            "position": 2,
+            "example_file": "./model-reference.png",
+            "prompt_role": "model/person reference"
+          }
+        ],
+        "prompt_must_bind_positions": true
+      },
+      "client_error": {
+        "http_status": [
+          400,
+          413,
+          415,
+          422
+        ],
+        "action": "fix the request and preserve the original error body; do not retry the unchanged request"
+      },
+      "unknown_outcome": {
+        "triggers": [
+          "HTTP 524",
+          "network timeout",
+          "HTTP 503",
+          "HTTP 504",
+          "result unknown"
+        ],
+        "trace_header": "X-Image2-Trace-Id",
+        "error_field": "error.task_id",
+        "same_task_identifier": true,
+        "preserve": [
+          "X-Image2-Trace-Id",
+          "error.task_id",
+          "Request-ID",
+          "X-Request-ID",
+          "HTTP status",
+          "redacted error JSON"
+        ],
+        "poll": {
+          "method": "GET",
+          "base_url": "https://api.yuqitoken.cn/v1",
+          "path": "/v1/videos/{task_id}"
+        },
+        "auto_resubmit": false,
+        "action": "query original task only; do not resubmit"
+      },
+      "models": [
+        "gpt-image-2",
+        "gpt-image-2-1K-medium",
+        "gpt-image-2-2K",
+        "gpt-image-2-4K"
+      ]
+    },
+    "gpt_image_2_async": {
+      "purpose": "text_to_image_without_reference_images",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "size",
+        "aspect_ratio"
+      ],
+      "additional_fields_allowed": false,
+      "result_format": "url",
+      "output_count": 1,
+      "forbidden_client_fields": [
+        "n",
+        "quality",
+        "response_format",
+        "resolution",
+        "detailLevel",
+        "aspectRatio",
+        "ratio",
+        "width",
+        "height",
+        "mask",
+        "image",
+        "images",
+        "image_url"
+      ],
+      "reference_images_allowed": false,
+      "models": [
+        "gpt-image-2",
+        "gpt-image-2-1K-medium",
+        "gpt-image-2-2K",
+        "gpt-image-2-4K"
+      ],
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "auto",
+        "exact_sizes_by_model_ref": "$.gpt_image_2_routing.route_stable_exact_sizes_by_model",
+        "supported_aspect_ratios_ref": "$.gpt_image_2_routing.supported_aspect_ratios"
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "processing",
+          "in_progress"
+        ],
+        "success": "completed",
+        "failure": "failed",
+        "success_requires": [
+          "url or image_url"
+        ],
+        "result_url_paths": [
+          "$.data[0].url",
+          "$.result.data[0].url",
+          "$.url",
+          "$.image_url"
+        ],
+        "progress_is_display_only": true
+      },
+      "model_substitution": {
+        "allowed": false,
+        "action_on_unsupported_model": "return the original error; never rewrite to another GPT Image 2 model"
+      }
+    },
+    "gpt_image_2_5_async_generation": {
+      "purpose": "asynchronous_text_to_image",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt",
+        "n"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "n",
+        "size",
+        "aspect_ratio"
+      ],
+      "additional_fields_allowed": false,
+      "n": {
+        "required_value": 1,
+        "other_values_allowed": false
+      },
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "allowed; use the service default",
+        "aspect_ratio_wire_format_ref": "$.gpt_image_2_5_routing.aspect_ratio_wire_format",
+        "base_model_exact_sizes_ref": "$.gpt_image_2_5_routing.base_model_exact_sizes",
+        "base_model_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+        "k_tier_size_rules_ref": "$.gpt_image_2_5_routing.k_tier_size_rules",
+        "k_tier_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "alternate_id_paths": [
+          "$.task_id"
+        ],
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "pending",
+          "processing",
+          "running",
+          "in_progress"
+        ],
+        "success": [
+          "completed",
+          "SUCCESS"
+        ],
+        "failure": [
+          "failed",
+          "failure",
+          "cancelled"
+        ],
+        "success_requires": [
+          "$.data[].url"
+        ],
+        "progress_is_display_only": true
+      },
+      "unknown_outcome": {
+        "auto_resubmit": false,
+        "poll_original_task_only": true,
+        "preserve": [
+          "request_id",
+          "task_id",
+          "sent_at",
+          "HTTP status",
+          "redacted error JSON"
+        ]
+      },
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ]
+    },
+    "gpt_image_2_5_sync_generation": {
+      "purpose": "synchronous_text_to_image",
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "prompt",
+        "n"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "n",
+        "size",
+        "aspect_ratio"
+      ],
+      "additional_fields_allowed": false,
+      "n": {
+        "required_value": 1,
+        "other_values_allowed": false
+      },
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "allowed; use the service default",
+        "aspect_ratio_wire_format_ref": "$.gpt_image_2_5_routing.aspect_ratio_wire_format",
+        "base_model_exact_sizes_ref": "$.gpt_image_2_5_routing.base_model_exact_sizes",
+        "base_model_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+        "k_tier_size_rules_ref": "$.gpt_image_2_5_routing.k_tier_size_rules",
+        "k_tier_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+      },
+      "response": {
+        "http_status": 200,
+        "format": "OpenAI Images",
+        "url_path": "$.data[].url"
+      },
+      "polling_required": false,
+      "unknown_outcome": {
+        "auto_resubmit": false,
+        "preserve": [
+          "request_id",
+          "sent_at",
+          "HTTP status",
+          "redacted error JSON"
+        ]
+      },
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ]
+    },
+    "gpt_image_2_5_sync_edits": {
+      "purpose": "synchronous_image_to_image_with_one_to_nine_local_reference_images",
+      "method": "POST",
+      "path": "/v1/images/edits",
+      "base_url": "https://direct-api.yuqitoken.cn/v1",
+      "content_type": "multipart/form-data",
+      "required": [
+        "model",
+        "prompt",
+        "image[]"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "image[]",
+        "n",
+        "size",
+        "aspect_ratio",
+        "response_format"
+      ],
+      "additional_fields_allowed": false,
+      "n": {
+        "optional": true,
+        "omitted_default": 1,
+        "allowed_values": [
+          1
+        ]
+      },
+      "image_input": {
+        "canonical_file_field": "image[]",
+        "min_items": 1,
+        "max_items": 9,
+        "transport": "repeat multipart image[] file parts",
+        "rejected_transports": [
+          "JSON image array",
+          "Base64",
+          "image URL",
+          "local path string"
+        ]
+      },
+      "size_and_aspect_ratio": {
+        "send_one_of": [
+          "size",
+          "aspect_ratio"
+        ],
+        "send_both": false,
+        "omitted": "infer only when all reference images have the same inspectable aspect ratio; otherwise return HTTP 400 size_required",
+        "aspect_ratio_wire_format_ref": "$.gpt_image_2_5_routing.aspect_ratio_wire_format",
+        "base_model_exact_sizes_ref": "$.gpt_image_2_5_routing.base_model_exact_sizes",
+        "base_model_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.base_model_supported_aspect_ratios",
+        "k_tier_size_rules_ref": "$.gpt_image_2_5_routing.k_tier_size_rules",
+        "k_tier_supported_aspect_ratios_ref": "$.gpt_image_2_5_routing.k_tier_supported_aspect_ratios"
+      },
+      "response_format": {
+        "optional": true,
+        "allowed_values": [
+          "url"
+        ],
+        "other_values_allowed": false
+      },
+      "response": {
+        "http_status": 200,
+        "format": "OpenAI Images",
+        "url_path": "$.data[].url"
+      },
+      "polling_required": false,
+      "unknown_outcome": {
+        "auto_resubmit": false,
+        "preserve": [
+          "request_id",
+          "sent_at",
+          "HTTP status",
+          "redacted error JSON"
+        ]
+      },
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ]
+    },
+    "nano_async_image": {
+      "availability": "available",
+      "call_action": "allow_call",
+      "request_example_status": "executable",
+      "safe_next_action": "submit_the_documented_request_and_poll_the_original_task",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "optional": [
+        "aspect_ratio"
+      ],
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "aspect_ratio",
+        "images"
+      ],
+      "additional_fields_allowed": false,
+      "image_input": {
+        "field": "images",
+        "text_to_image_items": 0,
+        "image_to_image_items": 1,
+        "format": "public_https_url",
+        "http_allowed": false,
+        "data_uri_allowed": false,
+        "bare_base64_allowed": false,
+        "multiple_images_allowed": false
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "processing"
+        ],
+        "success": "completed",
+        "failure": "failed",
+        "success_requires": [
+          "url or image_url"
+        ],
+        "progress_is_display_only": true
+      },
+      "models": [
+        "nano_banana_2",
+        "nano_banana_2-2K",
+        "nano_banana_2-4K",
+        "nano_banana_pro-1K",
+        "nano_banana_pro-2K",
+        "nano_banana_pro-4K"
+      ],
+      "model_status": {
+        "nano_banana_2": "available",
+        "nano_banana_2-2K": "available",
+        "nano_banana_2-4K": "available",
+        "nano_banana_pro-1K": "available",
+        "nano_banana_pro-2K": "available",
+        "nano_banana_pro-4K": "available"
+      },
+      "rejected_fields": [
+        "size",
+        "resolution",
+        "image",
+        "image_url",
+        "input_image",
+        "reference_image_url",
+        "data",
+        "messages"
+      ],
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_and_stop",
+        "poll_original_task_only": true,
+        "progress_zero_is_not_failure": true
+      }
+    },
+    "qwen_image_3_async": {
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "models": [
+        "qwen-image-3.0",
+        "qwen-image-3.0-pro-1K",
+        "qwen-image-3.0-pro"
+      ],
+      "display_names": {
+        "qwen-image-3.0": "千问 Image 3.0",
+        "qwen-image-3.0-pro-1K": "千问 Image 3.0 Pro 1K",
+        "qwen-image-3.0-pro": "千问 Image 3.0 Pro 2K"
+      },
+      "image_input": {
+        "enabled": true,
+        "field": "images",
+        "min_items": 1,
+        "max_items": 3,
+        "preserves_order": true,
+        "formats": [
+          "https_url",
+          "data_uri"
+        ],
+        "data_uri_mimes": [
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+          "image/gif",
+          "image/bmp",
+          "image/tiff",
+          "image/heic",
+          "image/heif",
+          "image/avif"
+        ],
+        "max_decoded_bytes": 10485760,
+        "max_request_bytes": 14680064,
+        "max_pixels": 16000000,
+        "fail_closed_formats": [
+          "svg",
+          "pdf",
+          "psd",
+          "raw"
+        ]
+      },
+      "pro_billing_tiers": {
+        "qwen-image-3.0-pro-1K": "1K",
+        "qwen-image-3.0-pro": "2K"
+      },
+      "allowed_fields": [
+        "model",
+        "prompt",
+        "images",
+        "n",
+        "size",
+        "resolution",
+        "aspect_ratio",
+        "aspectRatio",
+        "prompt_extend",
+        "watermark",
+        "negative_prompt",
+        "prompt_extend_mode",
+        "seed",
+        "idempotency_key"
+      ],
+      "n": 1,
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "processing"
+        ],
+        "success": "completed",
+        "failure": "failed",
+        "success_requires": [
+          "url or image_url"
+        ],
+        "progress_is_display_only": true
+      },
+      "idempotency": {
+        "header": "Idempotency-Key",
+        "new_logical_request": "generate a new 8-128 character key",
+        "retry_identical_request": "reuse original key",
+        "static_global_key_forbidden": true,
+        "same_key_same_request": "replay original task",
+        "same_key_different_request": 409,
+        "body_alias": "optional; when both header and body are sent their values must match; prefer Idempotency-Key header"
+      },
+      "capacity": {
+        "status": 429,
+        "retry_header": "Retry-After"
+      },
+      "unknown_submission": {
+        "code": "submission_outcome_unknown",
+        "task_id_paths": [
+          "$.task_id",
+          "$.error.task_id"
+        ],
+        "missing_task_id_action": "preserve request_id and stop; do not guess",
+        "action": "poll same task; do not resubmit"
+      },
+      "task_query_ttl_seconds": 86400,
+      "result_url_ttl_seconds": 86400
+    },
+    "kling_async": {
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos"
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}"
+      },
+      "capability_selection": {
+        "text_to_video": {
+          "models": [
+            "kling-v2-6",
+            "kling-3.0-turbo",
+            "kling-3.0-turbo-1080p"
+          ],
+          "supported": true
+        },
+        "image_to_video": {
+          "models": [],
+          "supported": false,
+          "action": "stop and request a site-verified contract; do not guess image_url or reuse motion-control fields"
+        },
+        "motion_transfer": {
+          "models": [
+            "kling-motion-control"
+          ],
+          "supported": true
+        }
+      },
+      "public_minimum_contract": {
+        "kling-v2-6": {
+          "required": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "allowed_fields": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "additional_fields_allowed": false,
+          "seconds": [
+            5
+          ],
+          "mode": "text_to_video",
+          "image_to_video_supported": false
+        },
+        "kling-3.0-turbo": {
+          "required": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "allowed_fields": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "additional_fields_allowed": false,
+          "seconds": [
+            5
+          ],
+          "mode": "text_to_video",
+          "resolution": "720p",
+          "image_to_video_supported": false
+        },
+        "kling-3.0-turbo-1080p": {
+          "required": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "allowed_fields": [
+            "model",
+            "prompt",
+            "seconds"
+          ],
+          "additional_fields_allowed": false,
+          "seconds": [
+            5
+          ],
+          "mode": "text_to_video",
+          "resolution": "1080p",
+          "image_to_video_supported": false
+        },
+        "kling-motion-control": {
+          "required": [
+            "model",
+            "image_url",
+            "video_url",
+            "character_orientation",
+            "mode",
+            "seconds"
+          ],
+          "optional": [
+            "keep_original_sound"
+          ],
+          "allowed_fields": [
+            "model",
+            "image_url",
+            "video_url",
+            "character_orientation",
+            "mode",
+            "seconds",
+            "keep_original_sound"
+          ],
+          "additional_fields_allowed": false,
+          "image_url": {
+            "transport": "public_https_direct_url",
+            "mimes": [
+              "image/jpeg",
+              "image/png"
+            ],
+            "extensions": [
+              "jpg",
+              "jpeg",
+              "png"
+            ],
+            "login_required_allowed": false,
+            "mime_must_match_content": true
+          },
+          "video_url": {
+            "transport": "public_https_direct_url",
+            "mime_and_codec": "not part of the public contract; validate direct accessibility"
+          },
+          "character_orientation": [
+            "image",
+            "video"
+          ],
+          "mode": [
+            "std"
+          ],
+          "keep_original_sound": [
+            "yes",
+            "no"
+          ],
+          "seconds": {
+            "minimum": 3,
+            "maximum_by_orientation": {
+              "image": 10,
+              "video": 30
+            },
+            "must_match_reference_video": true
+          }
+        }
+      },
+      "client_compatibility": {
+        "chat_clients_supported": false,
+        "requires_async_submit_and_poll": true
+      },
+      "submit_response": {
+        "http_status": [
+          200
+        ],
+        "id_path": "$.id",
+        "id_required": true,
+        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "pending",
+          "processing",
+          "running",
+          "in_progress"
+        ],
+        "success": "completed",
+        "failure": [
+          "failed",
+          "failure",
+          "cancelled"
+        ],
+        "success_requires": [
+          "result URL"
+        ],
+        "progress_is_display_only": true,
+        "result_paths": [
+          "result.data[0].url",
+          "output.video_url",
+          "video_url"
+        ]
+      },
+      "billing": {
+        "unit": "second",
+        "requested_seconds_field": "seconds",
+        "published_price_source": "customer pricing page",
+        "actual_charge_source": "control panel billing or usage record",
+        "failed_task_implies_refund": false,
+        "static_price_is_actual_charge_evidence": false
+      },
+      "recovery": {
+        "preserve": [
+          "task_id",
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message"
+        ],
+        "poll_original_task_only": true,
+        "auto_resubmit": false,
+        "retry_requires_proof_no_task_was_created": true
+      },
+      "models": [
+        "kling-v2-6",
+        "kling-3.0-turbo",
+        "kling-3.0-turbo-1080p",
+        "kling-motion-control"
+      ]
+    },
+    "grok_text_chat": {
+      "family_id": "grok_text",
+      "availability": "available",
+      "call_action": "allow_call",
+      "models": [
+        "grok-4.5",
+        "grok-4.6",
+        "grok-4.7"
+      ],
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer"
+      },
+      "content_type": "application/json",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "recovery": {
+        "auto_resubmit": false,
+        "unknown_result_action": "preserve_request_id_and_error_then_stop"
+      }
+    },
+    "grok_video_async": {
+      "family_id": "grok_video",
+      "availability": "available",
+      "call_action": "allow_call",
+      "models": [
+        "grok-video-1.0-480p",
+        "grok-video-1.0-720p",
+        "grok-video-1.5-480p",
+        "grok-video-1.5-720p",
+        "grok-video-1.5-1080p"
+      ],
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer"
+      },
+      "content_type": "application/json",
+      "submit": {
+        "method": "POST",
+        "path": "/v1/videos",
+        "required": [
+          "model",
+          "prompt",
+          "seconds"
+        ],
+        "allowed_fields": [
+          "model",
+          "prompt",
+          "seconds"
+        ],
+        "seconds": {
+          "minimum": 1,
+          "maximum": 15
+        }
+      },
+      "submit_response": {
+        "id_path": "$.id",
+        "id_required": true
+      },
+      "poll": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}",
+        "task_id_path": "$.id"
+      },
+      "status": {
+        "pending": [
+          "queued",
+          "pending",
+          "processing",
+          "running",
+          "in_progress"
+        ],
+        "success": "completed",
+        "failure": [
+          "failed",
+          "cancelled",
+          "canceled"
+        ],
+        "success_requires": [
+          "accessible video URL"
+        ],
+        "progress_is_display_only": true
+      },
+      "billing": {
+        "unit": "second",
+        "requested_seconds_field": "seconds",
+        "query_billed_again": false
+      },
+      "recovery": {
+        "auto_resubmit": false,
+        "poll_original_task_only": true,
+        "preserve": [
+          "task_id",
+          "request_id",
+          "HTTP status",
+          "error.code",
+          "error.message"
+        ]
+      },
+      "resolution_selected_by_model_name": true,
+      "client_resolution_field": false,
+      "client_duration_field": false
+    }
+  },
+  "constraints": {
+    "gpt_image_2": "zero reference images: strict JSON fields model,prompt and at most one of size/aspect_ratio to POST /v1/videos, then poll the original task; one to six local JPEG/PNG/WebP references: the same text fields plus ordered repeated multipart image[] file parts to POST /v1/images/edits; reject aliases, unknown fields and silent transcoding; never use /v1/images/generations, never send local paths in JSON, and never substitute or invent model names; the separate synchronous image2 contract remains unchanged",
+    "gpt_image_2_5": "seven exact public model IDs and three fixed routes; n must equal one; size and aspect_ratio are mutually exclusive but may both be omitted for text-to-image; aspect_ratio must be an exact ASCII WIDTH:HEIGHT string from the model-specific allowlist, with no spaces, decimals, Unicode punctuation, aliases, or automatic normalization; image-to-image omission is allowed only when all references have one inspectable ratio, otherwise HTTP 400 size_required; the base model uses an exact size allowlist and ten aspect ratios, while K-tier models use divisible-by-16 bounded pixel dimensions and add 7:6; personal-site synchronous edits use the dedicated long-request base URL; never auto-resubmit an unknown outcome",
+    "qwen_image_3": "async text-to-image and image-to-image; images accepts one to three ordered public HTTPS URLs or strict Base64 Data URIs; n remains fixed at one; Pro tier is fixed by exact model name and size cannot cross tiers",
+    "nano_banana": "async only; submit with model and prompt to /v1/videos and poll the returned top-level id; optional aspect_ratio is supported; image-to-image uses one public HTTPS URL in the top-level images array; resolution is selected by exact model suffix; do not send Data URI, bare Base64, HTTP, multiple images, size, resolution, or unlisted fields",
+    "kling": "async /v1/videos only; generic Chat/Responses clients are unsupported; public models are kling-v2-6, kling-3.0-turbo (fixed 720p), kling-3.0-turbo-1080p (fixed 1080p), and kling-motion-control; use seconds, never duration or resolution; preserve original IDs, HTTP status, error JSON, and billing record"
+  },
+  "gpt_text_status": {
+    "availability": "configuration_ready",
+    "status_action": "configure_and_validate",
+    "model_status": {
+      "gpt-5.5": "documented",
+      "gpt-5.6-luna": "documented",
+      "gpt-5.6-sol": "documented",
+      "gpt-5.6-terra": "documented",
+      "gpt-6-astra": "documented",
+      "gpt-6-sol": "documented"
+    },
+    "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
+    "family_id": "gpt_text",
+    "candidate_model_set": [
+      "gpt-5.5",
+      "gpt-5.6-luna",
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-6-astra",
+      "gpt-6-sol"
+    ],
+    "runtime_availability": "not_claimed",
+    "configuration_contract": "complete"
+  },
+  "grok_text_status": {
+    "family_id": "grok_text",
+    "availability": "available",
+    "call_action": "allow_call",
+    "model_status": {
+      "grok-4.5": "available",
+      "grok-4.6": "available",
+      "grok-4.7": "available"
+    }
+  },
+  "grok_video_status": {
+    "family_id": "grok_video",
+    "availability": "available",
+    "call_action": "allow_call",
+    "model_status": {
+      "grok-video-1.0-480p": "available",
+      "grok-video-1.0-720p": "available",
+      "grok-video-1.5-480p": "available",
+      "grok-video-1.5-720p": "available",
+      "grok-video-1.5-1080p": "available"
+    }
+  },
+  "image2_status": {
+    "configuration_contract": "verified",
+    "live_availability": "partially_available",
+    "available_models": [
+      "gpt-image-2",
+      "gpt-image-2-1K-medium",
+      "gpt-image-2-2K",
+      "gpt-image-2-4K"
+    ],
+    "fail_closed_models": [
+      "image2"
+    ],
+    "model_status": {
+      "gpt-image-2": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "gpt-image-2-1K-medium": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "gpt-image-2-2K": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "gpt-image-2-4K": {
+        "configuration_contract": "verified",
+        "live_availability": "available",
+        "call_action": "allow_call"
+      },
+      "image2": {
+        "configuration_contract": "verified",
+        "live_availability": "fail_closed",
+        "call_action": "do_not_call"
+      }
+    },
+    "verification": "current_production_route_and_ability_readback"
+  },
+  "image2_documentation_gate": {
+    "configuration_contract": "verified",
+    "availability_mode": "per_exact_model_id",
+    "call_action": "follow_model_status",
+    "guess_count": 0,
+    "safe_next_action": "call only an exact model whose live_availability is available and call_action is allow_call"
+  },
+  "image2_error_contracts": {
+    "400": {
+      "meaning": "invalid request fields or values",
+      "action": "fix the documented request and do not retry it unchanged",
+      "retry_allowed": false
+    },
+    "401": {
+      "meaning": "station authentication failed",
+      "action": "check the key privately and stop",
+      "retry_allowed": false
+    },
+    "403": {
+      "meaning": "permission or model availability rejected",
+      "action": "preserve the request fingerprint and stop",
+      "retry_allowed": false
+    },
+    "404": {
+      "meaning": "documented route, exact model, or original task not found",
+      "action": "verify the published values and never invent a replacement",
+      "retry_allowed": false
+    },
+    "409": {
+      "meaning": "request reconciliation conflict",
+      "action": "preserve the original task and request identifiers; never duplicate the unresolved request",
+      "retry_allowed": false
+    },
+    "413": {
+      "meaning": "request body too large",
+      "action": "reduce the request within the published limit",
+      "retry_allowed": false
+    },
+    "415": {
+      "meaning": "unsupported media type",
+      "action": "use only a documented MIME type",
+      "retry_allowed": false
+    },
+    "422": {
+      "meaning": "validation or moderation rejected",
+      "action": "fix the input and do not retry it unchanged",
+      "retry_allowed": false
+    },
+    "429": {
+      "meaning": "capacity or rate limit",
+      "action": "honor Retry-After with jitter; never duplicate an unknown outcome",
+      "retry_allowed": "only_when_the_original_outcome_is_known_not_created"
+    },
+    "500": {
+      "meaning": "internal failure; the outcome may be unknown",
+      "action": "preserve identifiers and stop",
+      "retry_allowed": false
+    },
+    "502": {
+      "meaning": "gateway failure; the outcome may be unknown",
+      "action": "preserve identifiers and stop",
+      "retry_allowed": false
+    },
+    "503": {
+      "meaning": "temporarily unavailable; the outcome may be unknown",
+      "action": "query only the original task when a task_id exists",
+      "retry_allowed": false
+    },
+    "504": {
+      "meaning": "gateway timeout; the outcome is unknown",
+      "action": "query only the original task when a task_id exists",
+      "retry_allowed": false
+    },
+    "524": {
+      "meaning": "long synchronous request timed out at the edge; the outcome is unknown",
+      "action": "preserve X-Image2-Trace-Id and error.task_id; query only the original task",
+      "retry_allowed": false
+    }
+  },
+  "image2_safe_rollback": {
+    "client_contract_change_count": 0,
+    "restore": "the previously recorded client configuration",
+    "preserve": [
+      "endpoint",
+      "HTTP method",
+      "Authorization Bearer header",
+      "request fields",
+      "response shape",
+      "defaults",
+      "error handling"
+    ],
+    "disable_calls": "affected_exact_model_only",
+    "forbidden": [
+      "switch host",
+      "rename model",
+      "send undocumented fields",
+      "auto resubmit",
+      "require a client change without an exact diff, compatibility window, and rollback"
+    ],
+    "reactivation_requires": [
+      "live_availability=available",
+      "call_action=allow_call",
+      "successful documented validation"
+    ]
+  },
+  "public_redaction": {
+    "allowlist_projection": true,
+    "forbidden_categories": [
+      "internal origin names",
+      "private route IDs",
+      "raw private URLs",
+      "secrets",
+      "costs",
+      "balances",
+      "topology"
+    ]
+  },
+  "model_families": {
+    "gpt_text": {
+      "models": [
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-6-astra",
+        "gpt-6-sol"
+      ],
+      "routes": [
+        "chat",
+        "responses"
+      ]
+    },
+    "grok_text": {
+      "models": [
+        "grok-4.5",
+        "grok-4.6",
+        "grok-4.7"
+      ],
+      "routes": [
+        "grok_text_chat"
+      ]
+    },
+    "claude_code": {
+      "models": [
+        "claude-fable-5",
+        "claude-opus-5",
+        "claude-opus-5-5",
+        "claude-sonnet-5"
+      ],
+      "routes": [
+        "anthropic_messages"
+      ]
+    },
+    "image2": {
+      "models": [
+        "image2"
+      ],
+      "routes": [
+        "image2_sync_generation",
+        "image2_sync_edits"
+      ]
+    },
+    "gpt_image_2": {
+      "models": [
+        "gpt-image-2",
+        "gpt-image-2-1K-medium",
+        "gpt-image-2-2K",
+        "gpt-image-2-4K"
+      ],
+      "routes": [
+        "gpt_image_2_async",
+        "gpt_image_2_edits"
+      ]
+    },
+    "gpt_image_2_5": {
+      "models": [
+        "gpt-image-2.5",
+        "gpt-image-2.5-flare-1k",
+        "gpt-image-2.5-flare-2k",
+        "gpt-image-2.5-flare-4k",
+        "gpt-image-2.5-sunburst-1k",
+        "gpt-image-2.5-sunburst-2k",
+        "gpt-image-2.5-sunburst-4k"
+      ],
+      "routes": [
+        "gpt_image_2_5_async_generation",
+        "gpt_image_2_5_sync_generation",
+        "gpt_image_2_5_sync_edits"
+      ]
+    },
+    "qwen_image_3": {
+      "models": [
+        "qwen-image-3.0",
+        "qwen-image-3.0-pro-1K",
+        "qwen-image-3.0-pro"
+      ],
+      "routes": [
+        "qwen_image_3_async"
+      ]
+    },
+    "nano_banana": {
+      "models": [
+        "nano_banana_2",
+        "nano_banana_2-2K",
+        "nano_banana_2-4K",
+        "nano_banana_pro-1K",
+        "nano_banana_pro-2K",
+        "nano_banana_pro-4K"
+      ],
+      "routes": [
+        "nano_async_image"
+      ]
+    },
+    "kling": {
+      "models": [
+        "kling-v2-6",
+        "kling-3.0-turbo",
+        "kling-3.0-turbo-1080p",
+        "kling-motion-control"
+      ],
+      "routes": [
+        "kling_async"
+      ]
+    },
+    "grok_video": {
+      "models": [
+        "grok-video-1.0-480p",
+        "grok-video-1.0-720p",
+        "grok-video-1.5-480p",
+        "grok-video-1.5-720p",
+        "grok-video-1.5-1080p"
+      ],
+      "routes": [
+        "grok_video_async"
+      ]
+    }
+  }
+}
