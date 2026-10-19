@@ -159,42 +159,35 @@ Fixed parameter rules:
 - One business request permits one generation POST. On timeout, disconnect, 408, 429, 5xx, or any unknown outcome, preserve identifiers and timestamps. Poll only an existing asynchronous task; never automatically submit a second POST.
 
 
-## 2026-10-17 additional model families
+## Selected models 2026-10-19-current-listings-g622-v2
 
-API origin: https://api.yuqitoken.cn; SDK base: https://api.yuqitoken.cn/v1. Use the original Bearer key. Free catalog/auth and structure checks only; no paid generation verification.
-34 currently listed models; withdrawn: midjourney-v7, sd7-seedance-2.0-1080p, sd7-seedance-2.0-720p, suno. Suno and Wan: no models on sale. No seconds-based billing in this batch.
-- doubao-seedream-5-0-flash: 张; POST /v1/images/generations, POST /v1/images/edits; sync
-- doubao-seedream-5-0-pro: 张; POST /v1/images/generations, POST /v1/images/edits; sync
-- gemini-3.8-flash: Token; POST /v1/chat/completions; sync, stream
-- gemini-3.8-flash-high: Token; POST /v1/chat/completions; sync, stream
-- gemini-4-argon: Token; POST /v1/chat/completions; sync, stream
-- gemini-stt: 分钟; POST /v1/audio/transcriptions; sync
-- gemini-tts: 千字符; POST /v1/audio/speech; sync
-- grok-imagine-image: 张; POST /v1/images/generations, POST /v1/images/edits; sync
-- grok-imagine-image-2.0: 张; POST /v1/images/generations, POST /v1/images/edits; sync
-- happyhorse-1.1: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- lyria-3-pro: 次; POST /v1/music, GET /v1/music/{task_id}; async
-- lyria-3.5: 次; POST /v1/music, GET /v1/music/{task_id}; async
-- midjourney-1k: 次; POST /v1/images/generations, GET /v1/images/generations/{task_id}, POST /v1/images/edits, GET /v1/images/edits/{task_id}; sync, async
-- midjourney-2k: 次; POST /v1/images/generations, GET /v1/images/generations/{task_id}, POST /v1/images/edits, GET /v1/images/edits/{task_id}; sync, async
-- mm3-minimax-h3-2k: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- mm4-minimax-h3-2k: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd10-seedance-2.5: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd13-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd13-seedance-2.0-fast: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd13-seedance-2.0-mini: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd13-seedance-2.5: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd14-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd16-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd16-seedance-2.0-fast: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd16-seedance-2.0-mini: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd17-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd17-seedance-2.0-2: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd17-seedance-2.0-3: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd17-seedance-2.5: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd17-seedance-2.5-2: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd17-seedance-2.5-3: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- sd8-seedance-2.5-s: 次; POST /v1/videos, GET /v1/videos/{task_id}; async
-- seedream-5.0-pro-x: 张; POST /v1/images/generations, POST /v1/images/edits; sync
-- gemini-4-argon-high: Token; POST /v1/chat/completions; sync, stream
-Full per-model parameters, billing tiers and examples: api-contract.json routes selected_* and index.html#selected-models-20261017. Never auto-resubmit unknown generation outcomes.
+- doubao-seedream-5-0-flash: 张; POST /v1/images/generations, POST /v1/images/edits; api-contract.json routes.selected_doubao_seedream_5_0_flash
+- doubao-seedream-5-0-pro: 张; POST /v1/images/generations, POST /v1/images/edits; api-contract.json routes.selected_doubao_seedream_5_0_pro
+- gemini-3.8-flash: Token; POST /v1/chat/completions; api-contract.json routes.selected_gemini_3_8_flash
+- gemini-3.8-flash-high: Token; POST /v1/chat/completions; api-contract.json routes.selected_gemini_3_8_flash_high
+- gemini-4-argon: Token; POST /v1/chat/completions; api-contract.json routes.selected_gemini_4_argon
+- gemini-4-argon-high: Token; POST /v1/chat/completions; api-contract.json routes.selected_gemini_4_argon_high
+- gemini-stt: 分钟; POST /v1/audio/transcriptions; api-contract.json routes.selected_gemini_stt
+- gemini-tts: 千字符; POST /v1/audio/speech; api-contract.json routes.selected_gemini_tts
+- grok-imagine-image: 张; POST /v1/images/generations, POST /v1/images/edits; api-contract.json routes.selected_grok_imagine_image
+- grok-imagine-image-2.0: 张; POST /v1/images/generations, POST /v1/images/edits; api-contract.json routes.selected_grok_imagine_image_2_0
+- happyhorse-1.1: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_happyhorse_1_1
+- lyria-3-pro: 次; POST /v1/music, GET /v1/music/{task_id}; api-contract.json routes.selected_lyria_3_pro
+- lyria-3.5: 次; POST /v1/music, GET /v1/music/{task_id}; api-contract.json routes.selected_lyria_3_5
+- midjourney-1k: 次; POST /v1/images/generations, GET /v1/images/generations/{task_id}, POST /v1/images/edits, GET /v1/images/edits/{task_id}; api-contract.json routes.selected_midjourney_1k
+- midjourney-2k: 次; POST /v1/images/generations, GET /v1/images/generations/{task_id}, POST /v1/images/edits, GET /v1/images/edits/{task_id}; api-contract.json routes.selected_midjourney_2k
+- mm3-minimax-h3-2k: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_mm3_minimax_h3_2k
+- mm4-minimax-h3-2k: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_mm4_minimax_h3_2k
+- sd13-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd13_seedance_2_0
+- sd13-seedance-2.0-fast: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd13_seedance_2_0_fast
+- sd13-seedance-2.0-mini: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd13_seedance_2_0_mini
+- sd13-seedance-2.5: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd13_seedance_2_5
+- sd16-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd16_seedance_2_0
+- sd16-seedance-2.0-fast: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd16_seedance_2_0_fast
+- sd16-seedance-2.0-mini: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd16_seedance_2_0_mini
+- sd17-seedance-2.0: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd17_seedance_2_0
+- sd17-seedance-2.0-2: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd17_seedance_2_0_2
+- sd17-seedance-2.0-3: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd17_seedance_2_0_3
+- sd17-seedance-2.5-2: 次; POST /v1/videos, GET /v1/videos/{task_id}; api-contract.json routes.selected_sd17_seedance_2_5_2
+- seedream-5.0-pro-x: 张; POST /v1/images/generations, POST /v1/images/edits; api-contract.json routes.selected_seedream_5_0_pro_x
+Full prices, parameters and results: https://docs.yuqitoken.cn/#selected-models-20261017. Unknown generation results never auto-resubmit.
