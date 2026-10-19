@@ -1088,148 +1088,6 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
   -H &quot;Content-Type: application/json&quot; \
   --data-binary &#x27;{&quot;model&quot;: &quot;grok-imagine-image-2.0&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;n&quot;: 1, &quot;response_format&quot;: &quot;url&quot;}&#x27;</code></pre>
 <p>结果：<code>data[].url or data[].b64_json</code>。</p>
-<h3 id="selected-happyhorse-1.1"><code>happyhorse-1.1</code></h3>
-<p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
-<table><thead><tr><th>计费档</th><th>单价</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>720p</td><td>11.822224 / 次</td><td>按所选参数与该档单价计费</td></tr><tr><td>1080p</td><td>16.044446 / 次</td><td>按所选参数与该档单价计费</td></tr></tbody></table>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 11.822224,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;720p&quot;,
-      &quot;price&quot;: 11.822224,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 11.822224,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;1080p&quot;,
-      &quot;price&quot;: 16.044446,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 16.044446,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 3,
-    &quot;maximum&quot;: 15,
-    &quot;listed_options&quot;: [
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15
-    ]
-  }
-}
-</code></pre>
-<table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
-<tr><td><code>model</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;固定传 happyhorse-1.1。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>prompt</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;生成内容的描述。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>duration</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;duration&quot;,
-  &quot;description&quot;: &quot;视频时长，单位秒。最小 3。最大 15。&quot;,
-  &quot;type&quot;: &quot;integer&quot;,
-  &quot;minimum&quot;: 3,
-  &quot;maximum&quot;: 15
-}
-</td></tr>
-<tr><td><code>aspect_ratio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;画面比例。推荐值：16:9 / 9:16 / 1:1 / 4:3 / 3:4 / 21:9 / 9:21 / 5:4 / 4:5；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;16:9&quot;,
-    &quot;9:16&quot;,
-    &quot;1:1&quot;,
-    &quot;4:3&quot;,
-    &quot;3:4&quot;,
-    &quot;21:9&quot;,
-    &quot;9:21&quot;,
-    &quot;5:4&quot;,
-    &quot;4:5&quot;
-  ]
-}
-</td></tr>
-<tr><td><code>resolution</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;resolution&quot;,
-  &quot;description&quot;: &quot;输出分辨率。推荐值：1080p / 720p；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;1080p&quot;,
-    &quot;720p&quot;
-  ]
-}
-</td></tr>
-<tr><td><code>reference_image_urls</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceImage&quot;,
-  &quot;description&quot;: &quot;参考图 HTTPS URL 数组，最多 9 个。上传文件最多 10485760 字节（10 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 9
-}
-</td></tr>
-</tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。</li><li>每次时长范围 3–15 秒；未公开默认秒数，请显式传 duration。界面列出 3、4、5、6、7、8、9、10、11、12、13、14、15 秒。按次计费；时长参数不代表改为按秒计费。</li><li>适合用途｜多图参考短片；3–15 秒；1080p / 720p；最多 9 张参考图。</li><li>使用注意｜不接首尾帧、参考视频或参考音频。</li></ul>
-<pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/videos \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  --data-binary &#x27;{&quot;model&quot;: &quot;happyhorse-1.1&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;duration&quot;: 5, &quot;resolution&quot;: &quot;720p&quot;}&#x27;</code></pre>
-<p>结果：<code>video_url or data[0].url</code>。</p>
-<p>原任务轮询：<code>{
-  &quot;method&quot;: &quot;GET&quot;,
-  &quot;path&quot;: &quot;/v1/videos/{task_id}&quot;,
-  &quot;auth&quot;: &quot;same original Bearer token&quot;,
-  &quot;task_id_jsonpath&quot;: &quot;$.id&quot;,
-  &quot;queued&quot;: [
-    &quot;queued&quot;
-  ],
-  &quot;running&quot;: [
-    &quot;in_progress&quot;
-  ],
-  &quot;success&quot;: [
-    &quot;completed&quot;
-  ],
-  &quot;failure&quot;: [
-    &quot;failed&quot;
-  ],
-  &quot;success_requires&quot;: &quot;terminal completed plus usable result&quot;,
-  &quot;interval_seconds&quot;: [
-    5,
-    10
-  ],
-  &quot;deadline_seconds&quot;: 1800,
-  &quot;unknown&quot;: &quot;preserve original id, stop blind retries, never create another POST&quot;
-}
-</code>。创建响应读取顶层id；只有completed加真实结果才成功，未知结果不得重提生成。</p>
 <h3 id="selected-lyria-3-pro"><code>lyria-3-pro</code></h3>
 <p>接口：<code>POST /v1/music; GET /v1/music/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p><strong>单价：1.055556 / 次</strong></p>
@@ -2020,564 +1878,6 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
   -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
   -H &quot;Content-Type: application/json&quot; \
   --data-binary &#x27;{&quot;model&quot;: &quot;mm4-minimax-h3-2k&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;duration&quot;: 5, &quot;resolution&quot;: &quot;2K&quot;}&#x27;</code></pre>
-<p>结果：<code>video_url or data[0].url</code>。</p>
-<p>原任务轮询：<code>{
-  &quot;method&quot;: &quot;GET&quot;,
-  &quot;path&quot;: &quot;/v1/videos/{task_id}&quot;,
-  &quot;auth&quot;: &quot;same original Bearer token&quot;,
-  &quot;task_id_jsonpath&quot;: &quot;$.id&quot;,
-  &quot;queued&quot;: [
-    &quot;queued&quot;
-  ],
-  &quot;running&quot;: [
-    &quot;in_progress&quot;
-  ],
-  &quot;success&quot;: [
-    &quot;completed&quot;
-  ],
-  &quot;failure&quot;: [
-    &quot;failed&quot;
-  ],
-  &quot;success_requires&quot;: &quot;terminal completed plus usable result&quot;,
-  &quot;interval_seconds&quot;: [
-    5,
-    10
-  ],
-  &quot;deadline_seconds&quot;: 1800,
-  &quot;unknown&quot;: &quot;preserve original id, stop blind retries, never create another POST&quot;
-}
-</code>。创建响应读取顶层id；只有completed加真实结果才成功，未知结果不得重提生成。</p>
-<h3 id="selected-sd13-seedance-2.0"><code>sd13-seedance-2.0</code></h3>
-<p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
-<table><thead><tr><th>计费档</th><th>单价</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>1080p / 4k</td><td>67.386667 / 次</td><td>按所选参数与该档单价计费</td></tr><tr><td>480p / 720p</td><td>30.02 / 次</td><td>按所选参数与该档单价计费</td></tr></tbody></table>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 30.02,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;1080p / 4k&quot;,
-      &quot;price&quot;: 67.386667,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 67.386667,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;480p / 720p&quot;,
-      &quot;price&quot;: 30.02,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 30.02,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 8
-  }
-}
-</code></pre>
-<table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
-<tr><td><code>model</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;固定传 sd13-seedance-2.0。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>prompt</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;生成内容的描述。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>duration</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;duration&quot;,
-  &quot;description&quot;: &quot;视频时长，单位秒。最小 4。最大 15。&quot;,
-  &quot;type&quot;: &quot;integer&quot;,
-  &quot;minimum&quot;: 4,
-  &quot;maximum&quot;: 15,
-  &quot;suggestedDefault&quot;: 8,
-  &quot;default&quot;: 8
-}
-</td></tr>
-<tr><td><code>aspect_ratio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;auto&quot;,
-    &quot;21:9&quot;,
-    &quot;16:9&quot;,
-    &quot;4:3&quot;,
-    &quot;1:1&quot;,
-    &quot;3:4&quot;,
-    &quot;9:16&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;auto&quot;
-}
-</td></tr>
-<tr><td><code>resolution</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;resolution&quot;,
-  &quot;description&quot;: &quot;输出分辨率。推荐值：480p / 720p / 1080p / 4k；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;480p&quot;,
-    &quot;720p&quot;,
-    &quot;1080p&quot;,
-    &quot;4k&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;480p&quot;
-}
-</td></tr>
-<tr><td><code>generate_audio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;是否生成音频。&quot;,
-  &quot;type&quot;: &quot;boolean&quot;
-}
-</td></tr>
-<tr><td><code>reference_image_urls</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceImage&quot;,
-  &quot;description&quot;: &quot;参考图 HTTPS URL 数组，最多 9 个。上传文件最多 31457280 字节（30 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 9
-}
-</td></tr>
-<tr><td><code>reference_videos</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceVideo&quot;,
-  &quot;description&quot;: &quot;参考视频 HTTPS URL 数组，最多 3 个。上传文件最多 52428800 字节（50 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 3
-}
-</td></tr>
-</tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。</li><li>每次时长范围 4–15 秒；默认 8 秒。按次计费；时长参数不代表改为按秒计费。</li><li>适合用途｜高清人物参考；原生不卡脸；4–15 秒；480p / 720p / 1080p / 4K；最多 9 张参考图 / 3 段参考视频。</li><li>使用注意｜不接参考音频和首尾帧。</li></ul>
-<pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/videos \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  --data-binary &#x27;{&quot;model&quot;: &quot;sd13-seedance-2.0&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;duration&quot;: 8, &quot;resolution&quot;: &quot;480p&quot;}&#x27;</code></pre>
-<p>结果：<code>video_url or data[0].url</code>。</p>
-<p>原任务轮询：<code>{
-  &quot;method&quot;: &quot;GET&quot;,
-  &quot;path&quot;: &quot;/v1/videos/{task_id}&quot;,
-  &quot;auth&quot;: &quot;same original Bearer token&quot;,
-  &quot;task_id_jsonpath&quot;: &quot;$.id&quot;,
-  &quot;queued&quot;: [
-    &quot;queued&quot;
-  ],
-  &quot;running&quot;: [
-    &quot;in_progress&quot;
-  ],
-  &quot;success&quot;: [
-    &quot;completed&quot;
-  ],
-  &quot;failure&quot;: [
-    &quot;failed&quot;
-  ],
-  &quot;success_requires&quot;: &quot;terminal completed plus usable result&quot;,
-  &quot;interval_seconds&quot;: [
-    5,
-    10
-  ],
-  &quot;deadline_seconds&quot;: 1800,
-  &quot;unknown&quot;: &quot;preserve original id, stop blind retries, never create another POST&quot;
-}
-</code>。创建响应读取顶层id；只有completed加真实结果才成功，未知结果不得重提生成。</p>
-<h3 id="selected-sd13-seedance-2.0-fast"><code>sd13-seedance-2.0-fast</code></h3>
-<p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
-<table><thead><tr><th>计费档</th><th>单价</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>480p / 720p</td><td>23.94 / 次</td><td>按所选参数与该档单价计费</td></tr></tbody></table>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次计费&quot;,
-  &quot;price&quot;: 23.94,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;480p / 720p&quot;,
-      &quot;price&quot;: 23.94,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 23.94,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 8
-  }
-}
-</code></pre>
-<table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
-<tr><td><code>model</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;固定传 sd13-seedance-2.0-fast。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>prompt</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;生成内容的描述。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>duration</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;duration&quot;,
-  &quot;description&quot;: &quot;视频时长，单位秒。最小 4。最大 15。&quot;,
-  &quot;type&quot;: &quot;integer&quot;,
-  &quot;minimum&quot;: 4,
-  &quot;maximum&quot;: 15,
-  &quot;suggestedDefault&quot;: 8,
-  &quot;default&quot;: 8
-}
-</td></tr>
-<tr><td><code>aspect_ratio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;auto&quot;,
-    &quot;21:9&quot;,
-    &quot;16:9&quot;,
-    &quot;4:3&quot;,
-    &quot;1:1&quot;,
-    &quot;3:4&quot;,
-    &quot;9:16&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;auto&quot;
-}
-</td></tr>
-<tr><td><code>resolution</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;resolution&quot;,
-  &quot;description&quot;: &quot;输出分辨率。推荐值：480p / 720p；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;480p&quot;,
-    &quot;720p&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;480p&quot;
-}
-</td></tr>
-<tr><td><code>generate_audio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;是否生成音频。&quot;,
-  &quot;type&quot;: &quot;boolean&quot;
-}
-</td></tr>
-<tr><td><code>reference_image_urls</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceImage&quot;,
-  &quot;description&quot;: &quot;参考图 HTTPS URL 数组，最多 9 个。上传文件最多 31457280 字节（30 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 9
-}
-</td></tr>
-<tr><td><code>reference_videos</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceVideo&quot;,
-  &quot;description&quot;: &quot;参考视频 HTTPS URL 数组，最多 3 个。上传文件最多 52428800 字节（50 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 3
-}
-</td></tr>
-</tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。</li><li>每次时长范围 4–15 秒；默认 8 秒。按次计费；时长参数不代表改为按秒计费。</li><li>适合用途｜Fast 档人物参考；原生不卡脸；4–15 秒；480p / 720p；最多 9 张参考图 / 3 段参考视频。</li><li>使用注意｜不接参考音频和首尾帧；需要高清档时选择同线路基础款。</li></ul>
-<pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/videos \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  --data-binary &#x27;{&quot;model&quot;: &quot;sd13-seedance-2.0-fast&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;duration&quot;: 8, &quot;resolution&quot;: &quot;480p&quot;}&#x27;</code></pre>
-<p>结果：<code>video_url or data[0].url</code>。</p>
-<p>原任务轮询：<code>{
-  &quot;method&quot;: &quot;GET&quot;,
-  &quot;path&quot;: &quot;/v1/videos/{task_id}&quot;,
-  &quot;auth&quot;: &quot;same original Bearer token&quot;,
-  &quot;task_id_jsonpath&quot;: &quot;$.id&quot;,
-  &quot;queued&quot;: [
-    &quot;queued&quot;
-  ],
-  &quot;running&quot;: [
-    &quot;in_progress&quot;
-  ],
-  &quot;success&quot;: [
-    &quot;completed&quot;
-  ],
-  &quot;failure&quot;: [
-    &quot;failed&quot;
-  ],
-  &quot;success_requires&quot;: &quot;terminal completed plus usable result&quot;,
-  &quot;interval_seconds&quot;: [
-    5,
-    10
-  ],
-  &quot;deadline_seconds&quot;: 1800,
-  &quot;unknown&quot;: &quot;preserve original id, stop blind retries, never create another POST&quot;
-}
-</code>。创建响应读取顶层id；只有completed加真实结果才成功，未知结果不得重提生成。</p>
-<h3 id="selected-sd13-seedance-2.0-mini"><code>sd13-seedance-2.0-mini</code></h3>
-<p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
-<table><thead><tr><th>计费档</th><th>单价</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>720p</td><td>15.326667 / 次</td><td>按所选参数与该档单价计费</td></tr><tr><td>480p</td><td>7.177778 / 次</td><td>按所选参数与该档单价计费</td></tr></tbody></table>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 7.177778,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;720p&quot;,
-      &quot;price&quot;: 15.326667,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 15.326667,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;480p&quot;,
-      &quot;price&quot;: 7.177778,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 7.177778,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 8
-  }
-}
-</code></pre>
-<table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
-<tr><td><code>model</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;固定传 sd13-seedance-2.0-mini。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>prompt</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;生成内容的描述。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>duration</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;duration&quot;,
-  &quot;description&quot;: &quot;视频时长，单位秒。最小 4。最大 15。&quot;,
-  &quot;type&quot;: &quot;integer&quot;,
-  &quot;minimum&quot;: 4,
-  &quot;maximum&quot;: 15,
-  &quot;suggestedDefault&quot;: 8,
-  &quot;default&quot;: 8
-}
-</td></tr>
-<tr><td><code>aspect_ratio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;auto&quot;,
-    &quot;21:9&quot;,
-    &quot;16:9&quot;,
-    &quot;4:3&quot;,
-    &quot;1:1&quot;,
-    &quot;3:4&quot;,
-    &quot;9:16&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;auto&quot;
-}
-</td></tr>
-<tr><td><code>resolution</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;resolution&quot;,
-  &quot;description&quot;: &quot;输出分辨率。推荐值：480p / 720p；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;480p&quot;,
-    &quot;720p&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;480p&quot;
-}
-</td></tr>
-<tr><td><code>generate_audio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;是否生成音频。&quot;,
-  &quot;type&quot;: &quot;boolean&quot;
-}
-</td></tr>
-<tr><td><code>reference_image_urls</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceImage&quot;,
-  &quot;description&quot;: &quot;参考图 HTTPS URL 数组，最多 9 个。上传文件最多 31457280 字节（30 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 9
-}
-</td></tr>
-<tr><td><code>reference_videos</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceVideo&quot;,
-  &quot;description&quot;: &quot;参考视频 HTTPS URL 数组，最多 3 个。上传文件最多 52428800 字节（50 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 3
-}
-</td></tr>
-</tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。</li><li>每次时长范围 4–15 秒；默认 8 秒。按次计费；时长参数不代表改为按秒计费。</li><li>适合用途｜Mini 档人物参考；原生不卡脸；4–15 秒；480p / 720p；最多 9 张参考图 / 3 段参考视频。</li><li>使用注意｜不接参考音频和首尾帧；需要高清档时选择同线路基础款。</li></ul>
-<pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/videos \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  --data-binary &#x27;{&quot;model&quot;: &quot;sd13-seedance-2.0-mini&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;duration&quot;: 8, &quot;resolution&quot;: &quot;480p&quot;}&#x27;</code></pre>
-<p>结果：<code>video_url or data[0].url</code>。</p>
-<p>原任务轮询：<code>{
-  &quot;method&quot;: &quot;GET&quot;,
-  &quot;path&quot;: &quot;/v1/videos/{task_id}&quot;,
-  &quot;auth&quot;: &quot;same original Bearer token&quot;,
-  &quot;task_id_jsonpath&quot;: &quot;$.id&quot;,
-  &quot;queued&quot;: [
-    &quot;queued&quot;
-  ],
-  &quot;running&quot;: [
-    &quot;in_progress&quot;
-  ],
-  &quot;success&quot;: [
-    &quot;completed&quot;
-  ],
-  &quot;failure&quot;: [
-    &quot;failed&quot;
-  ],
-  &quot;success_requires&quot;: &quot;terminal completed plus usable result&quot;,
-  &quot;interval_seconds&quot;: [
-    5,
-    10
-  ],
-  &quot;deadline_seconds&quot;: 1800,
-  &quot;unknown&quot;: &quot;preserve original id, stop blind retries, never create another POST&quot;
-}
-</code>。创建响应读取顶层id；只有completed加真实结果才成功，未知结果不得重提生成。</p>
-<h3 id="selected-sd13-seedance-2.5"><code>sd13-seedance-2.5</code></h3>
-<p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
-<table><thead><tr><th>计费档</th><th>单价</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>720p</td><td>93.48 / 次</td><td>按所选参数与该档单价计费</td></tr><tr><td>480p</td><td>43.573334 / 次</td><td>按所选参数与该档单价计费</td></tr></tbody></table>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 43.573334,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;720p&quot;,
-      &quot;price&quot;: 93.48,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 93.48,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;480p&quot;,
-      &quot;price&quot;: 43.573334,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 43.573334,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 30,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
-<table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
-<tr><td><code>model</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;固定传 sd13-seedance-2.5。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>prompt</code></td><td>是</td><td>{
-  &quot;description&quot;: &quot;生成内容的描述。&quot;,
-  &quot;type&quot;: &quot;string&quot;
-}
-</td></tr>
-<tr><td><code>duration</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;duration&quot;,
-  &quot;description&quot;: &quot;视频时长，单位秒。最小 4。最大 30。&quot;,
-  &quot;type&quot;: &quot;integer&quot;,
-  &quot;minimum&quot;: 4,
-  &quot;maximum&quot;: 30,
-  &quot;suggestedDefault&quot;: 5,
-  &quot;default&quot;: 5
-}
-</td></tr>
-<tr><td><code>aspect_ratio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;auto&quot;,
-    &quot;21:9&quot;,
-    &quot;16:9&quot;,
-    &quot;4:3&quot;,
-    &quot;1:1&quot;,
-    &quot;3:4&quot;,
-    &quot;9:16&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;auto&quot;
-}
-</td></tr>
-<tr><td><code>resolution</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;resolution&quot;,
-  &quot;description&quot;: &quot;输出分辨率。推荐值：480p / 720p；推荐值不代表完整允许集合。&quot;,
-  &quot;type&quot;: &quot;string&quot;,
-  &quot;suggestions&quot;: [
-    &quot;480p&quot;,
-    &quot;720p&quot;
-  ],
-  &quot;suggestedDefault&quot;: &quot;480p&quot;
-}
-</td></tr>
-<tr><td><code>generate_audio</code></td><td>否</td><td>{
-  &quot;description&quot;: &quot;是否生成音频。&quot;,
-  &quot;type&quot;: &quot;boolean&quot;
-}
-</td></tr>
-<tr><td><code>reference_image_urls</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceImage&quot;,
-  &quot;description&quot;: &quot;参考图 HTTPS URL 数组，最多 30 个。上传文件最多 31457280 字节（30 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 30
-}
-</td></tr>
-<tr><td><code>reference_videos</code></td><td>否</td><td>{
-  &quot;role&quot;: &quot;referenceVideo&quot;,
-  &quot;description&quot;: &quot;参考视频 HTTPS URL 数组，最多 10 个。上传文件最多 209715200 字节（200 MiB）。&quot;,
-  &quot;type&quot;: &quot;array&quot;,
-  &quot;maxItems&quot;: 10
-}
-</td></tr>
-</tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。</li><li>每次时长范围 4–30 秒；默认 5 秒。按次计费；时长参数不代表改为按秒计费。</li><li>适合用途｜长片图视频参考；原生不卡脸；4–30 秒；480p / 720p；最多 30 张参考图 / 10 段参考视频。</li><li>使用注意｜不接参考音频和首尾帧。</li></ul>
-<pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/videos \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  --data-binary &#x27;{&quot;model&quot;: &quot;sd13-seedance-2.5&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;duration&quot;: 5, &quot;resolution&quot;: &quot;480p&quot;}&#x27;</code></pre>
 <p>结果：<code>video_url or data[0].url</code>。</p>
 <p>原任务轮询：<code>{
   &quot;method&quot;: &quot;GET&quot;,
@@ -3616,126 +2916,86 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
   -H &quot;Content-Type: application/json&quot; \
   --data-binary &#x27;{&quot;model&quot;: &quot;seedream-5.0-pro-x&quot;, &quot;prompt&quot;: &quot;温暖的午后，阳光洒在窗台上。&quot;, &quot;n&quot;: 1, &quot;response_format&quot;: &quot;url&quot;}&#x27;</code></pre>
 <p>结果：<code>data[].url or data[].b64_json</code>。</p>
-<p>以下组当前无在售型号：suno, wan-video。</p>
-<span id="model-doubao-seedream-5-0-flash"></span>
-<span id="model-doubao-seedream-5-0-pro"></span>
-<span id="model-gemini-3.8-flash"></span>
-<span id="model-gemini-3.8-flash-high"></span>
-<span id="model-gemini-4-argon"></span>
-<span id="model-gemini-4-argon-high"></span>
-<span id="model-gemini-stt"></span>
-<span id="model-gemini-tts"></span>
-<span id="model-grok-imagine-image"></span>
-<span id="model-grok-imagine-image-2.0"></span>
-<span id="model-happyhorse-1.1"></span>
-<h4>happyhorse-1.1：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-lyria-3-pro"></span>
-<h4>lyria-3-pro：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/music/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。music_url[]。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-lyria-3.5"></span>
-<h4>lyria-3.5：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/music/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。music_url[]。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-midjourney-1k"></span>
-<h4>midjourney-1k：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/images/generations/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。data[].url or data[].b64_json。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-midjourney-2k"></span>
-<h4>midjourney-2k：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/images/generations/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。data[].url or data[].b64_json。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-mm3-minimax-h3-2k"></span>
-<h4>mm3-minimax-h3-2k：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-mm4-minimax-h3-2k"></span>
-<h4>mm4-minimax-h3-2k：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd13-seedance-2.0"></span>
-<h4>sd13-seedance-2.0：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd13-seedance-2.0-fast"></span>
-<h4>sd13-seedance-2.0-fast：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd13-seedance-2.0-mini"></span>
-<h4>sd13-seedance-2.0-mini：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd13-seedance-2.5"></span>
-<h4>sd13-seedance-2.5：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd16-seedance-2.0"></span>
-<h4>sd16-seedance-2.0：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd16-seedance-2.0-fast"></span>
-<h4>sd16-seedance-2.0-fast：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd16-seedance-2.0-mini"></span>
-<h4>sd16-seedance-2.0-mini：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd17-seedance-2.0"></span>
-<h4>sd17-seedance-2.0：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd17-seedance-2.0-2"></span>
-<h4>sd17-seedance-2.0-2：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd17-seedance-2.0-3"></span>
-<h4>sd17-seedance-2.0-3：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-sd17-seedance-2.5-2"></span>
-<h4>sd17-seedance-2.5-2：查询原任务并读取结果</h4>
-<pre><code>TASK_ID=&quot;创建响应顶层的原任务id&quot;
-curl --max-time 60 &quot;https://api.yuqitoken.cn/v1/videos/$TASK_ID&quot; \
-  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot;</code></pre>
-<p>使用创建时同一令牌和顶层 id；保留完整数组。video_url or data[0].url。只有 completed 且包含可用结果才取用；queued / in_progress（包括 progress=0）继续等，failed 为终态失败；未知结果不再发生成POST。</p>
-<span id="model-seedream-5.0-pro-x"></span>
+<h3 id="selected-suno"><code>suno</code></h3>
+<p>接口：<code>POST /v1/music; GET /v1/music/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
+<p><strong>单价：2.111112 / 次</strong></p>
+<pre><code>{
+  &quot;unit&quot;: &quot;次&quot;,
+  &quot;label&quot;: &quot;按次生成&quot;,
+  &quot;price&quot;: 2.111112,
+  &quot;tiers&quot;: [],
+  &quot;currency_label&quot;: &quot;USD&quot;,
+  &quot;duration_seconds&quot;: {
+    &quot;status&quot;: &quot;not_selectable&quot;
+  }
+}
+</code></pre>
+<table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
+<tr><td><code>model</code></td><td>是</td><td>{
+  &quot;description&quot;: &quot;固定传 suno。&quot;,
+  &quot;type&quot;: &quot;string&quot;
+}
+</td></tr>
+<tr><td><code>prompt</code></td><td>是</td><td>{
+  &quot;description&quot;: &quot;歌曲描述，1–520000个Unicode字符。&quot;,
+  &quot;type&quot;: &quot;string&quot;,
+  &quot;minLength&quot;: 1,
+  &quot;maxLength&quot;: 520000
+}
+</td></tr>
+<tr><td><code>lyrics</code></td><td>否</td><td>{
+  &quot;description&quot;: &quot;歌词。与提示词分开填写。最多 520000 字符。&quot;,
+  &quot;type&quot;: &quot;string&quot;,
+  &quot;maxLength&quot;: 520000
+}
+</td></tr>
+<tr><td><code>style_text</code></td><td>否</td><td>{
+  &quot;description&quot;: &quot;音乐风格。与提示词和歌词分开填写。最多 520000 字符。&quot;,
+  &quot;type&quot;: &quot;string&quot;,
+  &quot;maxLength&quot;: 520000
+}
+</td></tr>
+<tr><td><code>n</code></td><td>否</td><td>{
+  &quot;description&quot;: &quot;生成数量。最小 1。最大 1。&quot;,
+  &quot;type&quot;: &quot;integer&quot;,
+  &quot;minimum&quot;: 1,
+  &quot;maximum&quot;: 1
+}
+</td></tr>
+</tbody></table>
+<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>prompt、lyrics、style_text 分别最多520000个Unicode字符，n只能为1。</li><li>不接受指定时长、纯器乐开关或参考音频。</li><li>一次请求可能返回多首音频；完整读取 music_url 数组，按一次生成任务计费。</li><li>不支持指定时长；实际成品秒数未公开，不承诺固定秒数。</li><li>适合用途｜用提示词、歌词和风格生成歌曲；一次请求 n=1，可能返回多段音频。</li><li>使用注意｜不支持参考音频、续写、纯器乐开关或指定时长；轮询完成前不要重复提交。</li></ul>
+<pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/music \
+  -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  --data-binary &#x27;{&quot;model&quot;: &quot;suno&quot;, &quot;prompt&quot;: &quot;温暖、轻快的民谣歌曲&quot;, &quot;lyrics&quot;: &quot;清晨的风，吹向远方&quot;, &quot;style_text&quot;: &quot;轻快民谣，原声吉他&quot;, &quot;n&quot;: 1}&#x27;</code></pre>
+<p>结果：<code>music_url[]</code>。</p>
+<p>原任务轮询：<code>{
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;path&quot;: &quot;/v1/music/{task_id}&quot;,
+  &quot;auth&quot;: &quot;same original Bearer token&quot;,
+  &quot;task_id_jsonpath&quot;: &quot;$.id&quot;,
+  &quot;queued&quot;: [
+    &quot;queued&quot;
+  ],
+  &quot;running&quot;: [
+    &quot;in_progress&quot;
+  ],
+  &quot;success&quot;: [
+    &quot;completed&quot;
+  ],
+  &quot;failure&quot;: [
+    &quot;failed&quot;
+  ],
+  &quot;success_requires&quot;: &quot;terminal completed plus usable result&quot;,
+  &quot;interval_seconds&quot;: [
+    5,
+    10
+  ],
+  &quot;deadline_seconds&quot;: 1800,
+  &quot;unknown&quot;: &quot;preserve original id, stop blind retries, never create another POST&quot;
+}
+</code>。创建响应读取顶层id；只有completed加真实结果才成功，未知结果不得重提生成。</p>
+<p>以下组当前无在售型号：happyhorse, wan-video。</p>
 <h3>错误、超时与取图取片</h3><p>只发送一次生成POST。超时、断网或未知结果保留原任务id，不补单。安全GET按Retry-After退避查询原任务；异步等待至少30分钟，同步请求至少600秒。HTTP200或进度100不单独代表成功。只取原任务结果，不向结果CDN转发API令牌。最终计费与退款以账单核查为准。</p>
 </section>
 
@@ -6632,198 +5892,6 @@ print(completion.choices[0].message.content)</code></pre>
         "不发送 mask；本站当前图片参数元数据未开放蒙版。"
       ]
     },
-    "selected_happyhorse_1_1": {
-      "model": "happyhorse-1.1",
-      "family": "happyhorse",
-      "availability": "listed_in_current_catalog",
-      "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
-      "paid_generation_verified": false,
-      "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
-      "authentication": {
-        "header": "Authorization",
-        "scheme": "Bearer",
-        "placeholder": "RELAY_API_KEY"
-      },
-      "content_type": "application/json",
-      "modes": [
-        "async"
-      ],
-      "endpoints": [
-        {
-          "method": "POST",
-          "path": "/v1/videos",
-          "description": "创建视频任务。"
-        },
-        {
-          "method": "GET",
-          "path": "/v1/videos/{task_id}",
-          "description": "查询视频任务。"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "model",
-          "description": "固定传 happyhorse-1.1。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "prompt",
-          "description": "生成内容的描述。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "duration",
-          "role": "duration",
-          "description": "视频时长，单位秒。最小 3。最大 15。",
-          "type": "integer",
-          "minimum": 3,
-          "maximum": 15
-        },
-        {
-          "name": "aspect_ratio",
-          "description": "画面比例。推荐值：16:9 / 9:16 / 1:1 / 4:3 / 3:4 / 21:9 / 9:21 / 5:4 / 4:5；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "16:9",
-            "9:16",
-            "1:1",
-            "4:3",
-            "3:4",
-            "21:9",
-            "9:21",
-            "5:4",
-            "4:5"
-          ]
-        },
-        {
-          "name": "resolution",
-          "role": "resolution",
-          "description": "输出分辨率。推荐值：1080p / 720p；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "1080p",
-            "720p"
-          ]
-        },
-        {
-          "name": "reference_image_urls",
-          "role": "referenceImage",
-          "description": "参考图 HTTPS URL 数组，最多 9 个。上传文件最多 10485760 字节（10 MiB）。",
-          "type": "array",
-          "maxItems": 9
-        }
-      ],
-      "example": {
-        "model": "happyhorse-1.1",
-        "prompt": "温暖的午后，阳光洒在窗台上。",
-        "duration": 5,
-        "resolution": "720p"
-      },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "price": 11.822224,
-        "tiers": [
-          {
-            "label": "720p",
-            "price": 11.822224,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 11.822224,
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "1080p",
-            "price": 16.044446,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 16.044446,
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 3,
-          "maximum": 15,
-          "listed_options": [
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15
-          ]
-        }
-      },
-      "polling": {
-        "method": "GET",
-        "path": "/v1/videos/{task_id}",
-        "auth": "same original Bearer token",
-        "task_id_jsonpath": "$.id",
-        "queued": [
-          "queued"
-        ],
-        "running": [
-          "in_progress"
-        ],
-        "success": [
-          "completed"
-        ],
-        "failure": [
-          "failed"
-        ],
-        "success_requires": "terminal completed plus usable result",
-        "interval_seconds": [
-          5,
-          10
-        ],
-        "deadline_seconds": 1800,
-        "unknown": "preserve original id, stop blind retries, never create another POST"
-      },
-      "result": "video_url or data[0].url",
-      "timeouts": {
-        "request_min_seconds": 600,
-        "poll_total_seconds": 1800
-      },
-      "errors": {
-        "400": "修正字段、类型或范围，不原样重试。",
-        "401": "检查本站令牌并停止。",
-        "403": "权限拒绝；保留错误，不换组绕过。",
-        "404": "核对模型、任务编号及创建路径；不用别的路径猜测。",
-        "409": "保留原请求与任务编号，先核对冲突。",
-        "413": "请求过大，按字段限制调整。",
-        "429": "遵守 Retry-After；额度不足先处理账户。",
-        "5xx": "结果可能未知，保存原编号；禁止自动再次提交生成。"
-      },
-      "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
-      "notes": [
-        "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。",
-        "每次时长范围 3–15 秒；未公开默认秒数，请显式传 duration。界面列出 3、4、5、6、7、8、9、10、11、12、13、14、15 秒。按次计费；时长参数不代表改为按秒计费。",
-        "适合用途｜多图参考短片；3–15 秒；1080p / 720p；最多 9 张参考图。",
-        "使用注意｜不接首尾帧、参考视频或参考音频。"
-      ]
-    },
     "selected_lyria_3_pro": {
       "model": "lyria-3-pro",
       "family": "lyria",
@@ -7965,764 +7033,6 @@ print(completion.choices[0].message.content)</code></pre>
         "每次时长范围 5–15 秒；默认 5 秒。按次计费；时长参数不代表改为按秒计费。",
         "适合用途｜MiniMax 2K 多模态；5–15 秒；最多 9 张参考图 / 3 段参考音频 / 3 段参考视频。",
         "使用注意｜固定 2K；不接首尾帧。"
-      ]
-    },
-    "selected_sd13_seedance_2_0": {
-      "model": "sd13-seedance-2.0",
-      "family": "seedance",
-      "availability": "listed_in_current_catalog",
-      "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
-      "paid_generation_verified": false,
-      "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
-      "authentication": {
-        "header": "Authorization",
-        "scheme": "Bearer",
-        "placeholder": "RELAY_API_KEY"
-      },
-      "content_type": "application/json",
-      "modes": [
-        "async"
-      ],
-      "endpoints": [
-        {
-          "method": "POST",
-          "path": "/v1/videos",
-          "description": "创建视频任务。"
-        },
-        {
-          "method": "GET",
-          "path": "/v1/videos/{task_id}",
-          "description": "查询视频任务。"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "model",
-          "description": "固定传 sd13-seedance-2.0。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "prompt",
-          "description": "生成内容的描述。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "duration",
-          "role": "duration",
-          "description": "视频时长，单位秒。最小 4。最大 15。",
-          "type": "integer",
-          "minimum": 4,
-          "maximum": 15,
-          "suggestedDefault": 8,
-          "default": 8
-        },
-        {
-          "name": "aspect_ratio",
-          "description": "画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "auto",
-            "21:9",
-            "16:9",
-            "4:3",
-            "1:1",
-            "3:4",
-            "9:16"
-          ],
-          "suggestedDefault": "auto"
-        },
-        {
-          "name": "resolution",
-          "role": "resolution",
-          "description": "输出分辨率。推荐值：480p / 720p / 1080p / 4k；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "480p",
-            "720p",
-            "1080p",
-            "4k"
-          ],
-          "suggestedDefault": "480p"
-        },
-        {
-          "name": "generate_audio",
-          "description": "是否生成音频。",
-          "type": "boolean"
-        },
-        {
-          "name": "reference_image_urls",
-          "role": "referenceImage",
-          "description": "参考图 HTTPS URL 数组，最多 9 个。上传文件最多 31457280 字节（30 MiB）。",
-          "type": "array",
-          "maxItems": 9
-        },
-        {
-          "name": "reference_videos",
-          "role": "referenceVideo",
-          "description": "参考视频 HTTPS URL 数组，最多 3 个。上传文件最多 52428800 字节（50 MiB）。",
-          "type": "array",
-          "maxItems": 3
-        }
-      ],
-      "example": {
-        "model": "sd13-seedance-2.0",
-        "prompt": "温暖的午后，阳光洒在窗台上。",
-        "duration": 8,
-        "resolution": "480p"
-      },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "price": 30.02,
-        "tiers": [
-          {
-            "label": "1080p / 4k",
-            "price": 67.386667,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 67.386667,
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p / 720p",
-            "price": 30.02,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 30.02,
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 8
-        }
-      },
-      "polling": {
-        "method": "GET",
-        "path": "/v1/videos/{task_id}",
-        "auth": "same original Bearer token",
-        "task_id_jsonpath": "$.id",
-        "queued": [
-          "queued"
-        ],
-        "running": [
-          "in_progress"
-        ],
-        "success": [
-          "completed"
-        ],
-        "failure": [
-          "failed"
-        ],
-        "success_requires": "terminal completed plus usable result",
-        "interval_seconds": [
-          5,
-          10
-        ],
-        "deadline_seconds": 1800,
-        "unknown": "preserve original id, stop blind retries, never create another POST"
-      },
-      "result": "video_url or data[0].url",
-      "timeouts": {
-        "request_min_seconds": 600,
-        "poll_total_seconds": 1800
-      },
-      "errors": {
-        "400": "修正字段、类型或范围，不原样重试。",
-        "401": "检查本站令牌并停止。",
-        "403": "权限拒绝；保留错误，不换组绕过。",
-        "404": "核对模型、任务编号及创建路径；不用别的路径猜测。",
-        "409": "保留原请求与任务编号，先核对冲突。",
-        "413": "请求过大，按字段限制调整。",
-        "429": "遵守 Retry-After；额度不足先处理账户。",
-        "5xx": "结果可能未知，保存原编号；禁止自动再次提交生成。"
-      },
-      "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
-      "notes": [
-        "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。",
-        "每次时长范围 4–15 秒；默认 8 秒。按次计费；时长参数不代表改为按秒计费。",
-        "适合用途｜高清人物参考；原生不卡脸；4–15 秒；480p / 720p / 1080p / 4K；最多 9 张参考图 / 3 段参考视频。",
-        "使用注意｜不接参考音频和首尾帧。"
-      ]
-    },
-    "selected_sd13_seedance_2_0_fast": {
-      "model": "sd13-seedance-2.0-fast",
-      "family": "seedance",
-      "availability": "listed_in_current_catalog",
-      "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
-      "paid_generation_verified": false,
-      "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
-      "authentication": {
-        "header": "Authorization",
-        "scheme": "Bearer",
-        "placeholder": "RELAY_API_KEY"
-      },
-      "content_type": "application/json",
-      "modes": [
-        "async"
-      ],
-      "endpoints": [
-        {
-          "method": "POST",
-          "path": "/v1/videos",
-          "description": "创建视频任务。"
-        },
-        {
-          "method": "GET",
-          "path": "/v1/videos/{task_id}",
-          "description": "查询视频任务。"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "model",
-          "description": "固定传 sd13-seedance-2.0-fast。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "prompt",
-          "description": "生成内容的描述。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "duration",
-          "role": "duration",
-          "description": "视频时长，单位秒。最小 4。最大 15。",
-          "type": "integer",
-          "minimum": 4,
-          "maximum": 15,
-          "suggestedDefault": 8,
-          "default": 8
-        },
-        {
-          "name": "aspect_ratio",
-          "description": "画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "auto",
-            "21:9",
-            "16:9",
-            "4:3",
-            "1:1",
-            "3:4",
-            "9:16"
-          ],
-          "suggestedDefault": "auto"
-        },
-        {
-          "name": "resolution",
-          "role": "resolution",
-          "description": "输出分辨率。推荐值：480p / 720p；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "480p",
-            "720p"
-          ],
-          "suggestedDefault": "480p"
-        },
-        {
-          "name": "generate_audio",
-          "description": "是否生成音频。",
-          "type": "boolean"
-        },
-        {
-          "name": "reference_image_urls",
-          "role": "referenceImage",
-          "description": "参考图 HTTPS URL 数组，最多 9 个。上传文件最多 31457280 字节（30 MiB）。",
-          "type": "array",
-          "maxItems": 9
-        },
-        {
-          "name": "reference_videos",
-          "role": "referenceVideo",
-          "description": "参考视频 HTTPS URL 数组，最多 3 个。上传文件最多 52428800 字节（50 MiB）。",
-          "type": "array",
-          "maxItems": 3
-        }
-      ],
-      "example": {
-        "model": "sd13-seedance-2.0-fast",
-        "prompt": "温暖的午后，阳光洒在窗台上。",
-        "duration": 8,
-        "resolution": "480p"
-      },
-      "billing": {
-        "unit": "次",
-        "label": "按次计费",
-        "price": 23.94,
-        "tiers": [
-          {
-            "label": "480p / 720p",
-            "price": 23.94,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 23.94,
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 8
-        }
-      },
-      "polling": {
-        "method": "GET",
-        "path": "/v1/videos/{task_id}",
-        "auth": "same original Bearer token",
-        "task_id_jsonpath": "$.id",
-        "queued": [
-          "queued"
-        ],
-        "running": [
-          "in_progress"
-        ],
-        "success": [
-          "completed"
-        ],
-        "failure": [
-          "failed"
-        ],
-        "success_requires": "terminal completed plus usable result",
-        "interval_seconds": [
-          5,
-          10
-        ],
-        "deadline_seconds": 1800,
-        "unknown": "preserve original id, stop blind retries, never create another POST"
-      },
-      "result": "video_url or data[0].url",
-      "timeouts": {
-        "request_min_seconds": 600,
-        "poll_total_seconds": 1800
-      },
-      "errors": {
-        "400": "修正字段、类型或范围，不原样重试。",
-        "401": "检查本站令牌并停止。",
-        "403": "权限拒绝；保留错误，不换组绕过。",
-        "404": "核对模型、任务编号及创建路径；不用别的路径猜测。",
-        "409": "保留原请求与任务编号，先核对冲突。",
-        "413": "请求过大，按字段限制调整。",
-        "429": "遵守 Retry-After；额度不足先处理账户。",
-        "5xx": "结果可能未知，保存原编号；禁止自动再次提交生成。"
-      },
-      "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
-      "notes": [
-        "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。",
-        "每次时长范围 4–15 秒；默认 8 秒。按次计费；时长参数不代表改为按秒计费。",
-        "适合用途｜Fast 档人物参考；原生不卡脸；4–15 秒；480p / 720p；最多 9 张参考图 / 3 段参考视频。",
-        "使用注意｜不接参考音频和首尾帧；需要高清档时选择同线路基础款。"
-      ]
-    },
-    "selected_sd13_seedance_2_0_mini": {
-      "model": "sd13-seedance-2.0-mini",
-      "family": "seedance",
-      "availability": "listed_in_current_catalog",
-      "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
-      "paid_generation_verified": false,
-      "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
-      "authentication": {
-        "header": "Authorization",
-        "scheme": "Bearer",
-        "placeholder": "RELAY_API_KEY"
-      },
-      "content_type": "application/json",
-      "modes": [
-        "async"
-      ],
-      "endpoints": [
-        {
-          "method": "POST",
-          "path": "/v1/videos",
-          "description": "创建视频任务。"
-        },
-        {
-          "method": "GET",
-          "path": "/v1/videos/{task_id}",
-          "description": "查询视频任务。"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "model",
-          "description": "固定传 sd13-seedance-2.0-mini。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "prompt",
-          "description": "生成内容的描述。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "duration",
-          "role": "duration",
-          "description": "视频时长，单位秒。最小 4。最大 15。",
-          "type": "integer",
-          "minimum": 4,
-          "maximum": 15,
-          "suggestedDefault": 8,
-          "default": 8
-        },
-        {
-          "name": "aspect_ratio",
-          "description": "画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "auto",
-            "21:9",
-            "16:9",
-            "4:3",
-            "1:1",
-            "3:4",
-            "9:16"
-          ],
-          "suggestedDefault": "auto"
-        },
-        {
-          "name": "resolution",
-          "role": "resolution",
-          "description": "输出分辨率。推荐值：480p / 720p；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "480p",
-            "720p"
-          ],
-          "suggestedDefault": "480p"
-        },
-        {
-          "name": "generate_audio",
-          "description": "是否生成音频。",
-          "type": "boolean"
-        },
-        {
-          "name": "reference_image_urls",
-          "role": "referenceImage",
-          "description": "参考图 HTTPS URL 数组，最多 9 个。上传文件最多 31457280 字节（30 MiB）。",
-          "type": "array",
-          "maxItems": 9
-        },
-        {
-          "name": "reference_videos",
-          "role": "referenceVideo",
-          "description": "参考视频 HTTPS URL 数组，最多 3 个。上传文件最多 52428800 字节（50 MiB）。",
-          "type": "array",
-          "maxItems": 3
-        }
-      ],
-      "example": {
-        "model": "sd13-seedance-2.0-mini",
-        "prompt": "温暖的午后，阳光洒在窗台上。",
-        "duration": 8,
-        "resolution": "480p"
-      },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "price": 7.177778,
-        "tiers": [
-          {
-            "label": "720p",
-            "price": 15.326667,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 15.326667,
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "price": 7.177778,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 7.177778,
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 8
-        }
-      },
-      "polling": {
-        "method": "GET",
-        "path": "/v1/videos/{task_id}",
-        "auth": "same original Bearer token",
-        "task_id_jsonpath": "$.id",
-        "queued": [
-          "queued"
-        ],
-        "running": [
-          "in_progress"
-        ],
-        "success": [
-          "completed"
-        ],
-        "failure": [
-          "failed"
-        ],
-        "success_requires": "terminal completed plus usable result",
-        "interval_seconds": [
-          5,
-          10
-        ],
-        "deadline_seconds": 1800,
-        "unknown": "preserve original id, stop blind retries, never create another POST"
-      },
-      "result": "video_url or data[0].url",
-      "timeouts": {
-        "request_min_seconds": 600,
-        "poll_total_seconds": 1800
-      },
-      "errors": {
-        "400": "修正字段、类型或范围，不原样重试。",
-        "401": "检查本站令牌并停止。",
-        "403": "权限拒绝；保留错误，不换组绕过。",
-        "404": "核对模型、任务编号及创建路径；不用别的路径猜测。",
-        "409": "保留原请求与任务编号，先核对冲突。",
-        "413": "请求过大，按字段限制调整。",
-        "429": "遵守 Retry-After；额度不足先处理账户。",
-        "5xx": "结果可能未知，保存原编号；禁止自动再次提交生成。"
-      },
-      "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
-      "notes": [
-        "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。",
-        "每次时长范围 4–15 秒；默认 8 秒。按次计费；时长参数不代表改为按秒计费。",
-        "适合用途｜Mini 档人物参考；原生不卡脸；4–15 秒；480p / 720p；最多 9 张参考图 / 3 段参考视频。",
-        "使用注意｜不接参考音频和首尾帧；需要高清档时选择同线路基础款。"
-      ]
-    },
-    "selected_sd13_seedance_2_5": {
-      "model": "sd13-seedance-2.5",
-      "family": "seedance",
-      "availability": "listed_in_current_catalog",
-      "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
-      "paid_generation_verified": false,
-      "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
-      "authentication": {
-        "header": "Authorization",
-        "scheme": "Bearer",
-        "placeholder": "RELAY_API_KEY"
-      },
-      "content_type": "application/json",
-      "modes": [
-        "async"
-      ],
-      "endpoints": [
-        {
-          "method": "POST",
-          "path": "/v1/videos",
-          "description": "创建视频任务。"
-        },
-        {
-          "method": "GET",
-          "path": "/v1/videos/{task_id}",
-          "description": "查询视频任务。"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "model",
-          "description": "固定传 sd13-seedance-2.5。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "prompt",
-          "description": "生成内容的描述。",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "duration",
-          "role": "duration",
-          "description": "视频时长，单位秒。最小 4。最大 30。",
-          "type": "integer",
-          "minimum": 4,
-          "maximum": 30,
-          "suggestedDefault": 5,
-          "default": 5
-        },
-        {
-          "name": "aspect_ratio",
-          "description": "画面比例。推荐值：auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "auto",
-            "21:9",
-            "16:9",
-            "4:3",
-            "1:1",
-            "3:4",
-            "9:16"
-          ],
-          "suggestedDefault": "auto"
-        },
-        {
-          "name": "resolution",
-          "role": "resolution",
-          "description": "输出分辨率。推荐值：480p / 720p；推荐值不代表完整允许集合。",
-          "type": "string",
-          "suggestions": [
-            "480p",
-            "720p"
-          ],
-          "suggestedDefault": "480p"
-        },
-        {
-          "name": "generate_audio",
-          "description": "是否生成音频。",
-          "type": "boolean"
-        },
-        {
-          "name": "reference_image_urls",
-          "role": "referenceImage",
-          "description": "参考图 HTTPS URL 数组，最多 30 个。上传文件最多 31457280 字节（30 MiB）。",
-          "type": "array",
-          "maxItems": 30
-        },
-        {
-          "name": "reference_videos",
-          "role": "referenceVideo",
-          "description": "参考视频 HTTPS URL 数组，最多 10 个。上传文件最多 209715200 字节（200 MiB）。",
-          "type": "array",
-          "maxItems": 10
-        }
-      ],
-      "example": {
-        "model": "sd13-seedance-2.5",
-        "prompt": "温暖的午后，阳光洒在窗台上。",
-        "duration": 5,
-        "resolution": "480p"
-      },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "price": 43.573334,
-        "tiers": [
-          {
-            "label": "720p",
-            "price": 93.48,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 93.48,
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "price": 43.573334,
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "price": 43.573334,
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 30,
-          "default": 5
-        }
-      },
-      "polling": {
-        "method": "GET",
-        "path": "/v1/videos/{task_id}",
-        "auth": "same original Bearer token",
-        "task_id_jsonpath": "$.id",
-        "queued": [
-          "queued"
-        ],
-        "running": [
-          "in_progress"
-        ],
-        "success": [
-          "completed"
-        ],
-        "failure": [
-          "failed"
-        ],
-        "success_requires": "terminal completed plus usable result",
-        "interval_seconds": [
-          5,
-          10
-        ],
-        "deadline_seconds": 1800,
-        "unknown": "preserve original id, stop blind retries, never create another POST"
-      },
-      "result": "video_url or data[0].url",
-      "timeouts": {
-        "request_min_seconds": 600,
-        "poll_total_seconds": 1800
-      },
-      "errors": {
-        "400": "修正字段、类型或范围，不原样重试。",
-        "401": "检查本站令牌并停止。",
-        "403": "权限拒绝；保留错误，不换组绕过。",
-        "404": "核对模型、任务编号及创建路径；不用别的路径猜测。",
-        "409": "保留原请求与任务编号，先核对冲突。",
-        "413": "请求过大，按字段限制调整。",
-        "429": "遵守 Retry-After；额度不足先处理账户。",
-        "5xx": "结果可能未知，保存原编号；禁止自动再次提交生成。"
-      },
-      "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
-      "notes": [
-        "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按一次任务和分辨率分档计费，不在档价上再乘 duration。只发送本型号字段；不同型号的素材与首尾帧限制不可混用。",
-        "每次时长范围 4–30 秒；默认 5 秒。按次计费；时长参数不代表改为按秒计费。",
-        "适合用途｜长片图视频参考；原生不卡脸；4–30 秒；480p / 720p；最多 30 张参考图 / 10 段参考视频。",
-        "使用注意｜不接参考音频和首尾帧。"
       ]
     },
     "selected_sd16_seedance_2_0": {
@@ -10134,6 +8444,138 @@ print(completion.choices[0].message.content)</code></pre>
         "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
         "当前只说明同步调用。异步任务查询尚未取得本站完整适配证据，请勿传 async=true。"
       ]
+    },
+    "selected_suno": {
+      "model": "suno",
+      "family": "suno",
+      "availability": "listed_in_current_catalog",
+      "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
+      "paid_generation_verified": false,
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "origin": "https://api.yuqitoken.cn",
+      "authentication": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "placeholder": "RELAY_API_KEY"
+      },
+      "content_type": "application/json",
+      "modes": [
+        "async"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/v1/music",
+          "description": "创建音乐任务。"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/music/{task_id}",
+          "description": "查询音乐任务。"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "model",
+          "description": "固定传 suno。",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "prompt",
+          "description": "歌曲描述，1–520000个Unicode字符。",
+          "required": true,
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 520000
+        },
+        {
+          "name": "lyrics",
+          "description": "歌词。与提示词分开填写。最多 520000 字符。",
+          "type": "string",
+          "maxLength": 520000
+        },
+        {
+          "name": "style_text",
+          "description": "音乐风格。与提示词和歌词分开填写。最多 520000 字符。",
+          "type": "string",
+          "maxLength": 520000
+        },
+        {
+          "name": "n",
+          "description": "生成数量。最小 1。最大 1。",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1
+        }
+      ],
+      "example": {
+        "model": "suno",
+        "prompt": "温暖、轻快的民谣歌曲",
+        "lyrics": "清晨的风，吹向远方",
+        "style_text": "轻快民谣，原声吉他",
+        "n": 1
+      },
+      "billing": {
+        "unit": "次",
+        "label": "按次生成",
+        "price": 2.111112,
+        "tiers": [],
+        "currency_label": "USD",
+        "duration_seconds": {
+          "status": "not_selectable"
+        }
+      },
+      "polling": {
+        "method": "GET",
+        "path": "/v1/music/{task_id}",
+        "auth": "same original Bearer token",
+        "task_id_jsonpath": "$.id",
+        "queued": [
+          "queued"
+        ],
+        "running": [
+          "in_progress"
+        ],
+        "success": [
+          "completed"
+        ],
+        "failure": [
+          "failed"
+        ],
+        "success_requires": "terminal completed plus usable result",
+        "interval_seconds": [
+          5,
+          10
+        ],
+        "deadline_seconds": 1800,
+        "unknown": "preserve original id, stop blind retries, never create another POST"
+      },
+      "result": "music_url[]",
+      "timeouts": {
+        "request_min_seconds": 600,
+        "poll_total_seconds": 1800
+      },
+      "errors": {
+        "400": "修正字段、类型或范围，不原样重试。",
+        "401": "检查本站令牌并停止。",
+        "403": "权限拒绝；保留错误，不换组绕过。",
+        "404": "核对模型、任务编号及创建路径；不用别的路径猜测。",
+        "409": "保留原请求与任务编号，先核对冲突。",
+        "413": "请求过大，按字段限制调整。",
+        "429": "遵守 Retry-After；额度不足先处理账户。",
+        "5xx": "结果可能未知，保存原编号；禁止自动再次提交生成。"
+      },
+      "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
+      "notes": [
+        "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
+        "prompt、lyrics、style_text 分别最多520000个Unicode字符，n只能为1。",
+        "不接受指定时长、纯器乐开关或参考音频。",
+        "一次请求可能返回多首音频；完整读取 music_url 数组，按一次生成任务计费。",
+        "不支持指定时长；实际成品秒数未公开，不承诺固定秒数。",
+        "适合用途｜用提示词、歌词和风格生成歌曲；一次请求 n=1，可能返回多段音频。",
+        "使用注意｜不支持参考音频、续写、纯器乐开关或指定时长；轮询完成前不要重复提交。"
+      ]
     }
   },
   "constraints": {
@@ -10499,19 +8941,11 @@ print(completion.choices[0].message.content)</code></pre>
       ]
     },
     "selected_happyhorse": {
-      "models": [
-        "happyhorse-1.1"
-      ],
-      "routes": [
-        "selected_happyhorse_1_1"
-      ]
+      "models": [],
+      "routes": []
     },
     "selected_seedance": {
       "models": [
-        "sd13-seedance-2.0",
-        "sd13-seedance-2.0-fast",
-        "sd13-seedance-2.0-mini",
-        "sd13-seedance-2.5",
         "sd16-seedance-2.0",
         "sd16-seedance-2.0-fast",
         "sd16-seedance-2.0-mini",
@@ -10521,10 +8955,6 @@ print(completion.choices[0].message.content)</code></pre>
         "sd17-seedance-2.5-2"
       ],
       "routes": [
-        "selected_sd13_seedance_2_0",
-        "selected_sd13_seedance_2_0_fast",
-        "selected_sd13_seedance_2_0_mini",
-        "selected_sd13_seedance_2_5",
         "selected_sd16_seedance_2_0",
         "selected_sd16_seedance_2_0_fast",
         "selected_sd16_seedance_2_0_mini",
@@ -10579,8 +9009,12 @@ print(completion.choices[0].message.content)</code></pre>
       ]
     },
     "selected_suno": {
-      "models": [],
-      "routes": []
+      "models": [
+        "suno"
+      ],
+      "routes": [
+        "selected_suno"
+      ]
     },
     "selected_wan_video": {
       "models": [],
@@ -10588,12 +9022,17 @@ print(completion.choices[0].message.content)</code></pre>
     }
   },
   "selected_models_update": {
-    "version": "2026-10-19-current-listings-g622-v2",
-    "content_sha256": "af27a31d18cb040af5d9c6e182755f0bdeb8e9b3bc9efc64ad30644da97a7794",
-    "model_count": 29,
+    "version": "2026-10-20-current-listings-g622-r4",
+    "content_sha256": "0057e2bf1409b17500d90474a87dff54ce57e96e4896ad420030408fb60ba5b9",
+    "model_count": 25,
     "families": 11,
     "withdrawn_models": [
+      "happyhorse-1.1",
       "sd10-seedance-2.5",
+      "sd13-seedance-2.0",
+      "sd13-seedance-2.0-fast",
+      "sd13-seedance-2.0-mini",
+      "sd13-seedance-2.5",
       "sd14-seedance-2.0",
       "sd17-seedance-2.5",
       "sd17-seedance-2.5-3",
@@ -10611,17 +9050,12 @@ print(completion.choices[0].message.content)</code></pre>
       "gemini-tts": "selected_gemini_tts",
       "grok-imagine-image": "selected_grok_imagine_image",
       "grok-imagine-image-2.0": "selected_grok_imagine_image_2_0",
-      "happyhorse-1.1": "selected_happyhorse_1_1",
       "lyria-3-pro": "selected_lyria_3_pro",
       "lyria-3.5": "selected_lyria_3_5",
       "midjourney-1k": "selected_midjourney_1k",
       "midjourney-2k": "selected_midjourney_2k",
       "mm3-minimax-h3-2k": "selected_mm3_minimax_h3_2k",
       "mm4-minimax-h3-2k": "selected_mm4_minimax_h3_2k",
-      "sd13-seedance-2.0": "selected_sd13_seedance_2_0",
-      "sd13-seedance-2.0-fast": "selected_sd13_seedance_2_0_fast",
-      "sd13-seedance-2.0-mini": "selected_sd13_seedance_2_0_mini",
-      "sd13-seedance-2.5": "selected_sd13_seedance_2_5",
       "sd16-seedance-2.0": "selected_sd16_seedance_2_0",
       "sd16-seedance-2.0-fast": "selected_sd16_seedance_2_0_fast",
       "sd16-seedance-2.0-mini": "selected_sd16_seedance_2_0_mini",
@@ -10629,7 +9063,8 @@ print(completion.choices[0].message.content)</code></pre>
       "sd17-seedance-2.0-2": "selected_sd17_seedance_2_0_2",
       "sd17-seedance-2.0-3": "selected_sd17_seedance_2_0_3",
       "sd17-seedance-2.5-2": "selected_sd17_seedance_2_5_2",
-      "seedream-5.0-pro-x": "selected_seedream_5_0_pro_x"
+      "seedream-5.0-pro-x": "selected_seedream_5_0_pro_x",
+      "suno": "selected_suno"
     }
   }
 }
