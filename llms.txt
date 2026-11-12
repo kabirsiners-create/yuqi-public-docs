@@ -17,11 +17,13 @@ Read the exact model ID and full compatibility rules from api-contract.json.
 
 Availability: available; action: allow_call.
 Base URL: https://api.yuqitoken.cn (do not append /v1).
-Environment variable: ANTHROPIC_API_KEY.
+Environment variables: ANTHROPIC_BASE_URL (the site Base URL above) and ANTHROPIC_API_KEY (a key from this site).
 Authentication: x-api-key: YOUR_API_KEY.
 Required headers: anthropic-version: 2023-06-01 and content-type: application/json.
 Minimum entry: POST /v1/messages with model, max_tokens, and messages.
-Exact public models: claude-fable-5, claude-opus-5, claude-opus-5-5, claude-sonnet-5.
+Exact public models: claude-fable-5, claude-fable-5-2, claude-opus-5, claude-opus-5-5, claude-sonnet-5.
+claude-fable-5-2 is available only in Max (group ID: max). Use a Max key from this site and select the model with claude --model claude-fable-5-2.
+Fable 5.2 site prices verified 2026-11-12, CNY per million tokens: input 21.3333, output 106.6667, 5-minute cache write 26.6667, cache read 0.5333.
 Unknown outcomes must not trigger an automatic second request.
 
 ## Grok text family

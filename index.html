@@ -78,7 +78,7 @@ https://api.yuqitoken.cn
       <table><thead><tr><th>场景</th><th>实际模型示例</th><th>接口</th></tr></thead><tbody>
         <tr><td>GPT 文字、代码、推理</td><td><code>gpt-5.5</code>、<code>gpt-5.6-luna</code>、<code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code>、<code>gpt-6-astra</code>、<code>gpt-6-sol</code>（当前 configuration_ready）</td><td><code>POST /v1/chat/completions</code> 或 <code>POST /v1/responses</code></td></tr>
         <tr><td>Grok 文字</td><td>按 <code>grok_text_chat</code> 家族合同选择精确模型</td><td><code>POST /v1/chat/completions</code></td></tr>
-        <tr><td>Claude Code 与 Anthropic Messages（4）</td><td><code>claude-fable-5</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code></td><td><code>POST /v1/messages</code></td></tr>
+        <tr><td>Claude Code 与 Anthropic Messages（5）</td><td><code>claude-fable-5</code>、<code>claude-fable-5-2</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code></td><td><code>POST /v1/messages</code></td></tr>
         <tr><td>Image2 同步图片（1）</td><td><code>image2</code></td><td><code>POST /v1/images/generations</code>；编辑用 <code>POST /v1/images/edits</code></td></tr>
         <tr><td>GPT Image 2（4）</td><td><code>gpt-image-2</code>、<code>gpt-image-2-1K-medium</code>、<code>gpt-image-2-2K</code>、<code>gpt-image-2-4K</code></td><td>文生图：<code>POST /v1/videos</code> 并轮询；图生图：multipart <code>POST /v1/images/edits</code></td></tr>
         <!-- gpt-image-2.5:model-row:start -->
@@ -117,14 +117,18 @@ wire_api = "responses"</code></pre>
       <p class="muted">在系统私密环境中设置 <code>RELAY_API_KEY</code>，不要把真实 Key 写进 TOML 或项目仓库。配置规则以 <a href="https://developers.openai.com/codex/config-reference/">Codex 官方配置参考</a>为准。</p>
 
       <h2 id="claude-code">Claude Code</h2>
-      <div class="callout"><b>配置合同：complete</b>四个精确模型为 <code>claude-fable-5</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code>。本文给出 Claude Code 所需的完整 Base URL、认证头、请求字段、SSE 事件和错误处理；不要求客户 AI 猜测或查第三方资料。</div>
+      <div class="callout"><b>配置合同：complete</b>五个精确模型为 <code>claude-fable-5</code>、<code>claude-fable-5-2</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code>。本文给出 Claude Code 所需的完整 Base URL、认证头、请求字段、SSE 事件和错误处理；不要求客户 AI 猜测或查第三方资料。</div>
       <p>Claude Code 使用 Anthropic Messages：Base URL 不带 <code>/v1</code>，请求为 <code>POST https://api.yuqitoken.cn/v1/messages</code>，认证头为 <code>x-api-key: YOUR_API_KEY</code>，并固定发送 <code>anthropic-version: 2023-06-01</code> 与 <code>Content-Type: application/json</code>。把真实 Key 放入 <code>ANTHROPIC_API_KEY</code> 私密环境变量，不要写入文件、日志或聊天。</p>
-      <table><thead><tr><th>模型 ID</th><th>状态</th><th>动作</th></tr></thead><tbody><tr><td><code>claude-fable-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-opus-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-opus-5-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-sonnet-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr></tbody></table>
+      <table><thead><tr><th>模型 ID</th><th>状态</th><th>动作</th></tr></thead><tbody><tr><td><code>claude-fable-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-fable-5-2</code></td><td><code>available</code></td><td>仅 Max 分组</td></tr><tr><td><code>claude-opus-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-opus-5-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr><tr><td><code>claude-sonnet-5</code></td><td><code>available</code></td><td>按最小合同验证</td></tr></tbody></table>
+      <h3>Fable 5.2：Max 分组与价格</h3>
+      <p><code>claude-fable-5-2</code> 只在 Max（<code>max</code>）分组可用。请在本站控制台选择 Max 分组的 API Key。以下是 2026-11-12 核对的本站价格，单位为人民币元 / 百万 token。</p>
+      <table><thead><tr><th>输入</th><th>输出</th><th>5 分钟缓存写入</th><th>缓存读取</th></tr></thead><tbody><tr><td>21.3333</td><td>106.6667</td><td>26.6667</td><td>0.5333</td></tr></tbody></table>
       <h3>直接配置与最小验证</h3>
       <pre><code>export ANTHROPIC_BASE_URL="https://api.yuqitoken.cn"
 export ANTHROPIC_API_KEY="YOUR_API_KEY"
 curl -fsS https://docs.yuqitoken.cn/api-contract.json
 # 将真实 Key 保存在私密环境变量；不要写入文件、日志或聊天</code></pre>
+      <p>在同一个终端设置上面的两个环境变量后，运行 <code>claude --model claude-fable-5-2</code> 可选择 Fable 5.2；示例中的 Key 必须换成本站 Max 分组的 Key。Claude Code 会自动拼接 Messages 路径。可参照 <a href="https://code.claude.com/docs/en/llm-gateway-connect">Claude Code 官方网关配置</a>。</p>
       <h3>Messages 最小请求</h3>
       <pre><code>POST https://api.yuqitoken.cn/v1/messages
 x-api-key: YOUR_API_KEY
@@ -132,7 +136,7 @@ anthropic-version: 2023-06-01
 content-type: application/json
 {"model":"EXACT_MODEL_ID","max_tokens":64,"messages":[{"role":"user","content":"..."}]}</code></pre>
       <p>必填字段是 <code>model</code>、<code>max_tokens</code>、<code>messages</code>。只发送本页 contract 明确列出的字段；收到 2xx 后按非流式响应或 SSE 终止事件判断，收到错误或未知结果则保留 request ID 并停止自动补提。</p>
-      <p class="muted">本文是客户接入配置合同，不公开供应商、渠道、价格或内部拓扑。运行时若返回 401/403/404/429/5xx，按错误表定位，不要猜新域名、模型别名或替代字段。</p>
+      <p class="muted">本文是客户接入配置合同，不公开供应商、内部渠道或内部拓扑。运行时若返回 401/403/404/429/5xx，按错误表定位，不要猜新域名、模型别名或替代字段。</p>
 
       <h2 id="grok-text">Grok 文字模型</h2>
       <p>当前精确型号为 <code>grok-4.5</code>、<code>grok-4.6</code>、<code>grok-4.7</code>，共用同一份 OpenAI 兼容 Chat 合同。Base URL 为 <code>https://api.yuqitoken.cn/v1</code>，使用 <code>Authorization: Bearer YOUR_API_KEY</code>，请求 <code>POST /v1/chat/completions</code>，JSON 必填 <code>model</code> 和 <code>messages</code>。新型号若出现在价格页，先查机器合同所属家族和状态。</p>
@@ -3084,7 +3088,8 @@ print(completion.choices[0].message.content)</code></pre>
       "base_url": "https://api.yuqitoken.cn",
       "base_url_has_v1_suffix": false,
       "env_key": "ANTHROPIC_API_KEY",
-      "wire_api": "anthropic_messages"
+      "wire_api": "anthropic_messages",
+      "env_base_url": "ANTHROPIC_BASE_URL"
     }
   },
   "claude_status": {
@@ -3094,18 +3099,27 @@ print(completion.choices[0].message.content)</code></pre>
       "claude-fable-5": "available",
       "claude-opus-5": "available",
       "claude-opus-5-5": "available",
-      "claude-sonnet-5": "available"
+      "claude-sonnet-5": "available",
+      "claude-fable-5-2": "available"
     },
     "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
     "family_id": "claude_code",
     "generated_model_set": [
       "claude-fable-5",
+      "claude-fable-5-2",
       "claude-opus-5",
       "claude-opus-5-5",
       "claude-sonnet-5"
     ],
     "runtime_availability": "available",
-    "configuration_contract": "complete"
+    "configuration_contract": "complete",
+    "model_access": {
+      "claude-fable-5-2": {
+        "group_id": "max",
+        "group_name": "Max",
+        "only_in_group": true
+      }
+    }
   },
   "gpt_image_2_routing": {
     "models": [
@@ -3523,6 +3537,7 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "models": [
         "claude-fable-5",
+        "claude-fable-5-2",
         "claude-opus-5",
         "claude-opus-5-5",
         "claude-sonnet-5"
@@ -3531,7 +3546,8 @@ print(completion.choices[0].message.content)</code></pre>
         "claude-fable-5": "available",
         "claude-opus-5": "available",
         "claude-opus-5-5": "available",
-        "claude-sonnet-5": "available"
+        "claude-sonnet-5": "available",
+        "claude-fable-5-2": "available"
       },
       "availability": "available",
       "call_action": "allow_call",
@@ -8817,13 +8833,31 @@ print(completion.choices[0].message.content)</code></pre>
     "claude_code": {
       "models": [
         "claude-fable-5",
+        "claude-fable-5-2",
         "claude-opus-5",
         "claude-opus-5-5",
         "claude-sonnet-5"
       ],
       "routes": [
         "anthropic_messages"
-      ]
+      ],
+      "model_details": {
+        "claude-fable-5-2": {
+          "name": "Fable 5.2",
+          "group_id": "max",
+          "group_name": "Max",
+          "only_in_group": true,
+          "price_unit": "CNY / 1,000,000 tokens",
+          "prices": {
+            "input": "21.3333",
+            "output": "106.6667",
+            "cache_write_5m": "26.6667",
+            "cache_read": "0.5333"
+          },
+          "pricing_source": "https://console.yuqitoken.cn/api/pricing",
+          "price_verified_on": "2026-11-12"
+        }
+      }
     },
     "image2": {
       "models": [

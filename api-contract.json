@@ -50,7 +50,8 @@
       "base_url": "https://api.yuqitoken.cn",
       "base_url_has_v1_suffix": false,
       "env_key": "ANTHROPIC_API_KEY",
-      "wire_api": "anthropic_messages"
+      "wire_api": "anthropic_messages",
+      "env_base_url": "ANTHROPIC_BASE_URL"
     }
   },
   "claude_status": {
@@ -60,18 +61,27 @@
       "claude-fable-5": "available",
       "claude-opus-5": "available",
       "claude-opus-5-5": "available",
-      "claude-sonnet-5": "available"
+      "claude-sonnet-5": "available",
+      "claude-fable-5-2": "available"
     },
     "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
     "family_id": "claude_code",
     "generated_model_set": [
       "claude-fable-5",
+      "claude-fable-5-2",
       "claude-opus-5",
       "claude-opus-5-5",
       "claude-sonnet-5"
     ],
     "runtime_availability": "available",
-    "configuration_contract": "complete"
+    "configuration_contract": "complete",
+    "model_access": {
+      "claude-fable-5-2": {
+        "group_id": "max",
+        "group_name": "Max",
+        "only_in_group": true
+      }
+    }
   },
   "gpt_image_2_routing": {
     "models": [
@@ -489,6 +499,7 @@
       ],
       "models": [
         "claude-fable-5",
+        "claude-fable-5-2",
         "claude-opus-5",
         "claude-opus-5-5",
         "claude-sonnet-5"
@@ -497,7 +508,8 @@
         "claude-fable-5": "available",
         "claude-opus-5": "available",
         "claude-opus-5-5": "available",
-        "claude-sonnet-5": "available"
+        "claude-sonnet-5": "available",
+        "claude-fable-5-2": "available"
       },
       "availability": "available",
       "call_action": "allow_call",
@@ -5783,13 +5795,31 @@
     "claude_code": {
       "models": [
         "claude-fable-5",
+        "claude-fable-5-2",
         "claude-opus-5",
         "claude-opus-5-5",
         "claude-sonnet-5"
       ],
       "routes": [
         "anthropic_messages"
-      ]
+      ],
+      "model_details": {
+        "claude-fable-5-2": {
+          "name": "Fable 5.2",
+          "group_id": "max",
+          "group_name": "Max",
+          "only_in_group": true,
+          "price_unit": "CNY / 1,000,000 tokens",
+          "prices": {
+            "input": "21.3333",
+            "output": "106.6667",
+            "cache_write_5m": "26.6667",
+            "cache_read": "0.5333"
+          },
+          "pricing_source": "https://console.yuqitoken.cn/api/pricing",
+          "price_verified_on": "2026-11-12"
+        }
+      }
     },
     "image2": {
       "models": [
