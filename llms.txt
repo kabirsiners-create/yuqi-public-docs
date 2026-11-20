@@ -201,3 +201,7 @@ Reference limits: reference_image_urls 9; reference_videos 3; reference_audios 3
 Poll GET /v1/videos/{task_id} using returned site id or task_id and original token.
 completed: video_url; failed: error.message and check refund. Unknown submission outcome: query original task only; never resubmit automatically.
 Default customer group CNY per million output tokens: reference_videos nonempty 17.07; otherwise 28.71. Apply respective group rate for other customer groups. Submit estimated preauthorization; success reconciles actual output tokens; failure refunds preauthorization. Site bill is authoritative. Client GET does not guarantee usage.completion_tokens. Real first-order billing reconciliation pending; no paid generation performed in this documentation check.
+
+## GPT Luna retirement (2026-11-20)
+
+gpt-5.6-luna and gpt-6-luna: retired; new orders prohibited. Do not choose either model for new integrations or requests. Historical records retained; other active model prices unchanged.

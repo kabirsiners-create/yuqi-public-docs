@@ -281,7 +281,6 @@
       "call_action": "configure_and_validate",
       "models": [
         "gpt-5.5",
-        "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
         "gpt-6-astra",
@@ -289,11 +288,12 @@
       ],
       "model_status": {
         "gpt-5.5": "documented",
-        "gpt-5.6-luna": "documented",
+        "gpt-5.6-luna": "retired_no_new_orders",
         "gpt-5.6-sol": "documented",
         "gpt-5.6-terra": "documented",
         "gpt-6-astra": "documented",
-        "gpt-6-sol": "documented"
+        "gpt-6-sol": "documented",
+        "gpt-6-luna": "retired_no_new_orders"
       },
       "field_status": "documented_minimum_contract",
       "defaults": "no unpublished default may be guessed",
@@ -385,7 +385,6 @@
       "call_action": "configure_and_validate",
       "models": [
         "gpt-5.5",
-        "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
         "gpt-6-astra",
@@ -393,11 +392,12 @@
       ],
       "model_status": {
         "gpt-5.5": "documented",
-        "gpt-5.6-luna": "documented",
+        "gpt-5.6-luna": "retired_no_new_orders",
         "gpt-5.6-sol": "documented",
         "gpt-5.6-terra": "documented",
         "gpt-6-astra": "documented",
-        "gpt-6-sol": "documented"
+        "gpt-6-sol": "documented",
+        "gpt-6-luna": "retired_no_new_orders"
       },
       "field_status": "documented_minimum_contract",
       "defaults": "no unpublished default may be guessed",
@@ -5722,24 +5722,33 @@
     "status_action": "configure_and_validate",
     "model_status": {
       "gpt-5.5": "documented",
-      "gpt-5.6-luna": "documented",
+      "gpt-5.6-luna": "retired_no_new_orders",
       "gpt-5.6-sol": "documented",
       "gpt-5.6-terra": "documented",
       "gpt-6-astra": "documented",
-      "gpt-6-sol": "documented"
+      "gpt-6-sol": "documented",
+      "gpt-6-luna": "retired_no_new_orders"
     },
     "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
     "family_id": "gpt_text",
     "candidate_model_set": [
       "gpt-5.5",
-      "gpt-5.6-luna",
       "gpt-5.6-sol",
       "gpt-5.6-terra",
       "gpt-6-astra",
       "gpt-6-sol"
     ],
     "runtime_availability": "not_claimed",
-    "configuration_contract": "complete"
+    "configuration_contract": "complete",
+    "retirement": {
+      "effective_date": "2026-11-20",
+      "models": [
+        "gpt-5.6-luna",
+        "gpt-6-luna"
+      ],
+      "new_orders_allowed": false,
+      "historical_records_retained": true
+    }
   },
   "grok_text_status": {
     "family_id": "grok_text",
@@ -5925,7 +5934,6 @@
     "gpt_text": {
       "models": [
         "gpt-5.5",
-        "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
         "gpt-6-astra",

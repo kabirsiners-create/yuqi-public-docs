@@ -77,7 +77,7 @@ https://api.yuqitoken.cn
       <h2 id="models">模型与接口</h2>
       <p>模型名必须与本页 machine contract 完全一致，大小写、下划线和连字符不可改写。模型广场只用于查看客户价格；模型是否可调用只能以本页 contract 的 <code>availability</code> 与 <code>call_action</code> 为准。</p>
       <table><thead><tr><th>场景</th><th>实际模型示例</th><th>接口</th></tr></thead><tbody>
-        <tr><td>GPT 文字、代码、推理</td><td><code>gpt-5.5</code>、<code>gpt-5.6-luna</code>、<code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code>、<code>gpt-6-astra</code>、<code>gpt-6-sol</code>（当前 configuration_ready）</td><td><code>POST /v1/chat/completions</code> 或 <code>POST /v1/responses</code></td></tr>
+        <tr><td>GPT 文字、代码、推理</td><td><code>gpt-5.5</code>、<code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code>、<code>gpt-6-astra</code>、<code>gpt-6-sol</code>（当前 configuration_ready）</td><td><code>POST /v1/chat/completions</code> 或 <code>POST /v1/responses</code></td></tr>
         <tr><td>Grok 文字</td><td>按 <code>grok_text_chat</code> 家族合同选择精确模型</td><td><code>POST /v1/chat/completions</code></td></tr>
         <tr><td>Claude Code 与 Anthropic Messages（5）</td><td><code>claude-fable-5</code>、<code>claude-fable-5-2</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code></td><td><code>POST /v1/messages</code></td></tr>
         <tr><td>Image2 同步图片（1）</td><td><code>image2</code></td><td><code>POST /v1/images/generations</code>；编辑用 <code>POST /v1/images/edits</code></td></tr>
@@ -93,6 +93,8 @@ https://api.yuqitoken.cn
       <div class="callout"><b>异步任务统一规则</b>提交成功必须保存响应中的顶层 <code>id</code>；只查询 <code>GET /v1/videos/{task_id}</code> 的原任务。<code>queued</code> 配合 <code>progress=0</code> 是正常排队状态，<code>progress</code> 只用于展示，不能单独判定成功或失败；以终态和结果 URL 为准：终态为 <code>completed</code> 且存在结果 URL 即成功，即使进度仍为 0 也不要重复提交。图片首次等待 5 秒，之后每 5–10 秒查询；视频首次等待 5 秒，之后每 10 秒查询。客户端安全上限：图片 30 分钟、视频 45 分钟；达到上限、状态未知或网络超时，保留 <code>task_id</code>、<code>request_id</code>、HTTP 状态和原始错误，停止自动动作，稍后继续查询原任务。遇到 429 时遵循 <code>Retry-After</code> 并加入随机抖动；除 Qwen 明确支持的同键重放外，不得自动重试或补提第二单。</div>
       <p class="muted"><strong>提交响应与重试安全：</strong>所有异步提交均应收到 JSON 对象并从顶层 <code>id</code> 取得任务 ID；没有 <code>id</code> 的 2xx、网络超时、503/504 或 429 都属于结果未知，不得猜 <code>data.id</code>、不得换端点或自动重提。保存响应头中的 <code>Request-Id</code>/<code>X-Request-ID</code>（若存在）以及完整脱敏错误 JSON。只有千问合同支持用同一个 <code>Idempotency-Key</code> 重放完全相同的请求；Nano、GPT Image 2 文生图和可灵没有公开幂等重放合同，未知结果只能查询原任务或人工核对。</p>
 
+      <h2 id="gpt-luna-retired">GPT Luna 停售说明</h2>
+      <p>自 2026-11-20 起，<code>gpt-5.6-luna</code> 和 <code>gpt-6-luna</code> 已停止新单。两款均不可作为新接入的可选型号，不要继续用它们创建请求。历史记录保留。本次不调整其他在售型号的价格。</p>
       <h2 id="chat">GPT 文字模型：Chat Completions 与 Responses</h2>
       <div class="callout"><b>一条 URL + 一个 Key</b>先把站点 Base URL 配成 <code>https://api.yuqitoken.cn/v1</code>，再在私密环境变量中放入用户 API Key。这里是 OpenAI 兼容入口；精确模型 ID 和完整机器合同见 <a href="https://docs.yuqitoken.cn/api-contract.json"><code>api-contract.json</code></a>。</div>
       <p>认证头固定为 <code>Authorization: Bearer YOUR_API_KEY</code>。模型名必须原样读取机器合同，不要自行猜别名。</p>
@@ -3346,7 +3348,6 @@ print(completion.choices[0].message.content)</code></pre>
       "call_action": "configure_and_validate",
       "models": [
         "gpt-5.5",
-        "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
         "gpt-6-astra",
@@ -3354,11 +3355,12 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "model_status": {
         "gpt-5.5": "documented",
-        "gpt-5.6-luna": "documented",
+        "gpt-5.6-luna": "retired_no_new_orders",
         "gpt-5.6-sol": "documented",
         "gpt-5.6-terra": "documented",
         "gpt-6-astra": "documented",
-        "gpt-6-sol": "documented"
+        "gpt-6-sol": "documented",
+        "gpt-6-luna": "retired_no_new_orders"
       },
       "field_status": "documented_minimum_contract",
       "defaults": "no unpublished default may be guessed",
@@ -3450,7 +3452,6 @@ print(completion.choices[0].message.content)</code></pre>
       "call_action": "configure_and_validate",
       "models": [
         "gpt-5.5",
-        "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
         "gpt-6-astra",
@@ -3458,11 +3459,12 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "model_status": {
         "gpt-5.5": "documented",
-        "gpt-5.6-luna": "documented",
+        "gpt-5.6-luna": "retired_no_new_orders",
         "gpt-5.6-sol": "documented",
         "gpt-5.6-terra": "documented",
         "gpt-6-astra": "documented",
-        "gpt-6-sol": "documented"
+        "gpt-6-sol": "documented",
+        "gpt-6-luna": "retired_no_new_orders"
       },
       "field_status": "documented_minimum_contract",
       "defaults": "no unpublished default may be guessed",
@@ -8787,24 +8789,33 @@ print(completion.choices[0].message.content)</code></pre>
     "status_action": "configure_and_validate",
     "model_status": {
       "gpt-5.5": "documented",
-      "gpt-5.6-luna": "documented",
+      "gpt-5.6-luna": "retired_no_new_orders",
       "gpt-5.6-sol": "documented",
       "gpt-5.6-terra": "documented",
       "gpt-6-astra": "documented",
-      "gpt-6-sol": "documented"
+      "gpt-6-sol": "documented",
+      "gpt-6-luna": "retired_no_new_orders"
     },
     "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
     "family_id": "gpt_text",
     "candidate_model_set": [
       "gpt-5.5",
-      "gpt-5.6-luna",
       "gpt-5.6-sol",
       "gpt-5.6-terra",
       "gpt-6-astra",
       "gpt-6-sol"
     ],
     "runtime_availability": "not_claimed",
-    "configuration_contract": "complete"
+    "configuration_contract": "complete",
+    "retirement": {
+      "effective_date": "2026-11-20",
+      "models": [
+        "gpt-5.6-luna",
+        "gpt-6-luna"
+      ],
+      "new_orders_allowed": false,
+      "historical_records_retained": true
+    }
   },
   "grok_text_status": {
     "family_id": "grok_text",
@@ -8990,7 +9001,6 @@ print(completion.choices[0].message.content)</code></pre>
     "gpt_text": {
       "models": [
         "gpt-5.5",
-        "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
         "gpt-6-astra",
