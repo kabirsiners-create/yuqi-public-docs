@@ -45,7 +45,8 @@
   </div>
   <header><div class="bar"><a class="brand" href="https://yuqitoken.cn/"><img src="./favicon-tab-fish.png?v=docs-yukilin-20260914-r2" alt="鱼鳍鳞 AI 中转服务" />鱼鳍鳞 AI 中转服务</a><nav><a href="https://console.yuqitoken.cn/pricing">模型广场</a><a href="#quickstart">快速开始</a><a href="#images">图像</a><a class="button" href="https://console.yuqitoken.cn/sign-in">登录控制台</a></nav></div></header>
   <div class="layout">
-    <aside><strong>开发者文档</strong><a href="#ai-entry">直接发给 AI</a><a href="#quickstart">快速开始</a><a href="#models">全部模型与接口</a><a href="#chat">文字、代码与 Codex</a><a href="#claude-code">Claude Code</a><a href="#images">Image2 与 GPT Image 2</a><a href="#qwen-image">千问图像 3.0</a><a href="#nano">Nano Banana 异步生图</a><a href="#video">可灵视频</a><a href="#sdk">SDK 与客户端</a><a href="#troubleshooting">排查与安全</a></aside>
+    <aside><strong>开发者文档</strong><a href="#ai-entry">直接发给 AI</a><a href="#quickstart">快速开始</a><a href="#models">全部模型与接口</a><a href="#chat">文字、代码与 Codex</a><a href="#claude-code">Claude Code</a>
+        <a href="#seedance-fast-260128">Seedance 2.0 Fast</a><a href="#images">Image2 与 GPT Image 2</a><a href="#qwen-image">千问图像 3.0</a><a href="#nano">Nano Banana 异步生图</a><a href="#video">可灵视频</a><a href="#sdk">SDK 与客户端</a><a href="#troubleshooting">排查与安全</a></aside>
     <main>
       <section class="ai-entry" id="ai-entry">
         <div class="ai-entry-kicker">最简单的接入方式</div>
@@ -115,6 +116,32 @@ base_url = "https://api.yuqitoken.cn/v1"
 env_key = "RELAY_API_KEY"
 wire_api = "responses"</code></pre>
       <p class="muted">在系统私密环境中设置 <code>RELAY_API_KEY</code>，不要把真实 Key 写进 TOML 或项目仓库。配置规则以 <a href="https://developers.openai.com/codex/config-reference/">Codex 官方配置参考</a>为准。</p>
+
+      
+      <h2 id="seedance-fast-260128">Seedance 2.0 Fast</h2>
+      <p>精确模型名：<code>doubao-seedance-2-0-fast-260128</code>。支持 480p、720p 和 4–15 秒。本型号已在本站公开目录启用。使用本站令牌，认证头为 <code>Authorization: Bearer RELAY_API_KEY</code>，创建请求为 <code>Content-Type: application/json</code>。</p>
+      <h3>创建视频任务</h3>
+      <pre><code>POST https://api.yuqitoken.cn/v1/videos
+Authorization: Bearer RELAY_API_KEY
+Content-Type: application/json
+
+{
+  &quot;model&quot;: &quot;doubao-seedance-2-0-fast-260128&quot;,
+  &quot;prompt&quot;: &quot;阳光照在窗台上&quot;,
+  &quot;duration&quot;: 4,
+  &quot;resolution&quot;: &quot;480p&quot;
+}</code></pre>
+      <p><code>duration</code> 必填，为 4–15 的整数；<code>resolution</code> 可为 <code>480p</code> 或 <code>720p</code>，省略时为 720p。<code>aspect_ratio</code> 支持 16:9、9:16、1:1、21:9、4:3 和 3:4。</p>
+      <p>参考素材可用 <code>reference_image_urls</code>（最多 9 个）、<code>reference_videos</code>（最多 3 个）和 <code>reference_audios</code>（最多 3 个）。参考音频需同时提供参考图或参考视频。<code>first_image_url</code> 和 <code>last_image_url</code> 成对提供，且与参考素材分开使用。素材接受 HTTPS 或有效的 <code>asset://</code> 地址。</p>
+      <h3>查询原任务与读取结果</h3>
+      <p>保存创建返回的本站 <code>id</code> 或 <code>task_id</code>，使用原令牌轮询：</p>
+      <pre><code>GET https://api.yuqitoken.cn/v1/videos/{task_id}
+Authorization: Bearer RELAY_API_KEY</code></pre>
+      <p>状态为 <code>completed</code> 时读取 <code>video_url</code>；状态为 <code>failed</code> 时读取 <code>error.message</code> 并核对退款。提交结果未知时只查询原任务，不重复提交。400 请核对字段；401 或 403 请核对本站令牌、模型范围和余额。</p>
+      <h3>参考视频两档与计费</h3>
+      <table><thead><tr><th>条件</th><th>默认客户组人民币参考价 / 百万输出 Token</th></tr></thead><tbody><tr><td>reference_videos 非空</td><td>¥17.07</td></tr><tr><td>无参考视频</td><td>¥28.71</td></tr></tbody></table>
+      <p>2026-11-20 核对。仅 <code>reference_videos</code> 非空时使用有参考视频档，参考图片或音频本身不触发此档。其他客户组按各自费率折算。提交时按公式估算预扣，成功后按实际输出 Token 用量补扣或退回差额，失败全额退回预扣。最终实扣以本站账单为准，客户 GET 回包不保证含 <code>usage.completion_tokens</code>。</p>
+      <p class="muted">本轮完成公开目录与免费合同核验；未发起收费生成，真实首单实扣待对账。</p>
 
       <h2 id="claude-code">Claude Code</h2>
       <div class="callout"><b>配置合同：complete</b>五个精确模型为 <code>claude-fable-5</code>、<code>claude-fable-5-2</code>、<code>claude-opus-5</code>、<code>claude-opus-5-5</code>、<code>claude-sonnet-5</code>。本文给出 Claude Code 所需的完整 Base URL、认证头、请求字段、SSE 事件和错误处理；不要求客户 AI 猜测或查第三方资料。</div>
@@ -8592,6 +8619,160 @@ print(completion.choices[0].message.content)</code></pre>
         "适合用途｜用提示词、歌词和风格生成歌曲；一次请求 n=1，可能返回多段音频。",
         "使用注意｜不支持参考音频、续写、纯器乐开关或指定时长；轮询完成前不要重复提交。"
       ]
+    },
+    "seedance_2_0_fast_260128": {
+      "model": "doubao-seedance-2-0-fast-260128",
+      "family": "seedance",
+      "availability": "listed_in_current_catalog",
+      "validation": "owner_contract_and_public_catalog",
+      "paid_generation_verified": false,
+      "origin": "https://api.yuqitoken.cn",
+      "base_url": "https://api.yuqitoken.cn/v1",
+      "authentication": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "placeholder": "RELAY_API_KEY"
+      },
+      "content_type": "application/json",
+      "modes": [
+        "async"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/v1/videos",
+          "description": "创建视频任务。"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/videos/{task_id}",
+          "description": "使用原令牌查询本站原任务。"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "model",
+          "type": "string",
+          "required": true,
+          "const": "doubao-seedance-2-0-fast-260128"
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "duration",
+          "type": "integer",
+          "required": true,
+          "minimum": 4,
+          "maximum": 15
+        },
+        {
+          "name": "resolution",
+          "type": "string",
+          "enum": [
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        {
+          "name": "aspect_ratio",
+          "type": "string",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1",
+            "21:9",
+            "4:3",
+            "3:4"
+          ]
+        },
+        {
+          "name": "reference_image_urls",
+          "type": "array",
+          "maxItems": 9
+        },
+        {
+          "name": "reference_videos",
+          "type": "array",
+          "maxItems": 3
+        },
+        {
+          "name": "reference_audios",
+          "type": "array",
+          "maxItems": 3,
+          "requires": "reference_image_urls or reference_videos nonempty"
+        },
+        {
+          "name": "first_image_url",
+          "type": "string",
+          "requires": "last_image_url",
+          "exclusive_with": [
+            "reference_image_urls",
+            "reference_videos",
+            "reference_audios"
+          ]
+        },
+        {
+          "name": "last_image_url",
+          "type": "string",
+          "requires": "first_image_url",
+          "exclusive_with": [
+            "reference_image_urls",
+            "reference_videos",
+            "reference_audios"
+          ]
+        }
+      ],
+      "reference_url_schemes": [
+        "https",
+        "asset"
+      ],
+      "minimum_request": {
+        "model": "doubao-seedance-2-0-fast-260128",
+        "prompt": "阳光照在窗台上",
+        "duration": 4,
+        "resolution": "480p"
+      },
+      "polling": {
+        "method": "GET",
+        "path": "/v1/videos/{task_id}",
+        "task_id_fields": [
+          "id",
+          "task_id"
+        ],
+        "success_state": "completed",
+        "failure_state": "failed",
+        "result_field": "video_url",
+        "error_field": "error.message",
+        "use_original_token": true
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "per_million_output_tokens",
+        "customer_group": "default",
+        "with_reference_video": "17.07",
+        "without_reference_video": "28.71",
+        "reference_tier_condition": "reference_videos is nonempty",
+        "verified_on": "2026-11-20",
+        "other_groups": "apply_customer_group_rate",
+        "bill_is_authoritative": true
+      },
+      "billing": {
+        "submission": "estimated_preauthorization",
+        "success": "adjust_to_actual_completion_tokens",
+        "failure": "refund_preauthorization",
+        "client_get_usage_completion_tokens_guaranteed": false,
+        "real_first_order_reconciliation": "pending"
+      },
+      "unknown_outcome_action": "query_original_task_only_do_not_resubmit",
+      "errors": {
+        "400": "核对字段",
+        "401/403": "核对本站令牌、模型范围和余额",
+        "failed": "读取 error.message 并核对退款"
+      }
     }
   },
   "constraints": {
@@ -8986,7 +9167,8 @@ print(completion.choices[0].message.content)</code></pre>
         "sd17-seedance-2.0",
         "sd17-seedance-2.0-2",
         "sd17-seedance-2.0-3",
-        "sd17-seedance-2.5-2"
+        "sd17-seedance-2.5-2",
+        "doubao-seedance-2-0-fast-260128"
       ],
       "routes": [
         "selected_sd16_seedance_2_0",
@@ -8995,7 +9177,8 @@ print(completion.choices[0].message.content)</code></pre>
         "selected_sd17_seedance_2_0",
         "selected_sd17_seedance_2_0_2",
         "selected_sd17_seedance_2_0_3",
-        "selected_sd17_seedance_2_5_2"
+        "selected_sd17_seedance_2_5_2",
+        "seedance_2_0_fast_260128"
       ]
     },
     "selected_gemini_text": {

@@ -189,3 +189,15 @@ Fixed parameter rules:
 - seedream-5.0-pro-x: 张; POST /v1/images/generations, POST /v1/images/edits; api-contract.json routes.selected_seedream_5_0_pro_x
 - suno: 次; POST /v1/music, GET /v1/music/{task_id}; api-contract.json routes.selected_suno
 Full prices, parameters and results: https://docs.yuqitoken.cn/#selected-models-20261017. Unknown generation results never auto-resubmit.
+
+## Seedance 2.0 Fast (doubao-seedance-2-0-fast-260128)
+
+Documentation: https://docs.yuqitoken.cn/#seedance-fast-260128
+Origin: https://api.yuqitoken.cn
+Authentication: Authorization: Bearer RELAY_API_KEY; create Content-Type: application/json.
+POST /v1/videos: {"model": "doubao-seedance-2-0-fast-260128", "prompt": "阳光照在窗台上", "duration": 4, "resolution": "480p"}
+duration: required integer 4–15; resolution: 480p or 720p (default); aspect_ratio: 16:9, 9:16, 1:1, 21:9, 4:3, 3:4.
+Reference limits: reference_image_urls 9; reference_videos 3; reference_audios 3. Audio requires reference image or video. first_image_url and last_image_url must be paired and cannot be combined with reference materials. URLs: HTTPS or valid asset://.
+Poll GET /v1/videos/{task_id} using returned site id or task_id and original token.
+completed: video_url; failed: error.message and check refund. Unknown submission outcome: query original task only; never resubmit automatically.
+Default customer group CNY per million output tokens: reference_videos nonempty 17.07; otherwise 28.71. Apply respective group rate for other customer groups. Submit estimated preauthorization; success reconciles actual output tokens; failure refunds preauthorization. Site bill is authoritative. Client GET does not guarantee usage.completion_tokens. Real first-order billing reconciliation pending; no paid generation performed in this documentation check.
