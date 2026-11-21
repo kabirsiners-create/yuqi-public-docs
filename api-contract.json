@@ -5757,11 +5757,11 @@
         {
           "name": "resolution",
           "enum": [
-            "780P",
+            "768P",
             "2K"
           ],
-          "default": "780P",
-          "note": "生产回读确认客户价格档；上游参数原始目录可能显示 768P，以生产回读为准。"
+          "default": "768P",
+          "note": "公开参数档为 768P 或 2K。"
         },
         {
           "name": "aspect_ratio",
@@ -5833,13 +5833,12 @@
         "billing_mode": "tiered_expr",
         "condition": "has(param(\"resolution\"), \"2K\") || has(param(\"resolution\"), \"2k\")",
         "tiers": {
-          "780P": "6.0167",
+          "768P": "6.0167",
           "2K": "9.1833"
         },
         "currency": "CNY",
         "unit": "per_video",
-        "verified_on": "2026-11-20",
-        "enterprise_R_note": null
+        "verified_on": "2026-11-20"
       },
       "availability_note": "已开通；免费鉴权通过；真实生成待首单回读",
       "unknown_outcome_action": "query_original_task_only_do_not_resubmit"
