@@ -5712,9 +5712,7 @@
     "selected_mm5_minimax_h3": {
       "model": "mm5-minimax-h3",
       "family": "minimax_video",
-      "availability": "listed_in_current_catalog",
-      "validation": "free_authentication_verified_public_production_readback",
-      "paid_generation_verified": false,
+      "availability": "paused_no_new_orders",
       "base_url": "https://api.yuqitoken.cn/v1",
       "origin": "https://api.yuqitoken.cn",
       "authentication": {
@@ -5830,17 +5828,14 @@
         "use_original_token": true
       },
       "pricing": {
-        "billing_mode": "tiered_expr",
-        "condition": "has(param(\"resolution\"), \"2K\") || has(param(\"resolution\"), \"2k\")",
         "tiers": {
           "768P": "6.0167",
           "2K": "9.1833"
         },
         "currency": "CNY",
-        "unit": "per_video",
-        "verified_on": "2026-11-20"
+        "unit": "per_video"
       },
-      "availability_note": "已开通；免费鉴权通过；真实生成待首单回读",
+      "availability_note": "暂不接收新任务。恢复时间以本站模型目录为准。",
       "unknown_outcome_action": "query_original_task_only_do_not_resubmit"
     }
   },
