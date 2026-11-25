@@ -1643,11 +1643,21 @@
         "failure": "failed task refund contract passed simulation; actual customer billing is authoritative",
         "validation": "dual-site simulated response and refund replay; real first order pending",
         "pricing": {
-          "unit": "site_balance_per_output_second",
+          "unit": "usd_per_output_second",
           "customer_group": "default",
-          "kling-4.0_720p": "4.884445",
-          "kling-4.0_1080p": "7.311112",
-          "kling-4.0-flash_720p": "2.924445"
+          "five_second_cny_note": "普通充值口径，仅供参考，实际扣费以本站账单为准",
+          "kling-4.0_720p": {
+            "usd_per_second": "4.884445",
+            "five_second_cny": "12.21"
+          },
+          "kling-4.0_1080p": {
+            "usd_per_second": "7.311112",
+            "five_second_cny": "18.28"
+          },
+          "kling-4.0-flash_720p": {
+            "usd_per_second": "2.924445",
+            "five_second_cny": "7.31"
+          }
         }
       }
     },
