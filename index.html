@@ -352,7 +352,7 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
       <p>保存本站返回的任务编号，用原站令牌查询 <code>GET https://api.yuqitoken.cn/v1/videos/{task_id}</code>，下载 <code>GET https://api.yuqitoken.cn/v1/videos/{task_id}/content</code>。提交结果不明时保留任务号并查询原任务，不重复提交。</p>
       <h3>默认组价格</h3>
       <p>按输出秒计费；以下 5 秒合计按普通充值口径估算，实际扣费以本站账单为准。</p>
-<table><thead><tr><th>型号与分辨率</th><th>每秒价格</th><th>默认 5 秒人民币合计</th></tr></thead><tbody><tr><td>普通版 720p</td><td>$4.884445/秒</td><td>¥12.21</td></tr><tr><td>普通版 1080p</td><td>$7.311112/秒</td><td>¥18.28</td></tr><tr><td>Flash 720p</td><td>$2.924445/秒</td><td>¥7.31</td></tr></tbody></table>
+<table><thead><tr><th>型号与分辨率</th><th>每秒价格</th><th>默认 5 秒人民币合计</th></tr></thead><tbody><tr><td>普通版 720p</td><td>$3.14/秒</td><td>¥7.85</td></tr><tr><td>普通版 1080p</td><td>$4.70/秒</td><td>¥11.75</td></tr><tr><td>Flash 720p</td><td>$1.88/秒</td><td>¥4.70</td></tr></tbody></table>
       <p>响应与失败退款已完成模拟回放；真实首单仍待核对。</p>
       <h2 id="video">可灵视频与动作迁移</h2>
       <div class="callout"><b>可灵不是 Chat 模型</b>可灵提供 3 条能力链、4 个精确公开模型 ID，全部使用异步视频任务：<code>POST /v1/videos</code> 提交，再用 <code>GET /v1/videos/{task_id}</code> 轮询。通用 OpenAI Chat 客户端若只会调用 <code>/v1/chat/completions</code> 或 <code>/v1/responses</code>，不能直接调用可灵。</div>
@@ -4737,16 +4737,16 @@ print(completion.choices[0].message.content)</code></pre>
           "customer_group": "default",
           "five_second_cny_note": "普通充值口径，仅供参考，实际扣费以本站账单为准",
           "kling-4.0_720p": {
-            "usd_per_second": "4.884445",
-            "five_second_cny": "12.21"
+            "usd_per_second": "3.14",
+            "five_second_cny": "7.85"
           },
           "kling-4.0_1080p": {
-            "usd_per_second": "7.311112",
-            "five_second_cny": "18.28"
+            "usd_per_second": "4.70",
+            "five_second_cny": "11.75"
           },
           "kling-4.0-flash_720p": {
-            "usd_per_second": "2.924445",
-            "five_second_cny": "7.31"
+            "usd_per_second": "1.88",
+            "five_second_cny": "4.70"
           }
         }
       }

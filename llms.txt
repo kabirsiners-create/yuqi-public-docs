@@ -219,5 +219,5 @@ References: image/video/audio max 9/3/3, total max 12; audio-only unsupported; f
 Models: kling-4.0 (720p default or 1080p, 3–30 seconds) and kling-4.0-flash (720p, 3–20 seconds).
 POST /v1/videos with JSON model, prompt, resolution and duration or seconds. Default duration 5 seconds; both duration fields must agree when supplied.
 Video input and Flash 1080p return HTTP 400. Poll GET /v1/videos/{task_id}; download GET /v1/videos/{task_id}/content using the original site token.
-Default group pricing per output second: 普通版 720p: $4.884445/second, 5 seconds approximately CNY 12.21; 普通版 1080p: $7.311112/second, 5 seconds approximately CNY 18.28; Flash 720p: $2.924445/second, 5 seconds approximately CNY 7.31. CNY examples use the ordinary recharge rate; actual charge follows the site's billing record.
+Default group pricing per output second: 普通版 720p: $3.14/second, 5 seconds approximately CNY 7.85; 普通版 1080p: $4.70/second, 5 seconds approximately CNY 11.75; Flash 720p: $1.88/second, 5 seconds approximately CNY 4.70. CNY examples use the ordinary recharge rate; actual charge follows the site's billing record.
 Response and failure refund simulated; real first order pending verification.

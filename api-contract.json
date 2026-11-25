@@ -1647,16 +1647,16 @@
           "customer_group": "default",
           "five_second_cny_note": "普通充值口径，仅供参考，实际扣费以本站账单为准",
           "kling-4.0_720p": {
-            "usd_per_second": "4.884445",
-            "five_second_cny": "12.21"
+            "usd_per_second": "3.14",
+            "five_second_cny": "7.85"
           },
           "kling-4.0_1080p": {
-            "usd_per_second": "7.311112",
-            "five_second_cny": "18.28"
+            "usd_per_second": "4.70",
+            "five_second_cny": "11.75"
           },
           "kling-4.0-flash_720p": {
-            "usd_per_second": "2.924445",
-            "five_second_cny": "7.31"
+            "usd_per_second": "1.88",
+            "five_second_cny": "4.70"
           }
         }
       }
