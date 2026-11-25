@@ -343,7 +343,17 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
        <h3>价格档</h3>
        <table><thead><tr><th>分辨率</th><th>默认客户参考价</th></tr></thead><tbody><tr><td>768P</td><td>¥6.0167 / 条</td></tr><tr><td>2K</td><td>¥9.1833 / 条</td></tr></tbody></table>
        <p>按条计费，价格由分辨率档位决定。4–15 秒是请求时长，不参与计费。表中为暂停前的公开参考价。</p>
-<h2 id="video">可灵视频与动作迁移</h2>
+<h2 id="kling-4">可灵 4</h2>
+      <p>使用本站令牌；请求头 <code>Authorization: Bearer RELAY_API_KEY</code>，JSON 请求发送至 <code>POST https://api.yuqitoken.cn/v1/videos</code>。</p>
+      <pre><code>{&quot;model&quot;: &quot;kling-4.0&quot;, &quot;prompt&quot;: &quot;阳光照在窗台上&quot;, &quot;resolution&quot;: &quot;720p&quot;, &quot;duration&quot;: 5}</code></pre>
+      <p><code>kling-4.0</code> 支持 720p（默认）和 1080p，时长 3–30 秒；<code>kling-4.0-flash</code> 支持 720p，时长 3–20 秒。时长默认 5 秒；可用 <code>duration</code> 或 <code>seconds</code>，同时填写时必须一致。</p>
+      <p>当前仅开放不带视频输入的请求。带视频输入或 Flash 使用 1080p 会返回 HTTP 400。</p>
+      <h3>查询和下载</h3>
+      <p>保存本站返回的任务编号，用原站令牌查询 <code>GET https://api.yuqitoken.cn/v1/videos/{task_id}</code>，下载 <code>GET https://api.yuqitoken.cn/v1/videos/{task_id}/content</code>。提交结果不明时保留任务号并查询原任务，不重复提交。</p>
+      <h3>默认组价格</h3>
+      <p>按输出秒计费，单位为本站余额 / 秒：普通版 720p 4.884445，普通版 1080p 7.311112，Flash 720p 2.924445。实际扣费以本站账单为准。</p>
+      <p>响应与失败退款已完成模拟回放；真实首单仍待核对。</p>
+      <h2 id="video">可灵视频与动作迁移</h2>
       <div class="callout"><b>可灵不是 Chat 模型</b>可灵提供 3 条能力链、4 个精确公开模型 ID，全部使用异步视频任务：<code>POST /v1/videos</code> 提交，再用 <code>GET /v1/videos/{task_id}</code> 轮询。通用 OpenAI Chat 客户端若只会调用 <code>/v1/chat/completions</code> 或 <code>/v1/responses</code>，不能直接调用可灵。</div>
       <p><b>先按目标选择精确模型：</b>可灵 2.6 使用 <code>kling-v2-6</code>；可灵 3.0 Turbo 的 720P 与 1080P 是两个独立模型，分别使用 <code>kling-3.0-turbo</code> 与 <code>kling-3.0-turbo-1080p</code>；动作迁移使用独立的 <code>kling-motion-control</code>。不要用 <code>resolution</code> 参数切换 3.0 分辨率。</p>
       <table><thead><tr><th>模型 ID</th><th>规格</th><th>价格</th><th>公开请求</th></tr></thead><tbody>
@@ -4468,7 +4478,9 @@ print(completion.choices[0].message.content)</code></pre>
           "models": [
             "kling-v2-6",
             "kling-3.0-turbo",
-            "kling-3.0-turbo-1080p"
+            "kling-3.0-turbo-1080p",
+            "kling-4.0",
+            "kling-4.0-flash"
           ],
           "supported": true
         },
@@ -4662,8 +4674,71 @@ print(completion.choices[0].message.content)</code></pre>
         "kling-v2-6",
         "kling-3.0-turbo",
         "kling-3.0-turbo-1080p",
-        "kling-motion-control"
-      ]
+        "kling-motion-control",
+        "kling-4.0",
+        "kling-4.0-flash"
+      ],
+      "kling_4_contract": {
+        "models": {
+          "kling-4.0": {
+            "resolutions": [
+              "720p",
+              "1080p"
+            ],
+            "default_resolution": "720p"
+          },
+          "kling-4.0-flash": {
+            "resolutions": [
+              "720p"
+            ],
+            "unsupported_resolutions": [
+              "1080p"
+            ]
+          }
+        },
+        "duration": {
+          "fields": [
+            "duration",
+            "seconds"
+          ],
+          "minimum_seconds": 3,
+          "max_seconds": {
+            "kling-4.0": 30,
+            "kling-4.0-flash": 20
+          },
+          "default_seconds": 5,
+          "both_fields_must_match": true
+        },
+        "video_input": {
+          "supported": false,
+          "rejected_http_status": 400
+        },
+        "unsupported_flash_1080p_status": 400,
+        "submit": {
+          "method": "POST",
+          "path": "/v1/videos",
+          "format": "application/json"
+        },
+        "poll": {
+          "method": "GET",
+          "path": "/v1/videos/{task_id}",
+          "auth": "same site token"
+        },
+        "download": {
+          "method": "GET",
+          "path": "/v1/videos/{task_id}/content",
+          "auth": "same site token"
+        },
+        "failure": "failed task refund contract passed simulation; actual customer billing is authoritative",
+        "validation": "dual-site simulated response and refund replay; real first order pending",
+        "pricing": {
+          "unit": "site_balance_per_output_second",
+          "customer_group": "default",
+          "kling-4.0_720p": "4.884445",
+          "kling-4.0_1080p": "7.311112",
+          "kling-4.0-flash_720p": "2.924445"
+        }
+      }
     },
     "grok_text_chat": {
       "family_id": "grok_text",
