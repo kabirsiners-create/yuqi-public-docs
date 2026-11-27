@@ -371,6 +371,10 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
   &quot;size&quot;: &quot;1:1&quot;,
   &quot;resolution&quot;: &quot;2k&quot;
 }</code></pre><h3>MIMO 语音</h3><p><code>mimo-v2.5-asr</code> 和 <code>mimo-v2.5-tts</code> 使用 <code>POST /v1/chat/completions</code>，不使用 <code>/v1/audio/*</code>。ASR 传 <code>input_audio</code> 转写；TTS 需要 assistant 角色并返回音频。</p>
+<h2 id="current-image-video-models">图片与视频型号</h2><h3>图片</h3><p><code>flux-3-image-1.5k</code>、<code>flux-3-image-1k</code>、<code>flux-3-image-2k</code>、<code>flux-3-image-4k</code>、<code>flux-3-image-768sq</code>、<code>flux-3-klein-1k</code>、<code>flux-3-klein-2k</code>、<code>flux-3-klein-4k</code>、<code>gpt-image-2.6</code>、<code>gpt-image-2.6-flare</code>、<code>gpt-image-2.6-flare-1k</code>、<code>gpt-image-2.6-flare-2k</code>、<code>gpt-image-2.6-flare-4k</code>、<code>gpt-image-2.6-sunburst</code>、<code>gpt-image-2.6-sunburst-1k</code>、<code>gpt-image-2.6-sunburst-2k</code>、<code>gpt-image-2.6-sunburst-4k</code>、<code>gpt-image-2.6-x</code></p><p>向 <code>POST /v1/images/generations</code> 发送 JSON，填写 <code>model</code> 与 <code>prompt</code>。固定档型号以型号名选档；其他字段请参照对应型号说明。</p><pre><code>{
+  &quot;model&quot;: &quot;flux-3-image-1.5k&quot;,
+  &quot;prompt&quot;: &quot;一只纸鹤&quot;
+}</code></pre><h3>Wan 视频</h3><p><code>wan3.0-video-1080p</code>、<code>wan3.0-video-480p</code>、<code>wan3.0-video-720p</code></p><p>向 <code>POST /v1/videos</code> 发送 <code>model</code>、<code>prompt</code> 和整数 <code>duration</code>（2–30 秒）；型号名固定分辨率。保存返回的 <code>id</code>，使用同一站令牌 <code>GET /v1/videos/{task_id}</code> 查询。</p>
 <h2 id="video">可灵视频与动作迁移</h2>
       <div class="callout"><b>可灵不是 Chat 模型</b>可灵提供 3 条能力链、4 个精确公开模型 ID，全部使用异步视频任务：<code>POST /v1/videos</code> 提交，再用 <code>GET /v1/videos/{task_id}</code> 轮询。通用 OpenAI Chat 客户端若只会调用 <code>/v1/chat/completions</code> 或 <code>/v1/responses</code>，不能直接调用可灵。</div>
       <p><b>先按目标选择精确模型：</b>可灵 2.6 使用 <code>kling-v2-6</code>；可灵 3.0 Turbo 的 720P 与 1080P 是两个独立模型，分别使用 <code>kling-3.0-turbo</code> 与 <code>kling-3.0-turbo-1080p</code>；动作迁移使用独立的 <code>kling-motion-control</code>。不要用 <code>resolution</code> 参数切换 3.0 分辨率。</p>
@@ -8079,6 +8083,58 @@ print(completion.choices[0].message.content)</code></pre>
         "note": "不使用 /v1/audio/*"
       },
       "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "coverage_20261127": {
+      "image": {
+        "method": "POST",
+        "path": "/v1/images/generations",
+        "models": [
+          "flux-3-image-1.5k",
+          "flux-3-image-1k",
+          "flux-3-image-2k",
+          "flux-3-image-4k",
+          "flux-3-image-768sq",
+          "flux-3-klein-1k",
+          "flux-3-klein-2k",
+          "flux-3-klein-4k",
+          "gpt-image-2.6",
+          "gpt-image-2.6-flare",
+          "gpt-image-2.6-flare-1k",
+          "gpt-image-2.6-flare-2k",
+          "gpt-image-2.6-flare-4k",
+          "gpt-image-2.6-sunburst",
+          "gpt-image-2.6-sunburst-1k",
+          "gpt-image-2.6-sunburst-2k",
+          "gpt-image-2.6-sunburst-4k",
+          "gpt-image-2.6-x"
+        ],
+        "request_fields": [
+          "model",
+          "prompt"
+        ],
+        "notes": "固定档型号以型号名选档；其他可选字段请以对应型号合同为准"
+      },
+      "wan": {
+        "method": "POST",
+        "path": "/v1/videos",
+        "poll": "GET /v1/videos/{task_id}",
+        "models": [
+          "wan3.0-video-1080p",
+          "wan3.0-video-480p",
+          "wan3.0-video-720p"
+        ],
+        "request_fields": [
+          "model",
+          "prompt",
+          "duration"
+        ],
+        "duration_seconds": {
+          "min": 2,
+          "max": 30,
+          "type": "integer"
+        },
+        "notes": "型号名固定分辨率"
+      }
     }
   },
   "constraints": {

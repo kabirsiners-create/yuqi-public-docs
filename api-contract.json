@@ -5445,6 +5445,58 @@
         "note": "不使用 /v1/audio/*"
       },
       "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "coverage_20261127": {
+      "image": {
+        "method": "POST",
+        "path": "/v1/images/generations",
+        "models": [
+          "flux-3-image-1.5k",
+          "flux-3-image-1k",
+          "flux-3-image-2k",
+          "flux-3-image-4k",
+          "flux-3-image-768sq",
+          "flux-3-klein-1k",
+          "flux-3-klein-2k",
+          "flux-3-klein-4k",
+          "gpt-image-2.6",
+          "gpt-image-2.6-flare",
+          "gpt-image-2.6-flare-1k",
+          "gpt-image-2.6-flare-2k",
+          "gpt-image-2.6-flare-4k",
+          "gpt-image-2.6-sunburst",
+          "gpt-image-2.6-sunburst-1k",
+          "gpt-image-2.6-sunburst-2k",
+          "gpt-image-2.6-sunburst-4k",
+          "gpt-image-2.6-x"
+        ],
+        "request_fields": [
+          "model",
+          "prompt"
+        ],
+        "notes": "固定档型号以型号名选档；其他可选字段请以对应型号合同为准"
+      },
+      "wan": {
+        "method": "POST",
+        "path": "/v1/videos",
+        "poll": "GET /v1/videos/{task_id}",
+        "models": [
+          "wan3.0-video-1080p",
+          "wan3.0-video-480p",
+          "wan3.0-video-720p"
+        ],
+        "request_fields": [
+          "model",
+          "prompt",
+          "duration"
+        ],
+        "duration_seconds": {
+          "min": 2,
+          "max": 30,
+          "type": "integer"
+        },
+        "notes": "型号名固定分辨率"
+      }
     }
   },
   "constraints": {
