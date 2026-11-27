@@ -58,7 +58,6 @@ https://docs.yuqitoken.cn
 https://api.yuqitoken.cn/v1
 仅 GPT Image 2 multipart 同步图生图 POST /v1/images/edits 使用这个 Base URL：
 https://direct-api.yuqitoken.cn/v1
-该同步图生图请求的客户端 timeout 必须至少 600 秒；524、网络超时或结果未知时不得自动重提，必须保留 X-Image2-Trace-Id、error.task_id 与 Request-ID/X-Request-ID，并只查询原任务。
 Claude Code / Anthropic Messages 只使用这个不带 /v1 的 Base URL：
 https://api.yuqitoken.cn
 按文档为对应客户端配置认证、精确模型名和同步/异步接口，并检查所有实际 API 请求域名都属于 yuqitoken.cn。</code></pre>
@@ -142,7 +141,7 @@ Authorization: Bearer RELAY_API_KEY</code></pre>
       <p>状态为 <code>completed</code> 时读取 <code>video_url</code>；状态为 <code>failed</code> 时读取 <code>error.message</code> 并核对退款。提交结果未知时只查询原任务，不重复提交。400 请核对字段；401 或 403 请核对本站令牌、模型范围和余额。</p>
       <h3>参考视频两档与计费</h3>
       <table><thead><tr><th>条件</th></tr></thead><tbody><tr><td>reference_videos 非空</td></tr><tr><td>无参考视频</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-      <p>2026-11-20 核对。仅 <code>reference_videos</code> 非空时使用有参考视频档，参考图片或音频本身不触发此档。其他客户组按各自费率折算。提交时按公式估算预扣，成功后按实际输出 Token 用量补扣或退回差额，失败全额退回预扣。最终实扣以本站账单为准，客户 GET 回包不保证含 <code>usage.completion_tokens</code>。</p>
+      
       <p class="muted">本轮完成公开目录与免费合同核验；未发起收费生成，真实首单实扣待对账。</p>
 
       <h2 id="claude-code">Claude Code</h2>
@@ -164,7 +163,7 @@ anthropic-version: 2023-06-01
 content-type: application/json
 {"model":"EXACT_MODEL_ID","max_tokens":64,"messages":[{"role":"user","content":"..."}]}</code></pre>
       <p>必填字段是 <code>model</code>、<code>max_tokens</code>、<code>messages</code>。只发送本页 contract 明确列出的字段；收到 2xx 后按非流式响应或 SSE 终止事件判断，收到错误或未知结果则保留 request ID 并停止自动补提。</p>
-      <p class="muted">本文是客户接入配置合同，不公开供应商、内部渠道或内部拓扑。运行时若返回 401/403/404/429/5xx，按错误表定位，不要猜新域名、模型别名或替代字段。</p>
+      
 
       <h2 id="grok-text">Grok 文字模型</h2>
       <p>当前精确型号为 <code>grok-4.5</code>、<code>grok-4.6</code>、<code>grok-4.7</code>，共用同一份 OpenAI 兼容 Chat 合同。Base URL 为 <code>https://api.yuqitoken.cn/v1</code>，使用 <code>Authorization: Bearer YOUR_API_KEY</code>，请求 <code>POST /v1/chat/completions</code>，JSON 必填 <code>model</code> 和 <code>messages</code>。新型号若出现在价格页，先查机器合同所属家族和状态。</p>
@@ -180,7 +179,7 @@ content-type: application/json
       <p class="muted"><strong>当前不可执行：</strong><code>image2</code> 为 <code>fail_closed/do_not_call</code>。客户端只保留既有配置，不发送请求、不改成相似模型，也不从价格页推断可用性。</p>
       <h3>GPT Image 2 四款：文生图与图生图</h3>
       <p><strong>逐模型状态：</strong><code>gpt-image-2</code>: <code>available/allow_call</code>；<code>gpt-image-2-1K-medium</code>: <code>available/allow_call</code>；<code>gpt-image-2-2K</code>: <code>available/allow_call</code>；<code>gpt-image-2-4K</code>: <code>available/allow_call</code></p><p>以下 4 个精确、区分大小写的 GPT Image 2 模型名分别独立生效。文生图走默认异步任务入口；上传参考图编辑固定走同步兼容的 multipart <code>POST /v1/images/edits</code>，并使用专用 Base URL <code>https://direct-api.yuqitoken.cn/v1</code>。客户端请求超时必须设置为至少 <code>600</code> 秒。这个地址仍然进入本站中转、使用同一 API Key 和计费，只是为长同步请求使用不同公网入口；不要把图生图请求发到 <code>/v1/videos</code>，也不要把文生图发到 <code>/v1/images/generations</code>。</p>
-      <p><strong>图生图结果未知时：</strong>HTTP 524、网络超时、503/504 或其它结果未知都不能作为自动重提依据。保存响应头 <code>X-Image2-Trace-Id</code>、错误体 <code>error.task_id</code>、<code>Request-ID</code>/<code>X-Request-ID</code>、HTTP 状态与脱敏错误 JSON；存在原任务 ID 时，只使用默认 API 入口 <code>https://api.yuqitoken.cn/v1</code> 的 <code>GET /v1/videos/{task_id}</code> 查询这个原任务。只有确认原任务没有创建上游任务、没有产生结果后才能人工重新提交。</p>
+      
       <pre><button class="copy">复制图生图</button><code>curl --max-time 600 https://direct-api.yuqitoken.cn/v1/images/edits \
   -H "Authorization: Bearer $API_KEY" \
   -F "model=gpt-image-2-1K-medium" \
@@ -299,10 +298,10 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
   }'</code></pre>
       <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
   -H "Authorization: Bearer $API_KEY"</code></pre>
-      <p>当 <code>status=completed</code> 且顶层存在 <code>url</code> 或 <code>image_url</code> 时读取成品地址；<code>queued</code>、<code>processing</code> 时继续查询。<code>progress</code> 只作展示，<code>queued + progress=0</code> 正常；<code>failed</code> 时读取 <code>error</code> 并停止。若返回 <code>submission_outcome_unknown</code>，从同一响应的 <code>task_id</code> 或 <code>error.task_id</code> 取原任务 ID；没有原任务 ID 时也必须停单并保留 <code>request_id</code>，不得猜 ID 或补单。</p>
+      
       <p class="muted">标准版只传本站已验证的 <code>size</code>（<code>1024x1024</code>、<code>2048x2048</code>）或省略使用默认值；不要猜测未列出的比例或尺寸。Pro 1K 固定 <code>1024x1024</code>，Pro 2K 固定 <code>2048x2048</code>；任何跨档尺寸都会被拒绝。</p>
       <p class="muted">图生图只接受顶层 <code>images</code> 数组；<code>image</code>、<code>image_url</code>、<code>input_image</code>、<code>reference_image_url</code> 与消息内容中的嵌套图片字段会被拒绝。Data URI 会校验真实文件签名、声明 MIME、像素数与体积；公网 HTTPS URL 由图像生成服务校验。允许字段为 <code>model</code>、<code>prompt</code>、<code>images</code>、<code>n</code>、<code>size</code>/<code>resolution</code>、<code>aspect_ratio</code>/<code>aspectRatio</code>、<code>prompt_extend</code>、<code>watermark</code>、<code>negative_prompt</code>、<code>prompt_extend_mode</code>、<code>seed</code>、<code>idempotency_key</code>；其中 <code>n</code> 固定为 <code>1</code>，需要多张结果时提交多个独立任务。客户优先使用请求头 <code>Idempotency-Key</code>；请求体同名字段是兼容写法，两处同时发送时必须一致。</p>
-      <p class="muted">每个新的逻辑任务必须生成新的 8–128 位 <code>Idempotency-Key</code>；只有重试完全相同的请求体时才复用原键。客户端和 AI 不得把示例键固化为全局常量。同键同请求返回原任务，同键不同请求返回 409。收到 429 时按 <code>Retry-After</code> 等待；若响应包含 <code>submission_outcome_unknown</code>，从响应中的 <code>task_id</code> 或 <code>error.task_id</code> 继续轮询原任务；没有任务 ID 时停单并保留 <code>request_id</code>，不要猜 ID 或自动补单。</p>
+      
 
       <h2 id="nano">Nano Banana 异步图片生成</h2>
       <div class="callout"><b>Nano Banana 可直接调用</b>使用异步任务接口提交图片生成请求，再查询同一个任务直到完成。文生图和图生图都使用 <code>POST /v1/videos</code>；提交响应顶层的 <code>id</code> 是任务 ID。</div>
@@ -384,7 +383,7 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
         <tr><td>可灵 3.0 Turbo 1080P 文生视频</td><td><code>kling-3.0-turbo-1080p</code></td><td><code>model</code>、<code>prompt</code>、<code>seconds</code></td></tr>
         <tr><td>人物动作迁移</td><td><code>kling-motion-control</code></td><td><code>model</code>、<code>image_url</code>、<code>video_url</code>、<code>character_orientation</code>、<code>mode</code>、<code>seconds</code>，可选 <code>keep_original_sound</code></td></tr>
       </tbody></table>
-      <p>三种文生视频模型的客户字段固定为 <code>model</code>、<code>prompt</code>、<code>seconds</code>；示例使用 5 秒，按秒计费。不要发送上游字段 <code>duration</code>、<code>resolution</code>，也不要提交供应商名称或内部渠道编号。</p>
+      
       <h3><code>kling-v2-6</code></h3>
       <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/videos" \
   -H "Authorization: Bearer $API_KEY" \
@@ -489,14 +488,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-doubao-seedream-5-0-flash"><code>doubao-seedream-5-0-flash</code></h3>
 <p>接口：<code>POST /v1/images/generations; POST /v1/images/edits</code>；模式：sync；计费单位：<strong>张</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;张&quot;,
-  &quot;label&quot;: &quot;按张计费&quot;,
-  &quot;price&quot;: 0.295556,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 doubao-seedream-5-0-flash。&quot;,
@@ -556,14 +548,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-doubao-seedream-5-0-pro"><code>doubao-seedream-5-0-pro</code></h3>
 <p>接口：<code>POST /v1/images/generations; POST /v1/images/edits</code>；模式：sync；计费单位：<strong>张</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;张&quot;,
-  &quot;label&quot;: &quot;按张计费&quot;,
-  &quot;price&quot;: 0.418,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 doubao-seedream-5-0-pro。&quot;,
@@ -632,30 +617,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-gemini-3.8-flash"><code>gemini-3.8-flash</code></h3>
 <p>接口：<code>POST /v1/chat/completions</code>；模式：sync, stream；计费单位：<strong>Token</strong>。</p>
 <table><thead><tr><th>计费项</th></tr></thead><tbody><tr><td>输入</td></tr><tr><td>输出</td></tr><tr><td>缓存输入</td></tr><tr><td>创建缓存</td></tr><tr><td>音频输入</td></tr><tr><td>音频输出</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;Token&quot;,
-  &quot;label&quot;: &quot;输入、输出、缓存分别按Token计费&quot;,
-  &quot;price&quot;: null,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;public_price_factors&quot;: {
-    &quot;model_ratio&quot;: &quot;0.665&quot;,
-    &quot;completion_ratio&quot;: &quot;5&quot;,
-    &quot;cache_ratio&quot;: &quot;0.1&quot;,
-    &quot;create_cache_ratio&quot;: &quot;1&quot;,
-    &quot;audio_ratio&quot;: &quot;1&quot;,
-    &quot;audio_completion_ratio&quot;: &quot;1&quot;
-  },
-  &quot;per_1M_token_components&quot;: {
-    &quot;input&quot;: &quot;1.330&quot;,
-    &quot;output&quot;: &quot;6.650&quot;,
-    &quot;cached_input&quot;: &quot;0.1330&quot;,
-    &quot;cache_creation&quot;: &quot;1.330&quot;,
-    &quot;audio_input&quot;: &quot;1.330&quot;,
-    &quot;audio_output&quot;: &quot;1.330&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;请求使用本页公共名。&quot;,
@@ -699,30 +661,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-gemini-3.8-flash-high"><code>gemini-3.8-flash-high</code></h3>
 <p>接口：<code>POST /v1/chat/completions</code>；模式：sync, stream；计费单位：<strong>Token</strong>。</p>
 <table><thead><tr><th>计费项</th></tr></thead><tbody><tr><td>输入</td></tr><tr><td>输出</td></tr><tr><td>缓存输入</td></tr><tr><td>创建缓存</td></tr><tr><td>音频输入</td></tr><tr><td>音频输出</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;Token&quot;,
-  &quot;label&quot;: &quot;输入、输出、缓存分别按Token计费&quot;,
-  &quot;price&quot;: null,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;public_price_factors&quot;: {
-    &quot;model_ratio&quot;: &quot;0.665&quot;,
-    &quot;completion_ratio&quot;: &quot;5&quot;,
-    &quot;cache_ratio&quot;: &quot;0.1&quot;,
-    &quot;create_cache_ratio&quot;: &quot;1&quot;,
-    &quot;audio_ratio&quot;: &quot;1&quot;,
-    &quot;audio_completion_ratio&quot;: &quot;1&quot;
-  },
-  &quot;per_1M_token_components&quot;: {
-    &quot;input&quot;: &quot;1.330&quot;,
-    &quot;output&quot;: &quot;6.650&quot;,
-    &quot;cached_input&quot;: &quot;0.1330&quot;,
-    &quot;cache_creation&quot;: &quot;1.330&quot;,
-    &quot;audio_input&quot;: &quot;1.330&quot;,
-    &quot;audio_output&quot;: &quot;1.330&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;请求使用本页公共名。&quot;,
@@ -766,30 +705,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-gemini-4-argon"><code>gemini-4-argon</code></h3>
 <p>接口：<code>POST /v1/chat/completions</code>；模式：sync, stream；计费单位：<strong>Token</strong>。</p>
 <table><thead><tr><th>计费项</th></tr></thead><tbody><tr><td>输入</td></tr><tr><td>输出</td></tr><tr><td>缓存输入</td></tr><tr><td>创建缓存</td></tr><tr><td>音频输入</td></tr><tr><td>音频输出</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;Token&quot;,
-  &quot;label&quot;: &quot;输入、输出、缓存分别按Token计费&quot;,
-  &quot;price&quot;: null,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;public_price_factors&quot;: {
-    &quot;model_ratio&quot;: &quot;1.773334&quot;,
-    &quot;completion_ratio&quot;: &quot;5&quot;,
-    &quot;cache_ratio&quot;: &quot;0.5&quot;,
-    &quot;create_cache_ratio&quot;: &quot;1&quot;,
-    &quot;audio_ratio&quot;: &quot;1&quot;,
-    &quot;audio_completion_ratio&quot;: &quot;1&quot;
-  },
-  &quot;per_1M_token_components&quot;: {
-    &quot;input&quot;: &quot;3.546668&quot;,
-    &quot;output&quot;: &quot;17.733340&quot;,
-    &quot;cached_input&quot;: &quot;1.7733340&quot;,
-    &quot;cache_creation&quot;: &quot;3.546668&quot;,
-    &quot;audio_input&quot;: &quot;3.546668&quot;,
-    &quot;audio_output&quot;: &quot;3.546668&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;请求使用本页公共名。&quot;,
@@ -833,30 +749,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-gemini-4-argon-high"><code>gemini-4-argon-high</code></h3>
 <p>接口：<code>POST /v1/chat/completions</code>；模式：sync, stream；计费单位：<strong>Token</strong>。</p>
 <table><thead><tr><th>计费项</th></tr></thead><tbody><tr><td>输入</td></tr><tr><td>输出</td></tr><tr><td>缓存输入</td></tr><tr><td>创建缓存</td></tr><tr><td>音频输入</td></tr><tr><td>音频输出</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;Token&quot;,
-  &quot;label&quot;: &quot;输入、输出、缓存分别按Token计费&quot;,
-  &quot;price&quot;: null,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;public_price_factors&quot;: {
-    &quot;model_ratio&quot;: &quot;1.773334&quot;,
-    &quot;completion_ratio&quot;: &quot;5&quot;,
-    &quot;cache_ratio&quot;: &quot;0.5&quot;,
-    &quot;create_cache_ratio&quot;: &quot;1&quot;,
-    &quot;audio_ratio&quot;: &quot;1&quot;,
-    &quot;audio_completion_ratio&quot;: &quot;1&quot;
-  },
-  &quot;per_1M_token_components&quot;: {
-    &quot;input&quot;: &quot;3.546668&quot;,
-    &quot;output&quot;: &quot;17.733340&quot;,
-    &quot;cached_input&quot;: &quot;1.7733340&quot;,
-    &quot;cache_creation&quot;: &quot;3.546668&quot;,
-    &quot;audio_input&quot;: &quot;3.546668&quot;,
-    &quot;audio_output&quot;: &quot;3.546668&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;请求使用本页公共名。&quot;,
@@ -900,14 +793,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-gemini-stt"><code>gemini-stt</code></h3>
 <p>接口：<code>POST /v1/audio/transcriptions</code>；模式：sync；计费单位：<strong>分钟</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;分钟&quot;,
-  &quot;label&quot;: &quot;按分钟计费&quot;,
-  &quot;price&quot;: 0.050666668,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;请求使用本页公共名。&quot;,
@@ -939,7 +825,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 }
 </td></tr>
 </tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按音频分钟计费；同步 multipart 文件上传，不轮询。细分时长取整与最终扣额以实际账单为准。</li><li>有效上游usage优先；缺少有效usage时按本服务分钟或Unicode字符计量回退；不把单位价当成一次调用价。</li></ul>
+<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按音频分钟计费；同步 multipart 文件上传，不轮询。细分时长取整与最终扣额以实际账单为准。</li></ul>
 <pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/audio/transcriptions \
   -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
   -F &quot;model=gemini-stt&quot; \
@@ -948,14 +834,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-gemini-tts"><code>gemini-tts</code></h3>
 <p>接口：<code>POST /v1/audio/speech</code>；模式：sync；计费单位：<strong>千字符</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;千字符&quot;,
-  &quot;label&quot;: &quot;按千字符计费&quot;,
-  &quot;price&quot;: 0.126666668,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 gemini-tts。&quot;,
@@ -1004,7 +883,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 }
 </td></tr>
 </tbody></table>
-<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按千字符计费，不按输出音频时长；同步返回音频二进制，不轮询。字符取整与最终扣额以实际账单为准。</li><li>有效上游usage优先；缺少有效usage时按本服务分钟或Unicode字符计量回退；不把单位价当成一次调用价。</li></ul>
+<ul><li>仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。</li><li>按千字符计费，不按输出音频时长；同步返回音频二进制，不轮询。字符取整与最终扣额以实际账单为准。</li></ul>
 <pre><button class="copy">复制</button><code>curl --max-time 600 https://api.yuqitoken.cn/v1/audio/speech \
   -H &quot;Authorization: Bearer $RELAY_API_KEY&quot; \
   -H &quot;Content-Type: application/json&quot; \
@@ -1013,14 +892,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-grok-imagine-image"><code>grok-imagine-image</code></h3>
 <p>接口：<code>POST /v1/images/generations; POST /v1/images/edits</code>；模式：sync；计费单位：<strong>张</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;张&quot;,
-  &quot;label&quot;: &quot;按张计费&quot;,
-  &quot;price&quot;: 0.164668,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 grok-imagine-image。&quot;,
@@ -1092,14 +964,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-grok-imagine-image-2.0"><code>grok-imagine-image-2.0</code></h3>
 <p>接口：<code>POST /v1/images/generations; POST /v1/images/edits</code>；模式：sync；计费单位：<strong>张</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;张&quot;,
-  &quot;label&quot;: &quot;按张计费&quot;,
-  &quot;price&quot;: 0.253334,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 grok-imagine-image-2.0。&quot;,
@@ -1165,21 +1030,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-lyria-3-pro"><code>lyria-3-pro</code></h3>
 <p>接口：<code>POST /v1/music; GET /v1/music/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 1.055556,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 5,
-    &quot;maximum&quot;: 300,
-    &quot;semantics&quot;: &quot;request_hint&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 lyria-3-pro。&quot;,
@@ -1285,21 +1136,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-lyria-3.5"><code>lyria-3.5</code></h3>
 <p>接口：<code>POST /v1/music; GET /v1/music/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 1.055556,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 5,
-    &quot;maximum&quot;: 300,
-    &quot;semantics&quot;: &quot;request_hint&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 lyria-3.5。&quot;,
@@ -1405,39 +1242,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-midjourney-1k"><code>midjourney-1k</code></h3>
 <p>接口：<code>POST /v1/images/generations; GET /v1/images/generations/{task_id}; POST /v1/images/edits; GET /v1/images/edits/{task_id}</code>；模式：sync, async；计费单位：<strong>次</strong>。</p>
 <table><thead><tr><th>计费档</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>relax</td><td>按所选参数与该档单价计费</td></tr><tr><td>fast</td><td>按所选参数与该档单价计费</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·速度分档&quot;,
-  &quot;price&quot;: 1.224446,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;relax&quot;,
-      &quot;price&quot;: 1.224446,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 1.224446,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;fast&quot;,
-      &quot;price&quot;: 1.646668,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 1.646668,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 midjourney-1k。&quot;,
@@ -1579,39 +1384,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-midjourney-2k"><code>midjourney-2k</code></h3>
 <p>接口：<code>POST /v1/images/generations; GET /v1/images/generations/{task_id}; POST /v1/images/edits; GET /v1/images/edits/{task_id}</code>；模式：sync, async；计费单位：<strong>次</strong>。</p>
 <table><thead><tr><th>计费档</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>relax</td><td>按所选参数与该档单价计费</td></tr><tr><td>fast</td><td>按所选参数与该档单价计费</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·速度分档&quot;,
-  &quot;price&quot;: 1.646668,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;relax&quot;,
-      &quot;price&quot;: 1.646668,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 1.646668,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;fast&quot;,
-      &quot;price&quot;: 2.06889,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 2.06889,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 midjourney-2k。&quot;,
@@ -1753,21 +1526,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-mm3-minimax-h3-2k"><code>mm3-minimax-h3-2k</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 12.244446,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 15,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 15
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 mm3-minimax-h3-2k。&quot;,
@@ -1866,21 +1625,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-mm4-minimax-h3-2k"><code>mm4-minimax-h3-2k</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 8.022224,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 5,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 mm4-minimax-h3-2k。&quot;,
@@ -1982,70 +1727,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd16-seedance-2.0"><code>sd16-seedance-2.0</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <table><thead><tr><th>计费档</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>4k</td><td>按所选参数与该档单价计费</td></tr><tr><td>1080p</td><td>按所选参数与该档单价计费</td></tr><tr><td>720p</td><td>按所选参数与该档单价计费</td></tr><tr><td>480p</td><td>按所选参数与该档单价计费</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 20.266667,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;4k&quot;,
-      &quot;price&quot;: 122.444445,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 122.444445,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;1080p&quot;,
-      &quot;price&quot;: 44.333334,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 44.333334,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;720p&quot;,
-      &quot;price&quot;: 28.288889,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 28.288889,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;480p&quot;,
-      &quot;price&quot;: 20.266667,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 20.266667,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd16-seedance-2.0。&quot;,
@@ -2167,46 +1849,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd16-seedance-2.0-fast"><code>sd16-seedance-2.0-fast</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <table><thead><tr><th>计费档</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>720p</td><td>按所选参数与该档单价计费</td></tr><tr><td>480p</td><td>按所选参数与该档单价计费</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 16.466667,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;720p&quot;,
-      &quot;price&quot;: 22.8,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 22.8,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;480p&quot;,
-      &quot;price&quot;: 16.466667,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 16.466667,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd16-seedance-2.0-fast。&quot;,
@@ -2326,46 +1969,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd16-seedance-2.0-mini"><code>sd16-seedance-2.0-mini</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <table><thead><tr><th>计费档</th><th>默认时长与合计</th></tr></thead><tbody><tr><td>720p</td><td>按所选参数与该档单价计费</td></tr><tr><td>480p</td><td>按所选参数与该档单价计费</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次·清晰度分档&quot;,
-  &quot;price&quot;: 12.244445,
-  &quot;tiers&quot;: [
-    {
-      &quot;label&quot;: &quot;720p&quot;,
-      &quot;price&quot;: 17.733334,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 17.733334,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    },
-    {
-      &quot;label&quot;: &quot;480p&quot;,
-      &quot;price&quot;: 12.244445,
-      &quot;unit&quot;: &quot;次&quot;,
-      &quot;entries&quot;: [
-        {
-          &quot;label&quot;: &quot;生成&quot;,
-          &quot;price&quot;: 12.244445,
-          &quot;unit&quot;: &quot;次&quot;
-        }
-      ]
-    }
-  ],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 4,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd16-seedance-2.0-mini。&quot;,
@@ -2485,21 +2089,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd17-seedance-2.0"><code>sd17-seedance-2.0</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 15.833334,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 5,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd17-seedance-2.0。&quot;,
@@ -2594,21 +2184,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd17-seedance-2.0-2"><code>sd17-seedance-2.0-2</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 19,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 5,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd17-seedance-2.0-2。&quot;,
@@ -2703,26 +2279,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd17-seedance-2.0-3"><code>sd17-seedance-2.0-3</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 12.244445,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 5,
-    &quot;maximum&quot;: 15,
-    &quot;default&quot;: 5,
-    &quot;listed_options&quot;: [
-      5,
-      10,
-      15
-    ]
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd17-seedance-2.0-3。&quot;,
@@ -2810,21 +2367,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-sd17-seedance-2.5-2"><code>sd17-seedance-2.5-2</code></h3>
 <p>接口：<code>POST /v1/videos; GET /v1/videos/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 31.666667,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;published&quot;,
-    &quot;unit&quot;: &quot;秒&quot;,
-    &quot;minimum&quot;: 10,
-    &quot;maximum&quot;: 30,
-    &quot;default&quot;: 10
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 sd17-seedance-2.5-2。&quot;,
@@ -2926,14 +2469,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-seedream-5.0-pro-x"><code>seedream-5.0-pro-x</code></h3>
 <p>接口：<code>POST /v1/images/generations; POST /v1/images/edits</code>；模式：sync；计费单位：<strong>张</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;张&quot;,
-  &quot;label&quot;: &quot;按张计费&quot;,
-  &quot;price&quot;: 0.802224,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 seedream-5.0-pro-x。&quot;,
@@ -2993,17 +2529,7 @@ curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
 <h3 id="selected-suno"><code>suno</code></h3>
 <p>接口：<code>POST /v1/music; GET /v1/music/{task_id}</code>；模式：async；计费单位：<strong>次</strong>。</p>
 <p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
-<pre><code>{
-  &quot;unit&quot;: &quot;次&quot;,
-  &quot;label&quot;: &quot;按次生成&quot;,
-  &quot;price&quot;: 2.111112,
-  &quot;tiers&quot;: [],
-  &quot;currency_label&quot;: &quot;USD&quot;,
-  &quot;duration_seconds&quot;: {
-    &quot;status&quot;: &quot;not_selectable&quot;
-  }
-}
-</code></pre>
+<p>价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
 <table><thead><tr><th>字段</th><th>必填</th><th>类型、范围与说明</th></tr></thead><tbody>
 <tr><td><code>model</code></td><td>是</td><td>{
   &quot;description&quot;: &quot;固定传 suno。&quot;,
@@ -3096,12 +2622,12 @@ print(completion.choices[0].message.content)</code></pre>
         <tr><td><code>503</code> 服务暂时不可用</td><td>先到模型广场核对完整模型名并保存 Request ID；只有确认原请求没有创建任务后才能重新提交，不得换错误端点或盲目重试。</td></tr>
         <tr><td>客户端显示“模型服务额度不足”，但服务端没有可灵请求</td><td>这是客户端的泛化错误，不代表真实余额不足。确认实际请求为 <code>POST https://api.yuqitoken.cn/v1/videos</code>，模型名为本页列出的可灵型号，并让客户端保留原始 HTTP 状态、错误 JSON 与 Request ID；若只调用 Chat/Responses，必须改造为异步视频任务流程。</td></tr>
         <tr><td>给 2.6/3.0 增加 <code>image_url</code> 后失败</td><td>当前公开合同只保证 5 秒文生视频，图生视频扩展未开放。删除未公开字段；不要把其它能力的字段套入这两个模型。</td></tr>
-        <tr><td>动作迁移提示图片格式或无法获取素材</td><td>确认 <code>image_url</code> 是无需登录的公网 HTTPS 直链，响应真实 MIME 为 <code>image/jpeg</code> 或 <code>image/png</code>；HEIC/WEBP/AVIF 先转换。输入校验失败不代表上游余额不足。</td></tr>
+        
         <tr><td>GPT Image 请求路径错误</td><td><code>GPT Image 2 tier models</code> 文生图使用异步 <code>/v1/videos</code> 并轮询；上传参考图的图生图使用 multipart <code>/v1/images/edits</code>，每张文件都必须使用精确字段 <code>image[]</code>。单数 <code>image</code> 只属于独立的同步 <code>image2</code> 合同。</td></tr>
         <tr><td>千问 Pro 提示尺寸与计费档不匹配</td><td><code>qwen-image-3.0-pro-1K</code> 固定使用 1K 档，<code>qwen-image-3.0-pro</code> 固定使用 2K 档。请保持 <code>size</code> 与精确模型名一致，或改用标准版 <code>qwen-image-3.0</code>。</td></tr>
         <tr><td>Nano 请求立即报错或路径错误</td><td>确认提交地址是 <code>POST /v1/videos</code>，查询地址是 <code>GET /v1/videos/{task_id}</code>。</td></tr>
         <tr><td>图片或视频结果无法显示</td><td>先保存响应中的结果数据或 URL；确认客户端没有拦截大响应体，并保存响应头或 JSON 中的 Request ID。结果 URL 可能是临时地址，应立即下载。</td></tr>
-        <tr><td>GPT Image 2 图生图出现 524、网络超时或结果未知</td><td>仅适用于 GPT Image 2 tier models multipart 同步图生图：确认 Base URL 为 <code>https://direct-api.yuqitoken.cn/v1</code>、客户端 timeout 至少 600 秒；保存响应头 <code>X-Image2-Trace-Id</code>、错误体 <code>error.task_id</code> 与 <code>Request-ID</code>/<code>X-Request-ID</code>。用默认 API 入口的 <code>GET /v1/videos/{task_id}</code> 查询原任务，不得自动补提第二单。同步 <code>image2</code> 不使用这条异步回查规则。</td></tr>
+        
         <tr><td>额度消耗异常</td><td>核对模型、分辨率、质量、并发和重试策略。图片/视频失败重试前应先确认是否已创建任务。</td></tr>
       </tbody></table>
       <ul><li>每个应用或环境使用独立 Key，便于随时单独停用。</li><li>禁止把 Key 放在浏览器前端、移动端安装包、公开仓库和截图中。</li><li>服务端记录接口返回的请求 ID，提交工单时提供请求时间、模型名、接口和请求 ID，不要发送完整 Key。</li><li>模型广场用于确认型号与客户价格；生产可用性还必须结合鉴权、服务状态和真实请求的 Request ID 判断，不能只看“已上架”。</li></ul>
@@ -3111,7 +2637,6 @@ print(completion.choices[0].message.content)</code></pre>
   "last_verified_at": "2026-09-28",
   "service": "API 中转服务",
   "docs": "https://docs.yuqitoken.cn",
-  "origin": "https://api.yuqitoken.cn",
   "base_urls": {
     "openai_compatible": "https://api.yuqitoken.cn/v1",
     "gpt_image_2_sync_edits": "https://direct-api.yuqitoken.cn/v1",
@@ -3411,8 +2936,7 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "response": {
         "status": "documented_projection",
-        "projected_shape_preserved": true,
-        "raw_upstream_fields_exposed": false
+        "projected_shape_preserved": true
       },
       "streaming": {
         "protocol": "SSE when stream=true",
@@ -3515,8 +3039,7 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "response": {
         "status": "documented_projection",
-        "projected_shape_preserved": true,
-        "raw_upstream_fields_exposed": false
+        "projected_shape_preserved": true
       },
       "streaming": {
         "protocol": "SSE when stream=true",
@@ -3649,17 +3172,7 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "response": {
         "non_streaming": {
-          "status": "documented_projection",
-          "fields": [
-            "id",
-            "type",
-            "role",
-            "model",
-            "content",
-            "stop_reason",
-            "stop_sequence",
-            "usage"
-          ]
+          "status": "documented_projection"
         },
         "streaming": {
           "protocol": "SSE",
@@ -3692,13 +3205,7 @@ print(completion.choices[0].message.content)</code></pre>
           "529": "overloaded_error"
         },
         "response_shape": {
-          "top_level_fields": [
-            "type",
-            "error",
-            "request_id"
-          ],
-          "redacted_error_shape_preserved": true,
-          "raw_upstream_fields_exposed": false
+          "redacted_error_shape_preserved": true
         },
         "station_projection": "documented_projection"
       },
@@ -3924,11 +3431,9 @@ print(completion.choices[0].message.content)</code></pre>
           "result unknown"
         ],
         "trace_header": "X-Image2-Trace-Id",
-        "error_field": "error.task_id",
         "same_task_identifier": true,
         "preserve": [
           "X-Image2-Trace-Id",
-          "error.task_id",
           "Request-ID",
           "X-Request-ID",
           "HTTP status",
@@ -4010,8 +3515,7 @@ print(completion.choices[0].message.content)</code></pre>
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -4021,15 +3525,6 @@ print(completion.choices[0].message.content)</code></pre>
         ],
         "success": "completed",
         "failure": "failed",
-        "success_requires": [
-          "url or image_url"
-        ],
-        "result_url_paths": [
-          "$.data[0].url",
-          "$.result.data[0].url",
-          "$.url",
-          "$.image_url"
-        ],
         "progress_is_display_only": true
       },
       "model_substitution": {
@@ -4083,11 +3578,7 @@ print(completion.choices[0].message.content)</code></pre>
           200
         ],
         "id_path": "$.id",
-        "alternate_id_paths": [
-          "$.task_id"
-        ],
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -4319,8 +3810,7 @@ print(completion.choices[0].message.content)</code></pre>
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -4329,9 +3819,6 @@ print(completion.choices[0].message.content)</code></pre>
         ],
         "success": "completed",
         "failure": "failed",
-        "success_requires": [
-          "url or image_url"
-        ],
         "progress_is_display_only": true
       },
       "models": [
@@ -4417,10 +3904,6 @@ print(completion.choices[0].message.content)</code></pre>
           "raw"
         ]
       },
-      "pro_billing_tiers": {
-        "qwen-image-3.0-pro-1K": "1K",
-        "qwen-image-3.0-pro": "2K"
-      },
       "allowed_fields": [
         "model",
         "prompt",
@@ -4443,8 +3926,7 @@ print(completion.choices[0].message.content)</code></pre>
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -4453,9 +3935,6 @@ print(completion.choices[0].message.content)</code></pre>
         ],
         "success": "completed",
         "failure": "failed",
-        "success_requires": [
-          "url or image_url"
-        ],
         "progress_is_display_only": true
       },
       "idempotency": {
@@ -4473,10 +3952,6 @@ print(completion.choices[0].message.content)</code></pre>
       },
       "unknown_submission": {
         "code": "submission_outcome_unknown",
-        "task_id_paths": [
-          "$.task_id",
-          "$.error.task_id"
-        ],
         "missing_task_id_action": "preserve request_id and stop; do not guess",
         "action": "poll same task; do not resubmit"
       },
@@ -4642,8 +4117,7 @@ print(completion.choices[0].message.content)</code></pre>
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -4662,20 +4136,7 @@ print(completion.choices[0].message.content)</code></pre>
         "success_requires": [
           "result URL"
         ],
-        "progress_is_display_only": true,
-        "result_paths": [
-          "result.data[0].url",
-          "output.video_url",
-          "video_url"
-        ]
-      },
-      "billing": {
-        "unit": "second",
-        "requested_seconds_field": "seconds",
-        "published_price_source": "customer pricing page",
-        "actual_charge_source": "control panel billing or usage record",
-        "failed_task_implies_refund": false,
-        "static_price_is_actual_charge_evidence": false
+        "progress_is_display_only": true
       },
       "recovery": {
         "preserve": [
@@ -4844,11 +4305,6 @@ print(completion.choices[0].message.content)</code></pre>
         ],
         "progress_is_display_only": true
       },
-      "billing": {
-        "unit": "second",
-        "requested_seconds_field": "seconds",
-        "query_billed_again": false
-      },
       "recovery": {
         "auto_resubmit": false,
         "poll_original_task_only": true,
@@ -4871,7 +4327,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -4951,12 +4406,6 @@ print(completion.choices[0].message.content)</code></pre>
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -4986,7 +4435,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5075,12 +4523,6 @@ print(completion.choices[0].message.content)</code></pre>
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -5110,7 +4552,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5177,20 +4618,6 @@ print(completion.choices[0].message.content)</code></pre>
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "1.330",
-          "output": "6.650",
-          "cached_input": "0.1330",
-          "cache_creation": "1.330",
-          "audio_input": "1.330",
-          "audio_output": "1.330"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -5222,7 +4649,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5289,20 +4715,6 @@ print(completion.choices[0].message.content)</code></pre>
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "1.330",
-          "output": "6.650",
-          "cached_input": "0.1330",
-          "cache_creation": "1.330",
-          "audio_input": "1.330",
-          "audio_output": "1.330"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -5334,7 +4746,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5401,20 +4812,6 @@ print(completion.choices[0].message.content)</code></pre>
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "3.546668",
-          "output": "17.733340",
-          "cached_input": "1.7733340",
-          "cache_creation": "3.546668",
-          "audio_input": "3.546668",
-          "audio_output": "3.546668"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -5446,7 +4843,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5513,20 +4909,6 @@ print(completion.choices[0].message.content)</code></pre>
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "3.546668",
-          "output": "17.733340",
-          "cached_input": "1.7733340",
-          "cache_creation": "3.546668",
-          "audio_input": "3.546668",
-          "audio_output": "3.546668"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -5558,7 +4940,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5612,12 +4993,6 @@ print(completion.choices[0].message.content)</code></pre>
         "model": "gemini-stt",
         "file": "<audio>"
       },
-      "billing": {
-        "unit": "分钟",
-        "label": "按分钟计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "text (or selected text response_format)",
       "timeouts": {
@@ -5637,8 +5012,7 @@ print(completion.choices[0].message.content)</code></pre>
       "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
       "notes": [
         "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按音频分钟计费；同步 multipart 文件上传，不轮询。细分时长取整与最终扣额以实际账单为准。",
-        "有效上游usage优先；缺少有效usage时按本服务分钟或Unicode字符计量回退；不把单位价当成一次调用价。"
+        "按音频分钟计费；同步 multipart 文件上传，不轮询。细分时长取整与最终扣额以实际账单为准。"
       ]
     },
     "selected_gemini_tts": {
@@ -5648,7 +5022,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5719,12 +5092,6 @@ print(completion.choices[0].message.content)</code></pre>
         "input": "你好，欢迎使用语音生成。",
         "model": "gemini-tts"
       },
-      "billing": {
-        "unit": "千字符",
-        "label": "按千字符计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "audio binary",
       "timeouts": {
@@ -5744,8 +5111,7 @@ print(completion.choices[0].message.content)</code></pre>
       "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
       "notes": [
         "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按千字符计费，不按输出音频时长；同步返回音频二进制，不轮询。字符取整与最终扣额以实际账单为准。",
-        "有效上游usage优先；缺少有效usage时按本服务分钟或Unicode字符计量回退；不把单位价当成一次调用价。"
+        "按千字符计费，不按输出音频时长；同步返回音频二进制，不轮询。字符取整与最终扣额以实际账单为准。"
       ]
     },
     "selected_grok_imagine_image": {
@@ -5755,7 +5121,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5847,12 +5212,6 @@ print(completion.choices[0].message.content)</code></pre>
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -5882,7 +5241,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5968,12 +5326,6 @@ print(completion.choices[0].message.content)</code></pre>
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -6004,7 +5356,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -6103,19 +5454,6 @@ print(completion.choices[0].message.content)</code></pre>
         "prompt": "温暖的午后，阳光洒在窗台上。",
         "duration": 5
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 300,
-          "semantics": "request_hint"
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/music/{task_id}",
@@ -6173,7 +5511,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -6272,19 +5609,6 @@ print(completion.choices[0].message.content)</code></pre>
         "prompt": "温暖的午后，阳光洒在窗台上。",
         "duration": 5
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 300,
-          "semantics": "request_hint"
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/music/{task_id}",
@@ -6342,7 +5666,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -6490,33 +5813,6 @@ print(completion.choices[0].message.content)</code></pre>
         "response_format": "url",
         "async": true
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·速度分档",
-        "tiers": [
-          {
-            "label": "relax",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "fast",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD"
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/images/generations/{task_id}",
@@ -6573,7 +5869,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -6721,33 +6016,6 @@ print(completion.choices[0].message.content)</code></pre>
         "response_format": "url",
         "async": true
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·速度分档",
-        "tiers": [
-          {
-            "label": "relax",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "fast",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD"
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/images/generations/{task_id}",
@@ -6804,7 +6072,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -6897,19 +6164,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 15,
         "resolution": "2k"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 15,
-          "maximum": 15,
-          "default": 15
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -6967,7 +6221,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -7063,19 +6316,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "2K"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -7133,7 +6373,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -7249,60 +6488,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "480p"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "tiers": [
-          {
-            "label": "4k",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "1080p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "720p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -7359,7 +6544,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -7473,40 +6657,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "480p"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "tiers": [
-          {
-            "label": "720p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -7563,7 +6713,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -7677,40 +6826,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "480p"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "tiers": [
-          {
-            "label": "720p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -7767,7 +6882,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -7856,19 +6970,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -7925,7 +7026,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -8014,19 +7114,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -8083,7 +7170,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -8165,24 +7251,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 5,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5,
-          "listed_options": [
-            5,
-            10,
-            15
-          ]
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -8239,7 +7307,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -8335,19 +7402,6 @@ print(completion.choices[0].message.content)</code></pre>
         "duration": 10,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 10,
-          "maximum": 30,
-          "default": 10
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -8404,7 +7458,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -8484,12 +7537,6 @@ print(completion.choices[0].message.content)</code></pre>
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -8519,7 +7566,6 @@ print(completion.choices[0].message.content)</code></pre>
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -8583,15 +7629,6 @@ print(completion.choices[0].message.content)</code></pre>
         "style_text": "轻快民谣，原声吉他",
         "n": 1
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "not_selectable"
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/music/{task_id}",
@@ -8649,7 +7686,6 @@ print(completion.choices[0].message.content)</code></pre>
       "availability": "listed_in_current_catalog",
       "validation": "owner_contract_and_public_catalog",
       "paid_generation_verified": false,
-      "origin": "https://api.yuqitoken.cn",
       "base_url": "https://api.yuqitoken.cn/v1",
       "authentication": {
         "header": "Authorization",
@@ -8775,13 +7811,6 @@ print(completion.choices[0].message.content)</code></pre>
       "pricing": {
         "price_page": "https://console.yuqitoken.cn/pricing"
       },
-      "billing": {
-        "submission": "estimated_preauthorization",
-        "success": "adjust_to_actual_completion_tokens",
-        "failure": "refund_preauthorization",
-        "client_get_usage_completion_tokens_guaranteed": false,
-        "real_first_order_reconciliation": "pending"
-      },
       "unknown_outcome_action": "query_original_task_only_do_not_resubmit",
       "errors": {
         "400": "核对字段",
@@ -8794,7 +7823,6 @@ print(completion.choices[0].message.content)</code></pre>
       "family": "minimax_video",
       "availability": "paused_no_new_orders",
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -9224,7 +8252,6 @@ print(completion.choices[0].message.content)</code></pre>
     },
     "524": {
       "meaning": "long synchronous request timed out at the edge; the outcome is unknown",
-      "action": "preserve X-Image2-Trace-Id and error.task_id; query only the original task",
       "retry_allowed": false
     }
   },
@@ -9252,18 +8279,6 @@ print(completion.choices[0].message.content)</code></pre>
       "live_availability=available",
       "call_action=allow_call",
       "successful documented validation"
-    ]
-  },
-  "public_redaction": {
-    "allowlist_projection": true,
-    "forbidden_categories": [
-      "internal origin names",
-      "private route IDs",
-      "raw private URLs",
-      "secrets",
-      "costs",
-      "balances",
-      "topology"
     ]
   },
   "model_families": {
@@ -9557,6 +8572,22 @@ print(completion.choices[0].message.content)</code></pre>
       "seedream-5.0-pro-x": "selected_seedream_5_0_pro_x",
       "suno": "selected_suno"
     }
+  },
+  "documented_response_fields_policy": {
+    "fields": [
+      "id",
+      "object",
+      "status",
+      "progress",
+      "created_at",
+      "completed_at",
+      "model",
+      "size",
+      "url",
+      "data[].url",
+      "error"
+    ],
+    "server_export_verification": "pending"
   }
 }
 </script>

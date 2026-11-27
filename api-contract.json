@@ -3,7 +3,6 @@
   "last_verified_at": "2026-09-28",
   "service": "API 中转服务",
   "docs": "https://docs.yuqitoken.cn",
-  "origin": "https://api.yuqitoken.cn",
   "base_urls": {
     "openai_compatible": "https://api.yuqitoken.cn/v1",
     "gpt_image_2_sync_edits": "https://direct-api.yuqitoken.cn/v1",
@@ -303,8 +302,7 @@
       ],
       "response": {
         "status": "documented_projection",
-        "projected_shape_preserved": true,
-        "raw_upstream_fields_exposed": false
+        "projected_shape_preserved": true
       },
       "streaming": {
         "protocol": "SSE when stream=true",
@@ -407,8 +405,7 @@
       ],
       "response": {
         "status": "documented_projection",
-        "projected_shape_preserved": true,
-        "raw_upstream_fields_exposed": false
+        "projected_shape_preserved": true
       },
       "streaming": {
         "protocol": "SSE when stream=true",
@@ -541,17 +538,7 @@
       ],
       "response": {
         "non_streaming": {
-          "status": "documented_projection",
-          "fields": [
-            "id",
-            "type",
-            "role",
-            "model",
-            "content",
-            "stop_reason",
-            "stop_sequence",
-            "usage"
-          ]
+          "status": "documented_projection"
         },
         "streaming": {
           "protocol": "SSE",
@@ -584,13 +571,7 @@
           "529": "overloaded_error"
         },
         "response_shape": {
-          "top_level_fields": [
-            "type",
-            "error",
-            "request_id"
-          ],
-          "redacted_error_shape_preserved": true,
-          "raw_upstream_fields_exposed": false
+          "redacted_error_shape_preserved": true
         },
         "station_projection": "documented_projection"
       },
@@ -816,11 +797,9 @@
           "result unknown"
         ],
         "trace_header": "X-Image2-Trace-Id",
-        "error_field": "error.task_id",
         "same_task_identifier": true,
         "preserve": [
           "X-Image2-Trace-Id",
-          "error.task_id",
           "Request-ID",
           "X-Request-ID",
           "HTTP status",
@@ -902,8 +881,7 @@
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -913,15 +891,6 @@
         ],
         "success": "completed",
         "failure": "failed",
-        "success_requires": [
-          "url or image_url"
-        ],
-        "result_url_paths": [
-          "$.data[0].url",
-          "$.result.data[0].url",
-          "$.url",
-          "$.image_url"
-        ],
         "progress_is_display_only": true
       },
       "model_substitution": {
@@ -975,11 +944,7 @@
           200
         ],
         "id_path": "$.id",
-        "alternate_id_paths": [
-          "$.task_id"
-        ],
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -1211,8 +1176,7 @@
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -1221,9 +1185,6 @@
         ],
         "success": "completed",
         "failure": "failed",
-        "success_requires": [
-          "url or image_url"
-        ],
         "progress_is_display_only": true
       },
       "models": [
@@ -1309,10 +1270,6 @@
           "raw"
         ]
       },
-      "pro_billing_tiers": {
-        "qwen-image-3.0-pro-1K": "1K",
-        "qwen-image-3.0-pro": "2K"
-      },
       "allowed_fields": [
         "model",
         "prompt",
@@ -1335,8 +1292,7 @@
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -1345,9 +1301,6 @@
         ],
         "success": "completed",
         "failure": "failed",
-        "success_requires": [
-          "url or image_url"
-        ],
         "progress_is_display_only": true
       },
       "idempotency": {
@@ -1365,10 +1318,6 @@
       },
       "unknown_submission": {
         "code": "submission_outcome_unknown",
-        "task_id_paths": [
-          "$.task_id",
-          "$.error.task_id"
-        ],
         "missing_task_id_action": "preserve request_id and stop; do not guess",
         "action": "poll same task; do not resubmit"
       },
@@ -1534,8 +1483,7 @@
           200
         ],
         "id_path": "$.id",
-        "id_required": true,
-        "missing_id_action": "outcome_unknown; preserve request_id and stop"
+        "id_required": true
       },
       "status": {
         "pending": [
@@ -1554,20 +1502,7 @@
         "success_requires": [
           "result URL"
         ],
-        "progress_is_display_only": true,
-        "result_paths": [
-          "result.data[0].url",
-          "output.video_url",
-          "video_url"
-        ]
-      },
-      "billing": {
-        "unit": "second",
-        "requested_seconds_field": "seconds",
-        "published_price_source": "customer pricing page",
-        "actual_charge_source": "control panel billing or usage record",
-        "failed_task_implies_refund": false,
-        "static_price_is_actual_charge_evidence": false
+        "progress_is_display_only": true
       },
       "recovery": {
         "preserve": [
@@ -1736,11 +1671,6 @@
         ],
         "progress_is_display_only": true
       },
-      "billing": {
-        "unit": "second",
-        "requested_seconds_field": "seconds",
-        "query_billed_again": false
-      },
       "recovery": {
         "auto_resubmit": false,
         "poll_original_task_only": true,
@@ -1763,7 +1693,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -1843,12 +1772,6 @@
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -1878,7 +1801,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -1967,12 +1889,6 @@
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -2002,7 +1918,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2069,20 +1984,6 @@
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "1.330",
-          "output": "6.650",
-          "cached_input": "0.1330",
-          "cache_creation": "1.330",
-          "audio_input": "1.330",
-          "audio_output": "1.330"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -2114,7 +2015,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2181,20 +2081,6 @@
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "1.330",
-          "output": "6.650",
-          "cached_input": "0.1330",
-          "cache_creation": "1.330",
-          "audio_input": "1.330",
-          "audio_output": "1.330"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -2226,7 +2112,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2293,20 +2178,6 @@
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "3.546668",
-          "output": "17.733340",
-          "cached_input": "1.7733340",
-          "cache_creation": "3.546668",
-          "audio_input": "3.546668",
-          "audio_output": "3.546668"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -2338,7 +2209,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2405,20 +2275,6 @@
           }
         ]
       },
-      "billing": {
-        "unit": "Token",
-        "label": "输入、输出、缓存分别按Token计费",
-        "tiers": [],
-        "currency_label": "USD",
-        "per_1M_token_components": {
-          "input": "3.546668",
-          "output": "17.733340",
-          "cached_input": "1.7733340",
-          "cache_creation": "3.546668",
-          "audio_input": "3.546668",
-          "audio_output": "3.546668"
-        }
-      },
       "polling": null,
       "result": "choices[].message.content; SSE choices[].delta.content, complete frame before success",
       "timeouts": {
@@ -2450,7 +2306,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2504,12 +2359,6 @@
         "model": "gemini-stt",
         "file": "<audio>"
       },
-      "billing": {
-        "unit": "分钟",
-        "label": "按分钟计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "text (or selected text response_format)",
       "timeouts": {
@@ -2529,8 +2378,7 @@
       "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
       "notes": [
         "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按音频分钟计费；同步 multipart 文件上传，不轮询。细分时长取整与最终扣额以实际账单为准。",
-        "有效上游usage优先；缺少有效usage时按本服务分钟或Unicode字符计量回退；不把单位价当成一次调用价。"
+        "按音频分钟计费；同步 multipart 文件上传，不轮询。细分时长取整与最终扣额以实际账单为准。"
       ]
     },
     "selected_gemini_tts": {
@@ -2540,7 +2388,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2611,12 +2458,6 @@
         "input": "你好，欢迎使用语音生成。",
         "model": "gemini-tts"
       },
-      "billing": {
-        "unit": "千字符",
-        "label": "按千字符计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "audio binary",
       "timeouts": {
@@ -2636,8 +2477,7 @@
       "retry": "One generation POST only. Unknown outcome never auto-resubmits. Retry safe GET with backoff and original id.",
       "notes": [
         "仅核对现售目录、接口资料及已审核本服务适配合同；示例未发送，未做付费生成验证。",
-        "按千字符计费，不按输出音频时长；同步返回音频二进制，不轮询。字符取整与最终扣额以实际账单为准。",
-        "有效上游usage优先；缺少有效usage时按本服务分钟或Unicode字符计量回退；不把单位价当成一次调用价。"
+        "按千字符计费，不按输出音频时长；同步返回音频二进制，不轮询。字符取整与最终扣额以实际账单为准。"
       ]
     },
     "selected_grok_imagine_image": {
@@ -2647,7 +2487,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2739,12 +2578,6 @@
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -2774,7 +2607,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2860,12 +2692,6 @@
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -2896,7 +2722,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -2995,19 +2820,6 @@
         "prompt": "温暖的午后，阳光洒在窗台上。",
         "duration": 5
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 300,
-          "semantics": "request_hint"
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/music/{task_id}",
@@ -3065,7 +2877,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -3164,19 +2975,6 @@
         "prompt": "温暖的午后，阳光洒在窗台上。",
         "duration": 5
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 300,
-          "semantics": "request_hint"
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/music/{task_id}",
@@ -3234,7 +3032,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -3382,33 +3179,6 @@
         "response_format": "url",
         "async": true
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·速度分档",
-        "tiers": [
-          {
-            "label": "relax",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "fast",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD"
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/images/generations/{task_id}",
@@ -3465,7 +3235,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -3613,33 +3382,6 @@
         "response_format": "url",
         "async": true
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·速度分档",
-        "tiers": [
-          {
-            "label": "relax",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "fast",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD"
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/images/generations/{task_id}",
@@ -3696,7 +3438,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -3789,19 +3530,6 @@
         "duration": 15,
         "resolution": "2k"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 15,
-          "maximum": 15,
-          "default": 15
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -3859,7 +3587,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -3955,19 +3682,6 @@
         "duration": 5,
         "resolution": "2K"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -4025,7 +3739,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -4141,60 +3854,6 @@
         "duration": 5,
         "resolution": "480p"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "tiers": [
-          {
-            "label": "4k",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "1080p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "720p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -4251,7 +3910,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -4365,40 +4023,6 @@
         "duration": 5,
         "resolution": "480p"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "tiers": [
-          {
-            "label": "720p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -4455,7 +4079,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -4569,40 +4192,6 @@
         "duration": 5,
         "resolution": "480p"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次·清晰度分档",
-        "tiers": [
-          {
-            "label": "720p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          },
-          {
-            "label": "480p",
-            "unit": "次",
-            "entries": [
-              {
-                "label": "生成",
-                "unit": "次"
-              }
-            ]
-          }
-        ],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 4,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -4659,7 +4248,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -4748,19 +4336,6 @@
         "duration": 5,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -4817,7 +4392,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -4906,19 +4480,6 @@
         "duration": 5,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -4975,7 +4536,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5057,24 +4617,6 @@
         "duration": 5,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 5,
-          "maximum": 15,
-          "default": 5,
-          "listed_options": [
-            5,
-            10,
-            15
-          ]
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -5131,7 +4673,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5227,19 +4768,6 @@
         "duration": 10,
         "resolution": "720P"
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "published",
-          "unit": "秒",
-          "minimum": 10,
-          "maximum": 30,
-          "default": 10
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/videos/{task_id}",
@@ -5296,7 +4824,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5376,12 +4903,6 @@
         "n": 1,
         "response_format": "url"
       },
-      "billing": {
-        "unit": "张",
-        "label": "按张计费",
-        "tiers": [],
-        "currency_label": "USD"
-      },
       "polling": null,
       "result": "data[].url or data[].b64_json",
       "timeouts": {
@@ -5411,7 +4932,6 @@
       "validation": "current_public_catalog_reviewed_native_adapter_and_offline_contract",
       "paid_generation_verified": false,
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -5475,15 +4995,6 @@
         "style_text": "轻快民谣，原声吉他",
         "n": 1
       },
-      "billing": {
-        "unit": "次",
-        "label": "按次生成",
-        "tiers": [],
-        "currency_label": "USD",
-        "duration_seconds": {
-          "status": "not_selectable"
-        }
-      },
       "polling": {
         "method": "GET",
         "path": "/v1/music/{task_id}",
@@ -5541,7 +5052,6 @@
       "availability": "listed_in_current_catalog",
       "validation": "owner_contract_and_public_catalog",
       "paid_generation_verified": false,
-      "origin": "https://api.yuqitoken.cn",
       "base_url": "https://api.yuqitoken.cn/v1",
       "authentication": {
         "header": "Authorization",
@@ -5667,13 +5177,6 @@
       "pricing": {
         "price_page": "https://console.yuqitoken.cn/pricing"
       },
-      "billing": {
-        "submission": "estimated_preauthorization",
-        "success": "adjust_to_actual_completion_tokens",
-        "failure": "refund_preauthorization",
-        "client_get_usage_completion_tokens_guaranteed": false,
-        "real_first_order_reconciliation": "pending"
-      },
       "unknown_outcome_action": "query_original_task_only_do_not_resubmit",
       "errors": {
         "400": "核对字段",
@@ -5686,7 +5189,6 @@
       "family": "minimax_video",
       "availability": "paused_no_new_orders",
       "base_url": "https://api.yuqitoken.cn/v1",
-      "origin": "https://api.yuqitoken.cn",
       "authentication": {
         "header": "Authorization",
         "scheme": "Bearer",
@@ -6116,7 +5618,6 @@
     },
     "524": {
       "meaning": "long synchronous request timed out at the edge; the outcome is unknown",
-      "action": "preserve X-Image2-Trace-Id and error.task_id; query only the original task",
       "retry_allowed": false
     }
   },
@@ -6144,18 +5645,6 @@
       "live_availability=available",
       "call_action=allow_call",
       "successful documented validation"
-    ]
-  },
-  "public_redaction": {
-    "allowlist_projection": true,
-    "forbidden_categories": [
-      "internal origin names",
-      "private route IDs",
-      "raw private URLs",
-      "secrets",
-      "costs",
-      "balances",
-      "topology"
     ]
   },
   "model_families": {
@@ -6449,5 +5938,21 @@
       "seedream-5.0-pro-x": "selected_seedream_5_0_pro_x",
       "suno": "selected_suno"
     }
+  },
+  "documented_response_fields_policy": {
+    "fields": [
+      "id",
+      "object",
+      "status",
+      "progress",
+      "created_at",
+      "completed_at",
+      "model",
+      "size",
+      "url",
+      "data[].url",
+      "error"
+    ],
+    "server_export_verification": "pending"
   }
 }
