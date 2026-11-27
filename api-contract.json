@@ -1643,21 +1643,7 @@
         "failure": "failed task refund contract passed simulation; actual customer billing is authoritative",
         "validation": "dual-site simulated response and refund replay; real first order pending",
         "pricing": {
-          "unit": "usd_per_output_second",
-          "customer_group": "default",
-          "five_second_cny_note": "普通充值口径，仅供参考，实际扣费以本站账单为准",
-          "kling-4.0_720p": {
-            "usd_per_second": "3.14",
-            "five_second_cny": "7.85"
-          },
-          "kling-4.0_1080p": {
-            "usd_per_second": "4.70",
-            "five_second_cny": "11.75"
-          },
-          "kling-4.0-flash_720p": {
-            "usd_per_second": "1.88",
-            "five_second_cny": "4.70"
-          }
+          "price_page": "https://console.yuqitoken.cn/pricing"
         }
       }
     },
@@ -1860,7 +1846,6 @@
       "billing": {
         "unit": "张",
         "label": "按张计费",
-        "price": 0.295556,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -1985,7 +1970,6 @@
       "billing": {
         "unit": "张",
         "label": "按张计费",
-        "price": 0.418,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -2088,17 +2072,8 @@
       "billing": {
         "unit": "Token",
         "label": "输入、输出、缓存分别按Token计费",
-        "price": null,
         "tiers": [],
         "currency_label": "USD",
-        "public_price_factors": {
-          "model_ratio": "0.665",
-          "completion_ratio": "5",
-          "cache_ratio": "0.1",
-          "create_cache_ratio": "1",
-          "audio_ratio": "1",
-          "audio_completion_ratio": "1"
-        },
         "per_1M_token_components": {
           "input": "1.330",
           "output": "6.650",
@@ -2209,17 +2184,8 @@
       "billing": {
         "unit": "Token",
         "label": "输入、输出、缓存分别按Token计费",
-        "price": null,
         "tiers": [],
         "currency_label": "USD",
-        "public_price_factors": {
-          "model_ratio": "0.665",
-          "completion_ratio": "5",
-          "cache_ratio": "0.1",
-          "create_cache_ratio": "1",
-          "audio_ratio": "1",
-          "audio_completion_ratio": "1"
-        },
         "per_1M_token_components": {
           "input": "1.330",
           "output": "6.650",
@@ -2330,17 +2296,8 @@
       "billing": {
         "unit": "Token",
         "label": "输入、输出、缓存分别按Token计费",
-        "price": null,
         "tiers": [],
         "currency_label": "USD",
-        "public_price_factors": {
-          "model_ratio": "1.773334",
-          "completion_ratio": "5",
-          "cache_ratio": "0.5",
-          "create_cache_ratio": "1",
-          "audio_ratio": "1",
-          "audio_completion_ratio": "1"
-        },
         "per_1M_token_components": {
           "input": "3.546668",
           "output": "17.733340",
@@ -2451,17 +2408,8 @@
       "billing": {
         "unit": "Token",
         "label": "输入、输出、缓存分别按Token计费",
-        "price": null,
         "tiers": [],
         "currency_label": "USD",
-        "public_price_factors": {
-          "model_ratio": "1.773334",
-          "completion_ratio": "5",
-          "cache_ratio": "0.5",
-          "create_cache_ratio": "1",
-          "audio_ratio": "1",
-          "audio_completion_ratio": "1"
-        },
         "per_1M_token_components": {
           "input": "3.546668",
           "output": "17.733340",
@@ -2559,7 +2507,6 @@
       "billing": {
         "unit": "分钟",
         "label": "按分钟计费",
-        "price": 0.050666668,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -2667,7 +2614,6 @@
       "billing": {
         "unit": "千字符",
         "label": "按千字符计费",
-        "price": 0.126666668,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -2796,7 +2742,6 @@
       "billing": {
         "unit": "张",
         "label": "按张计费",
-        "price": 0.164668,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -2918,7 +2863,6 @@
       "billing": {
         "unit": "张",
         "label": "按张计费",
-        "price": 0.253334,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -3054,7 +2998,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 1.055556,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -3224,7 +3167,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 1.055556,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -3443,28 +3385,23 @@
       "billing": {
         "unit": "次",
         "label": "按次·速度分档",
-        "price": 1.224446,
         "tiers": [
           {
             "label": "relax",
-            "price": 1.224446,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 1.224446,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "fast",
-            "price": 1.646668,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 1.646668,
                 "unit": "次"
               }
             ]
@@ -3679,28 +3616,23 @@
       "billing": {
         "unit": "次",
         "label": "按次·速度分档",
-        "price": 1.646668,
         "tiers": [
           {
             "label": "relax",
-            "price": 1.646668,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 1.646668,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "fast",
-            "price": 2.06889,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 2.06889,
                 "unit": "次"
               }
             ]
@@ -3860,7 +3792,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 12.244446,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -4027,7 +3958,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 8.022224,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -4214,52 +4144,43 @@
       "billing": {
         "unit": "次",
         "label": "按次·清晰度分档",
-        "price": 20.266667,
         "tiers": [
           {
             "label": "4k",
-            "price": 122.444445,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 122.444445,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "1080p",
-            "price": 44.333334,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 44.333334,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "720p",
-            "price": 28.288889,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 28.288889,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "480p",
-            "price": 20.266667,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 20.266667,
                 "unit": "次"
               }
             ]
@@ -4447,28 +4368,23 @@
       "billing": {
         "unit": "次",
         "label": "按次·清晰度分档",
-        "price": 16.466667,
         "tiers": [
           {
             "label": "720p",
-            "price": 22.8,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 22.8,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "480p",
-            "price": 16.466667,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 16.466667,
                 "unit": "次"
               }
             ]
@@ -4656,28 +4572,23 @@
       "billing": {
         "unit": "次",
         "label": "按次·清晰度分档",
-        "price": 12.244445,
         "tiers": [
           {
             "label": "720p",
-            "price": 17.733334,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 17.733334,
                 "unit": "次"
               }
             ]
           },
           {
             "label": "480p",
-            "price": 12.244445,
             "unit": "次",
             "entries": [
               {
                 "label": "生成",
-                "price": 12.244445,
                 "unit": "次"
               }
             ]
@@ -4840,7 +4751,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 15.833334,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -4999,7 +4909,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 19,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -5151,7 +5060,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 12.244445,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -5322,7 +5230,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 31.666667,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -5472,7 +5379,6 @@
       "billing": {
         "unit": "张",
         "label": "按张计费",
-        "price": 0.802224,
         "tiers": [],
         "currency_label": "USD"
       },
@@ -5572,7 +5478,6 @@
       "billing": {
         "unit": "次",
         "label": "按次生成",
-        "price": 2.111112,
         "tiers": [],
         "currency_label": "USD",
         "duration_seconds": {
@@ -5760,15 +5665,7 @@
         "use_original_token": true
       },
       "pricing": {
-        "currency": "CNY",
-        "unit": "per_million_output_tokens",
-        "customer_group": "default",
-        "with_reference_video": "17.07",
-        "without_reference_video": "28.71",
-        "reference_tier_condition": "reference_videos is nonempty",
-        "verified_on": "2026-11-20",
-        "other_groups": "apply_customer_group_rate",
-        "bill_is_authoritative": true
+        "price_page": "https://console.yuqitoken.cn/pricing"
       },
       "billing": {
         "submission": "estimated_preauthorization",
@@ -5903,15 +5800,149 @@
         "use_original_token": true
       },
       "pricing": {
-        "tiers": {
-          "768P": "6.0167",
-          "2K": "9.1833"
-        },
-        "currency": "CNY",
-        "unit": "per_video"
+        "price_page": "https://console.yuqitoken.cn/pricing"
       },
       "availability_note": "暂不接收新任务。恢复时间以本站模型目录为准。",
       "unknown_outcome_action": "query_original_task_only_do_not_resubmit"
+    },
+    "catalog_template_20261127": {
+      "chat": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "models": [
+          "LongCat-2.5",
+          "agnes-3.0-flash",
+          "as-gemini-3.1-pro-preview",
+          "as-gemini-3.6-flash",
+          "as-gemini-3.8-flash",
+          "as-gemini-4-argon",
+          "as-gemini-4-carbon",
+          "as-gemini-4-hydrogen",
+          "codex-auto-review",
+          "deepseek-v4-flash",
+          "deepseek-v4-flash-0731",
+          "deepseek-v4-flash-vision",
+          "deepseek-v4-pro",
+          "deepseek-v4-pro-0813",
+          "deepseek-v4.1-flash",
+          "deepseek-v4.1-flash-1017",
+          "gemini-3-flash",
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview",
+          "gemini-3.5-flash",
+          "gemini-3.5-flash-lite",
+          "gemini-3.6-flash",
+          "gemini-3.7-flash",
+          "gemini-3.8-flash",
+          "gemini-4-argon",
+          "glm-5.1",
+          "glm-5.2",
+          "glm-5.3",
+          "glm-5.3-flash",
+          "glm-5.3-flashx",
+          "glm-5.4",
+          "gpt-5.5",
+          "gpt-5.6-luna",
+          "gpt-5.6-sol",
+          "gpt-5.6-terra",
+          "gpt-6-astra",
+          "gpt-6-luna",
+          "gpt-6-sol",
+          "gpt-6.1-sol",
+          "gpt-6.1-terra",
+          "gpt-6.2-astra",
+          "gpt-6.2-sol",
+          "hy3",
+          "hy4",
+          "kimi-k2.5",
+          "kimi-k2.6",
+          "kimi-k2.7-code",
+          "kimi-k2.8-code",
+          "kimi-k2.8-preview",
+          "kimi-k3",
+          "kimi-k3.1-pro",
+          "kimi-k3.1-pro-highspeed",
+          "mimo-v2.5-pro",
+          "mimo-v2.6-flash",
+          "mimo-v2.6-pro",
+          "minimax-m2.5",
+          "minimax-m2.7",
+          "minimax-m2.7-highspeed",
+          "minimax-m3",
+          "minimax-m3.1-flash",
+          "mu1-muse-chat",
+          "mu1-muse-invite",
+          "mu1-muse-live",
+          "nemotron-3-ultra",
+          "nemotron-3.5-lightning",
+          "qwen3.7-max",
+          "qwen3.7-plus",
+          "qwen3.8-27b",
+          "qwen3.8-flash",
+          "qwen3.8-max",
+          "qwen4-max",
+          "sensenova-6.8-flash-lite",
+          "step-3.7-flash",
+          "step-5"
+        ],
+        "fields": [
+          "model",
+          "messages",
+          "max_tokens",
+          "stream"
+        ]
+      },
+      "embeddings": {
+        "method": "POST",
+        "path": "/v1/embeddings",
+        "models": [
+          "text-embedding-3-large",
+          "text-embedding-3-small",
+          "text-embedding-ada-002",
+          "text-embedding-v4"
+        ],
+        "fields": [
+          "model",
+          "input"
+        ]
+      },
+      "images": {
+        "method": "POST",
+        "path": "/v1/images/generations",
+        "models": {
+          "Z-Image-Turbo": {
+            "size": "比例，如 1:1"
+          },
+          "doubao-seedream-5-0-lite-x": {
+            "size": "比例或 auto，不接受 WxH",
+            "resolution": [
+              "2K",
+              "3K",
+              "4K"
+            ]
+          },
+          "doubao-seedream-5-5": {
+            "size": "比例或 auto",
+            "resolution": [
+              "1k",
+              "2k"
+            ]
+          },
+          "mu1-muse-image": {
+            "size": "比例，如 1:1"
+          }
+        }
+      },
+      "mimo_audio": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "models": {
+          "mimo-v2.5-asr": "传 input_audio 用于转写",
+          "mimo-v2.5-tts": "需带 assistant 角色并返回音频"
+        },
+        "note": "不使用 /v1/audio/*"
+      },
+      "price_page": "https://console.yuqitoken.cn/pricing"
     }
   },
   "constraints": {
@@ -5926,33 +5957,26 @@
     "status_action": "configure_and_validate",
     "model_status": {
       "gpt-5.5": "documented",
-      "gpt-5.6-luna": "retired_no_new_orders",
+      "gpt-5.6-luna": "documented",
       "gpt-5.6-sol": "documented",
       "gpt-5.6-terra": "documented",
       "gpt-6-astra": "documented",
       "gpt-6-sol": "documented",
-      "gpt-6-luna": "retired_no_new_orders"
+      "gpt-6-luna": "documented"
     },
     "safe_next_action": "use_only_the_documented_configuration_and_minimum_request",
     "family_id": "gpt_text",
     "candidate_model_set": [
       "gpt-5.5",
+      "gpt-5.6-luna",
       "gpt-5.6-sol",
       "gpt-5.6-terra",
       "gpt-6-astra",
+      "gpt-6-luna",
       "gpt-6-sol"
     ],
     "runtime_availability": "not_claimed",
-    "configuration_contract": "complete",
-    "retirement": {
-      "effective_date": "2026-11-20",
-      "models": [
-        "gpt-5.6-luna",
-        "gpt-6-luna"
-      ],
-      "new_orders_allowed": false,
-      "historical_records_retained": true
-    }
+    "configuration_contract": "complete"
   },
   "grok_text_status": {
     "family_id": "grok_text",
@@ -6176,14 +6200,7 @@
           "group_name": "Max",
           "only_in_group": true,
           "price_unit": "CNY / 1,000,000 tokens",
-          "prices": {
-            "input": "21.3333",
-            "output": "106.6667",
-            "cache_write_5m": "26.6667",
-            "cache_read": "0.5333"
-          },
-          "pricing_source": "https://console.yuqitoken.cn/api/pricing",
-          "price_verified_on": "2026-11-12"
+          "pricing_source": "https://console.yuqitoken.cn/api/pricing"
         }
       }
     },

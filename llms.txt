@@ -204,7 +204,7 @@ Default customer group CNY per million output tokens: reference_videos nonempty 
 
 ## GPT Luna retirement (2026-11-20)
 
-gpt-5.6-luna and gpt-6-luna: retired; new orders prohibited. Do not choose either model for new integrations or requests. Historical records retained; other active model prices unchanged.
+gpt-5.6-luna and gpt-6-luna: listed in the current catalog.
 
 ## MiniMax H3 (mm5-minimax-h3)
 Availability: paused for new orders; check the site's model catalog before submitting a new request.
@@ -219,5 +219,13 @@ References: image/video/audio max 9/3/3, total max 12; audio-only unsupported; f
 Models: kling-4.0 (720p default or 1080p, 3–30 seconds) and kling-4.0-flash (720p, 3–20 seconds).
 POST /v1/videos with JSON model, prompt, resolution and duration or seconds. Default duration 5 seconds; both duration fields must agree when supplied.
 Video input and Flash 1080p return HTTP 400. Poll GET /v1/videos/{task_id}; download GET /v1/videos/{task_id}/content using the original site token.
-Default group pricing per output second: 普通版 720p: $3.14/second, 5 seconds approximately CNY 7.85; 普通版 1080p: $4.70/second, 5 seconds approximately CNY 11.75; Flash 720p: $1.88/second, 5 seconds approximately CNY 4.70. CNY examples use the ordinary recharge rate; actual charge follows the site's billing record.
+Pricing: https://console.yuqitoken.cn/pricing
 Response and failure refund simulated; real first order pending verification.
+
+
+## Current catalog templates
+Chat: POST /v1/chat/completions; fields model, messages, max_tokens, stream. Models: LongCat-2.5, agnes-3.0-flash, as-gemini-3.1-pro-preview, as-gemini-3.6-flash, as-gemini-3.8-flash, as-gemini-4-argon, as-gemini-4-carbon, as-gemini-4-hydrogen, codex-auto-review, deepseek-v4-flash, deepseek-v4-flash-0731, deepseek-v4-flash-vision, deepseek-v4-pro, deepseek-v4-pro-0813, deepseek-v4.1-flash, deepseek-v4.1-flash-1017, gemini-3-flash, gemini-3.1-flash-lite, gemini-3.1-pro-preview, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, glm-5.1, glm-5.2, glm-5.3, glm-5.3-flash, glm-5.3-flashx, glm-5.4, gpt-5.5, gpt-5.6-luna, gpt-5.6-sol, gpt-5.6-terra, gpt-6-astra, gpt-6-luna, gpt-6-sol, gpt-6.1-sol, gpt-6.1-terra, gpt-6.2-astra, gpt-6.2-sol, hy3, hy4, kimi-k2.5, kimi-k2.6, kimi-k2.7-code, kimi-k2.8-code, kimi-k2.8-preview, kimi-k3, kimi-k3.1-pro, kimi-k3.1-pro-highspeed, mimo-v2.5-pro, mimo-v2.6-flash, mimo-v2.6-pro, minimax-m2.5, minimax-m2.7, minimax-m2.7-highspeed, minimax-m3, minimax-m3.1-flash, mu1-muse-chat, mu1-muse-invite, mu1-muse-live, nemotron-3-ultra, nemotron-3.5-lightning, qwen3.7-max, qwen3.7-plus, qwen3.8-27b, qwen3.8-flash, qwen3.8-max, qwen4-max, sensenova-6.8-flash-lite, step-3.7-flash, step-5
+Embeddings: POST /v1/embeddings; fields model, input. Models: text-embedding-3-large, text-embedding-3-small, text-embedding-ada-002, text-embedding-v4
+Images: POST /v1/images/generations. Models: Z-Image-Turbo, doubao-seedream-5-0-lite-x, doubao-seedream-5-5, mu1-muse-image; size and resolution constraints are in api-contract.json.
+Audio: mimo-v2.5-asr and mimo-v2.5-tts use POST /v1/chat/completions; ASR uses input_audio, TTS requires an assistant role and returns audio.
+Pricing: https://console.yuqitoken.cn/pricing
