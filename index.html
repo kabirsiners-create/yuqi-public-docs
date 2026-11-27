@@ -375,6 +375,12 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
   &quot;model&quot;: &quot;flux-3-image-1.5k&quot;,
   &quot;prompt&quot;: &quot;一只纸鹤&quot;
 }</code></pre><h3>Wan 视频</h3><p><code>wan3.0-video-1080p</code>、<code>wan3.0-video-480p</code>、<code>wan3.0-video-720p</code></p><p>向 <code>POST /v1/videos</code> 发送 <code>model</code>、<code>prompt</code> 和整数 <code>duration</code>（2–30 秒）；型号名固定分辨率。保存返回的 <code>id</code>，使用同一站令牌 <code>GET /v1/videos/{task_id}</code> 查询。</p>
+<h2 id="video-submission-20261128">视频提交</h2><p><code>gemini-omni-1.2-flash</code>、<code>omni-fast</code>、<code>omni-fast-no-water</code></p><p>向 <code>POST /v1/videos</code> 发送 JSON。以下请求格式已完成模拟提交，实际任务查询方式与原任务归属仍待核实。</p><pre><code>{
+  &quot;model&quot;: &quot;gemini-omni-1.2-flash&quot;,
+  &quot;prompt&quot;: &quot;海边灯塔的清晨&quot;,
+  &quot;n&quot;: 1,
+  &quot;seconds&quot;: &quot;5&quot;
+}</code></pre>
 <h2 id="video">可灵视频与动作迁移</h2>
       <div class="callout"><b>可灵不是 Chat 模型</b>可灵提供 3 条能力链、4 个精确公开模型 ID，全部使用异步视频任务：<code>POST /v1/videos</code> 提交，再用 <code>GET /v1/videos/{task_id}</code> 轮询。通用 OpenAI Chat 客户端若只会调用 <code>/v1/chat/completions</code> 或 <code>/v1/responses</code>，不能直接调用可灵。</div>
       <p><b>先按目标选择精确模型：</b>可灵 2.6 使用 <code>kling-v2-6</code>；可灵 3.0 Turbo 的 720P 与 1080P 是两个独立模型，分别使用 <code>kling-3.0-turbo</code> 与 <code>kling-3.0-turbo-1080p</code>；动作迁移使用独立的 <code>kling-motion-control</code>。不要用 <code>resolution</code> 参数切换 3.0 分辨率。</p>
@@ -8135,6 +8141,23 @@ print(completion.choices[0].message.content)</code></pre>
         },
         "notes": "型号名固定分辨率"
       }
+    },
+    "video_submission_20261128": {
+      "models": [
+        "gemini-omni-1.2-flash",
+        "omni-fast",
+        "omni-fast-no-water"
+      ],
+      "method": "POST",
+      "path": "/v1/videos",
+      "example_fields": [
+        "model",
+        "prompt",
+        "n",
+        "seconds"
+      ],
+      "verification": "模拟提交已通过；查询接口与原任务归属待验证",
+      "query_contract": "待验证"
     }
   },
   "constraints": {

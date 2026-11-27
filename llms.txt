@@ -229,3 +229,7 @@ Pricing: https://console.yuqitoken.cn/pricing
 ## Current image and video models
 POST /v1/images/generations: model, prompt. Models: flux-3-image-1.5k, flux-3-image-1k, flux-3-image-2k, flux-3-image-4k, flux-3-image-768sq, flux-3-klein-1k, flux-3-klein-2k, flux-3-klein-4k, gpt-image-2.6, gpt-image-2.6-flare, gpt-image-2.6-flare-1k, gpt-image-2.6-flare-2k, gpt-image-2.6-flare-4k, gpt-image-2.6-sunburst, gpt-image-2.6-sunburst-1k, gpt-image-2.6-sunburst-2k, gpt-image-2.6-sunburst-4k, gpt-image-2.6-x
 POST /v1/videos: model, prompt, integer duration 2–30 seconds; poll GET /v1/videos/{task_id} using returned id. Models: wan3.0-video-1080p, wan3.0-video-480p, wan3.0-video-720p
+
+
+## Video submission
+POST /v1/videos JSON model, prompt, n and seconds; models: gemini-omni-1.2-flash, omni-fast, omni-fast-no-water. Submission was simulated; task query and ownership remain unverified.
