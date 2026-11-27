@@ -135,10 +135,10 @@ Content-Type: application/json
       <p><code>duration</code> 必填，为 4–15 的整数；<code>resolution</code> 可为 <code>480p</code> 或 <code>720p</code>，省略时为 720p。<code>aspect_ratio</code> 支持 16:9、9:16、1:1、21:9、4:3 和 3:4。</p>
       <p>参考素材可用 <code>reference_image_urls</code>（最多 9 个）、<code>reference_videos</code>（最多 3 个）和 <code>reference_audios</code>（最多 3 个）。参考音频需同时提供参考图或参考视频。<code>first_image_url</code> 和 <code>last_image_url</code> 成对提供，且与参考素材分开使用。素材接受 HTTPS 或有效的 <code>asset://</code> 地址。</p>
       <h3>查询原任务与读取结果</h3>
-      <p>保存创建返回的本站 <code>id</code> 或 <code>task_id</code>，使用原令牌轮询：</p>
+      <p>保存创建返回的本站 <code>id</code> ，使用原令牌轮询：</p>
       <pre><code>GET https://api.yuqitoken.cn/v1/videos/{task_id}
 Authorization: Bearer RELAY_API_KEY</code></pre>
-      <p>状态为 <code>completed</code> 时读取 <code>video_url</code>；状态为 <code>failed</code> 时读取 <code>error.message</code> 并核对退款。提交结果未知时只查询原任务，不重复提交。400 请核对字段；401 或 403 请核对本站令牌、模型范围和余额。</p>
+      <p>状态为 <code>completed</code> 时读取 <code>url</code> 或 <code>data[].url</code>；状态为 <code>failed</code> 时读取 <code>error</code> 并核对退款。提交结果未知时只查询原任务，不重复提交。400 请核对字段；401 或 403 请核对本站令牌、模型范围和余额。</p>
       <h3>参考视频两档与计费</h3>
       <table><thead><tr><th>条件</th></tr></thead><tbody><tr><td>reference_videos 非空</td></tr><tr><td>无参考视频</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
       
@@ -206,7 +206,7 @@ content-type: application/json
       <p class="muted">验收分辨率时同时核对原请求模型名与返回的 <code>size</code>；1K、2K、4K 正方形分别应为 <code>1024x1024</code>、<code>2048x2048</code>、<code>2880x2880</code>。</p>
       <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
   -H "Authorization: Bearer $API_KEY"</code></pre>
-      <p class="muted">GPT Image 2 异步文生图完成后，以 <code>status=completed</code> 且存在顶层 <code>url</code> 或 <code>image_url</code> 为成功条件；<code>progress</code> 仅展示，<code>progress=0</code> 不能触发重复提交。失败时读取 <code>error</code> 并停止。</p>
+      <p class="muted">GPT Image 2 异步文生图完成后，以 <code>status=completed</code> 且存在顶层 <code>url</code> 或 <code>data[].url</code> 为成功条件；<code>progress</code> 仅展示，<code>progress=0</code> 不能触发重复提交。失败时读取 <code>error</code> 并停止。</p>
 
       
 
@@ -224,7 +224,7 @@ content-type: application/json
     "size": "2880x2880",
     "n": 1
   }'</code></pre>
-      <p>保存响应中的 <code>id</code> 或明确返回的 <code>task_id</code>，然后只查询原任务：<code>GET https://api.yuqitoken.cn/v1/videos/{task_id}</code>。只有最终状态为 <code>completed</code> 或等价成功状态，并且存在 <code>data[].url</code>，才算成功；排队、运行中、提交成功或进度数值都不代表已出图。</p>
+      <p>保存响应中的 <code>id</code> ，然后只查询原任务：<code>GET https://api.yuqitoken.cn/v1/videos/{task_id}</code>。只有最终状态为 <code>completed</code> 或等价成功状态，并且存在 <code>data[].url</code>，才算成功；排队、运行中、提交成功或进度数值都不代表已出图。</p>
       <h3>接法 B：同步文生图</h3>
       <pre><button class="copy">复制</button><code>curl -X POST "https://api.yuqitoken.cn/v1/images/generations" \
   -H "Authorization: Bearer $API_KEY" \
@@ -327,7 +327,7 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
       <h3>查询任务</h3>
       <pre><button class="copy">复制</button><code>curl "https://api.yuqitoken.cn/v1/videos/$TASK_ID" \
   -H "Authorization: Bearer $API_KEY"</code></pre>
-      <p>提交后保存顶层 <code>id</code>，只查询 <code>GET /v1/videos/{task_id}</code>。<code>queued</code>、<code>processing</code> 时继续查询；只有 <code>status=completed</code> 且返回 <code>url</code> 或 <code>image_url</code> 才算成功。<code>progress=0</code> 可能只是排队，不能因此重复提交。</p>
+      <p>提交后保存顶层 <code>id</code>，只查询 <code>GET /v1/videos/{task_id}</code>。<code>queued</code>、<code>processing</code> 时继续查询；只有 <code>status=completed</code> 且返回 <code>url</code> 或 <code>data[].url</code> 才算成功。<code>progress=0</code> 可能只是排队，不能因此重复提交。</p>
 
       <h2 id="minimax-h3">MiniMax H3</h2>
        <p>精确模型名：<code>mm5-minimax-h3</code>。本站暂不接收新任务。恢复时间以本站模型目录为准。创建使用本站令牌，认证头为 <code>Authorization: Bearer RELAY_API_KEY</code>，请求为 <code>POST https://api.yuqitoken.cn/v1/videos</code>。</p>
@@ -337,7 +337,7 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
        <h3>查询原任务</h3>
        <pre><code>GET https://api.yuqitoken.cn/v1/videos/{task_id}
  Authorization: Bearer RELAY_API_KEY</code></pre>
-       <p>保存本站返回的 <code>id</code> 或 <code>task_id</code>，使用原令牌查询原任务。结果未知时只查原任务，不重复提交。</p>
+       <p>保存本站返回的 <code>id</code> ，使用原令牌查询原任务。结果未知时只查原任务，不重复提交。</p>
        <h3>价格档</h3>
        <table><thead><tr><th>分辨率</th></tr></thead><tbody><tr><td>768P</td></tr><tr><td>2K</td></tr></tbody></table><p>价格请查看<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p>
        <p>按条计费，价格由分辨率档位决定。4–15 秒是请求时长，不参与计费。价格以本站价格页为准。</p>
