@@ -381,6 +381,17 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
   &quot;n&quot;: 1,
   &quot;seconds&quot;: &quot;5&quot;
 }</code></pre>
+<h2 id="video-v2v-20261128">视频转视频（公用调用名）</h2><p><code>omni-v2v</code>、<code>omni-v2v-no-water</code></p><p>入口为 <code>POST /v1/videos</code>（参考查询路径 <code>GET /v1/videos/{task_id}</code>）。支持 <code>prompt</code>、<code>aspect_ratio</code>、<code>duration</code>（4–15）、<code>reference_image_urls</code>（最多 5 个）与 <code>reference_videos</code>（最多 2 个）。其中 <code>omni-v2v</code> 已完成模拟提交，<code>omni-v2v-no-water</code> 模拟单扣待核；两款参考素材必填条件与原任务查询归属仍待站端核实。价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p><pre><code>{
+  &quot;model&quot;: &quot;omni-v2v&quot;,
+  &quot;prompt&quot;: &quot;海边灯塔的清晨&quot;,
+  &quot;reference_image_urls&quot;: [
+    &quot;https://example.com/reference.png&quot;
+  ]
+}</code></pre>
+<h2 id="seedream-lite-20261128">Seedream 5.0 Lite（仅个人站）</h2><p><code>doubao-seedream-5-0-lite</code></p><p>支持 <code>POST /v1/images/generations</code> 与 <code>POST /v1/images/edits</code>（参考查询路径 <code>GET /v1/images/generations/{task_id}</code>、<code>GET /v1/images/edits/{task_id}</code>），可选 <code>n</code>（1）、<code>size</code>、<code>response_format</code>（<code>url</code> / <code>b64_json</code>）、<code>async</code>、<code>images</code>（最多 1 张）。该型号当前承接路由、模拟单扣与原任务查询归属仍待核实。价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p><pre><code>{
+  &quot;model&quot;: &quot;doubao-seedream-5-0-lite&quot;,
+  &quot;prompt&quot;: &quot;海边灯塔的清晨&quot;
+}</code></pre>
 <h2 id="video">可灵视频与动作迁移</h2>
       <div class="callout"><b>可灵不是 Chat 模型</b>可灵提供 3 条能力链、4 个精确公开模型 ID，全部使用异步视频任务：<code>POST /v1/videos</code> 提交，再用 <code>GET /v1/videos/{task_id}</code> 轮询。通用 OpenAI Chat 客户端若只会调用 <code>/v1/chat/completions</code> 或 <code>/v1/responses</code>，不能直接调用可灵。</div>
       <p><b>先按目标选择精确模型：</b>可灵 2.6 使用 <code>kling-v2-6</code>；可灵 3.0 Turbo 的 720P 与 1080P 是两个独立模型，分别使用 <code>kling-3.0-turbo</code> 与 <code>kling-3.0-turbo-1080p</code>；动作迁移使用独立的 <code>kling-motion-control</code>。不要用 <code>resolution</code> 参数切换 3.0 分辨率。</p>
@@ -8158,6 +8169,66 @@ print(completion.choices[0].message.content)</code></pre>
       ],
       "verification": "模拟提交已通过；查询接口与原任务归属待验证",
       "query_contract": "待验证"
+    },
+    "video_v2v_20261128": {
+      "models": [
+        "omni-v2v",
+        "omni-v2v-no-water"
+      ],
+      "method": "POST",
+      "path": "/v1/videos",
+      "polling_path": "GET /v1/videos/{task_id}",
+      "example_fields": [
+        "model",
+        "prompt",
+        "reference_image_urls"
+      ],
+      "optional_fields": [
+        "aspect_ratio",
+        "duration",
+        "reference_videos"
+      ],
+      "verification": {
+        "omni-v2v": "已通过 POST /v1/videos 模拟提交；参考素材必填条件、查询接口与原任务归属待核实",
+        "omni-v2v-no-water": "已列入本站目录；模拟单扣、参考素材必填条件、查询接口与原任务归属待核实"
+      },
+      "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "seedream_lite_20261128": {
+      "models": [
+        "doubao-seedream-5-0-lite"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/v1/images/generations"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/images/edits"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/images/generations/{task_id}"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/images/edits/{task_id}"
+        }
+      ],
+      "example_fields": [
+        "model",
+        "prompt"
+      ],
+      "optional_fields": [
+        "n",
+        "size",
+        "response_format",
+        "async",
+        "images"
+      ],
+      "verification": "已列入个人站目录；当前承接路由、模拟单扣与原任务查询归属待核实",
+      "price_page": "https://console.yuqitoken.cn/pricing"
     }
   },
   "constraints": {

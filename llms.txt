@@ -233,3 +233,13 @@ POST /v1/videos: model, prompt, integer duration 2–30 seconds; poll GET /v1/vi
 
 ## Video submission
 POST /v1/videos JSON model, prompt, n and seconds; models: gemini-omni-1.2-flash, omni-fast, omni-fast-no-water. Submission was simulated; task query and ownership remain unverified.
+
+## Video-to-video (public model IDs)
+POST /v1/videos (reference polling GET /v1/videos/{task_id}); models: omni-v2v, omni-v2v-no-water.
+Fields: model, prompt, optional aspect_ratio, duration (4-15), reference_image_urls (max 5), reference_videos (max 2).
+Status: omni-v2v simulated submission verified; omni-v2v-no-water single-debit pending; reference media requirements and task query ownership pending verification.
+
+## Seedream 5.0 Lite (personal site only)
+Models: doubao-seedream-5-0-lite
+POST /v1/images/generations and POST /v1/images/edits (reference polling GET .../generations/{task_id} or .../edits/{task_id}).
+Fields: model, prompt, optional n (1), size, response_format (url/b64_json), async, images (max 1). Serving route, single-debit, and task query ownership pending verification.

@@ -5514,6 +5514,66 @@
       ],
       "verification": "模拟提交已通过；查询接口与原任务归属待验证",
       "query_contract": "待验证"
+    },
+    "video_v2v_20261128": {
+      "models": [
+        "omni-v2v",
+        "omni-v2v-no-water"
+      ],
+      "method": "POST",
+      "path": "/v1/videos",
+      "polling_path": "GET /v1/videos/{task_id}",
+      "example_fields": [
+        "model",
+        "prompt",
+        "reference_image_urls"
+      ],
+      "optional_fields": [
+        "aspect_ratio",
+        "duration",
+        "reference_videos"
+      ],
+      "verification": {
+        "omni-v2v": "已通过 POST /v1/videos 模拟提交；参考素材必填条件、查询接口与原任务归属待核实",
+        "omni-v2v-no-water": "已列入本站目录；模拟单扣、参考素材必填条件、查询接口与原任务归属待核实"
+      },
+      "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "seedream_lite_20261128": {
+      "models": [
+        "doubao-seedream-5-0-lite"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/v1/images/generations"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/images/edits"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/images/generations/{task_id}"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/images/edits/{task_id}"
+        }
+      ],
+      "example_fields": [
+        "model",
+        "prompt"
+      ],
+      "optional_fields": [
+        "n",
+        "size",
+        "response_format",
+        "async",
+        "images"
+      ],
+      "verification": "已列入个人站目录；当前承接路由、模拟单扣与原任务查询归属待核实",
+      "price_page": "https://console.yuqitoken.cn/pricing"
     }
   },
   "constraints": {
