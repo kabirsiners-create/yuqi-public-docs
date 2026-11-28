@@ -250,3 +250,39 @@ POST /v1/3d/generations -> GET /v1/3d/generations/{id} (object=threed.generation
 Retry safety: send Idempotency-Key header and keep it unchanged across retries.
 Downloads: completed data[].url provides a 15-minute signed site URL for GLB/FBX (no API key needed; re-query task if expired).
 Capabilities: text-to-3D, image-to-3D, and multi-view (p1: face limit; p2: quad mesh; v3.1: geometry quality, quad mesh, part splitting).
+
+## Rerank (qwen3-rerank)
+POST /v1/rerank (do NOT use /v1/chat/completions); required fields: model, query, documents. Models: qwen3-rerank.
+
+## Midjourney Image Models
+Endpoints: POST /v1/images/generations, POST /v1/images/edits (polling GET .../generations/{task_id} or .../edits/{task_id}).
+- mj2-midjourney: params [model*, prompt*, n, size, response_format, async, images]
+- mj2-midjourney-blend: params [model*, prompt*, n, size, response_format, async, images]
+- mj2-midjourney-describe: params [model*, prompt*, n, response_format, async, images]
+
+## Muse ASR
+POST /v1/audio/transcriptions (multipart/form-data); model: mu1-muse-asr; params [model*, file*, language, prompt, response_format, temperature].
+
+## Video & Podcast Contracts (21 models)
+POST /v1/videos -> GET /v1/videos/{task_id}. Use exact public model IDs below:
+- gf1-gemini-omni-1.2-flash: params [model*, prompt*, aspect_ratio, duration, resolution, seed, reference_image_urls, reference_videos, first_image_url, last_image_url]; example {"model": "gf1-gemini-omni-1.2-flash", "prompt": "海边灯塔的清晨"}
+- gf1-gemini-omni-flash: params [model*, prompt*, aspect_ratio, duration, resolution, reference_image_urls, reference_videos]; example {"model": "gf1-gemini-omni-flash", "prompt": "海边灯塔的清晨"}
+- mu1-muse-podcast: params [model*, prompt*, duration, language, speakers, voices]; example {"model": "mu1-muse-podcast", "prompt": "海边灯塔的清晨"}
+- mu1-muse-video: params [model*, prompt*, aspect_ratio, camera_movement, custom_skill, custom_style, duration, mute_voice, negative_prompt, script, seed, skill_preset, style, style_preset, reference_image_urls, first_image_url, last_image_url]; example {"model": "mu1-muse-video", "prompt": "海边灯塔的清晨"}
+- mu1-muse-video-20s: params [model*, prompt*, aspect_ratio, camera_movement, custom_skill, custom_style, duration, mute_voice, negative_prompt, script, seed, skill_preset, style, style_preset, reference_image_urls, reference_videos, first_image_url, last_image_url]; example {"model": "mu1-muse-video-20s", "prompt": "海边灯塔的清晨"}
+- mu1-muse-video-30s: params [model*, prompt*, aspect_ratio, camera_movement, custom_skill, custom_style, duration, mute_voice, negative_prompt, script, seed, skill_preset, style, style_preset, reference_image_urls, reference_videos, first_image_url, last_image_url]; example {"model": "mu1-muse-video-30s", "prompt": "海边灯塔的清晨"}
+- mu1-muse-video-40s: params [model*, prompt*, aspect_ratio, camera_movement, custom_skill, custom_style, duration, mute_voice, negative_prompt, script, seed, skill_preset, style, style_preset, reference_image_urls, reference_videos, first_image_url, last_image_url]; example {"model": "mu1-muse-video-40s", "prompt": "海边灯塔的清晨"}
+- mu1-muse-video-50s: params [model*, prompt*, aspect_ratio, camera_movement, custom_skill, custom_style, duration, mute_voice, negative_prompt, script, seed, skill_preset, style, style_preset, reference_image_urls, reference_videos, first_image_url, last_image_url]; example {"model": "mu1-muse-video-50s", "prompt": "海边灯塔的清晨"}
+- mu1-muse-video-60s: params [model*, prompt*, aspect_ratio, camera_movement, custom_skill, custom_style, duration, mute_voice, negative_prompt, script, seed, skill_preset, style, style_preset, reference_image_urls, reference_videos, first_image_url, last_image_url]; example {"model": "mu1-muse-video-60s", "prompt": "海边灯塔的清晨"}
+- sd7-seedance-2.0-720p: params [model*, prompt*, aspect_ratio, duration, generate_audio, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd7-seedance-2.0-720p", "prompt": "海边灯塔的清晨"}
+- sd7-seedance-2.0-1080p: params [model*, prompt*, aspect_ratio, duration, generate_audio, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd7-seedance-2.0-1080p", "prompt": "海边灯塔的清晨"}
+- sd10-seedance-2.0-fast: params [model*, prompt*, aspect_ratio, duration, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd10-seedance-2.0-fast", "prompt": "海边灯塔的清晨"}
+- sd16-seedance-2.5-4: params [model*, prompt*, aspect_ratio, duration, generate_audio, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd16-seedance-2.5-4", "prompt": "海边灯塔的清晨"}
+- sd17-seedance-2.5-6: params [model*, prompt*, aspect_ratio, duration, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd17-seedance-2.5-6", "prompt": "海边灯塔的清晨"}
+- sd21-seedance-2.5-3: params [model*, prompt*, aspect_ratio, duration*, resolution*, reference_image_urls, reference_videos, reference_audios, first_image_url, last_image_url]; example {"model": "sd21-seedance-2.5-3", "duration": 5, "resolution": "720p", "prompt": "海边灯塔的清晨"}
+- sd23-seedance-2.5: params [model*, prompt*, aspect_ratio*, duration*, resolution, reference_image_urls]; example {"model": "sd23-seedance-2.5", "aspect_ratio": "16:9", "duration": 5, "prompt": "海边灯塔的清晨"}
+- sd23-seedance-2.5-pro: params [model*, prompt*, aspect_ratio*, duration*, resolution, reference_image_urls, reference_audios]; example {"model": "sd23-seedance-2.5-pro", "aspect_ratio": "16:9", "duration": 5, "prompt": "海边灯塔的清晨"}
+- sd26-seedance-2.5: params [model*, prompt*, aspect_ratio, duration, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd26-seedance-2.5", "prompt": "海边灯塔的清晨"}
+- sd26-seedance-2.5-flash: params [model*, prompt*, aspect_ratio, duration, resolution, reference_image_urls, reference_videos, reference_audios]; example {"model": "sd26-seedance-2.5-flash", "prompt": "海边灯塔的清晨"}
+- wan8-wan3.0: params [model*, prompt*, aspect_ratio*, duration*, resolution, reference_image_urls, reference_videos, reference_audios, first_image_url, last_image_url]; example {"model": "wan8-wan3.0", "aspect_ratio": "16:9", "duration": 5, "prompt": "海边灯塔的清晨"}
+- wan8-wan3.0-2: params [model*, prompt*, aspect_ratio*, duration*, resolution, reference_image_urls, reference_videos, reference_audios, first_image_url, last_image_url]; example {"model": "wan8-wan3.0-2", "aspect_ratio": "16:9", "duration": 5, "prompt": "海边灯塔的清晨"}

@@ -5614,6 +5614,1552 @@
       },
       "verification": "双站已上架并接入 /v1/3d/generations；隔离回放提交/轮询/下载/退款已通过，真实首单终态计量字段待核（trellis、tripo3d 暂未开售）",
       "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "rerank_20261128": {
+      "models": [
+        "qwen3-rerank"
+      ],
+      "method": "POST",
+      "path": "/v1/rerank",
+      "required_fields": [
+        "model",
+        "query",
+        "documents"
+      ],
+      "billing_note": "按输入 Token 计费，勿调用 /v1/chat/completions",
+      "example": {
+        "model": "qwen3-rerank",
+        "query": "海边灯塔的清晨",
+        "documents": [
+          "清晨海边灯塔与海浪声",
+          "城市夜晚霓虹街道"
+        ]
+      },
+      "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "midjourney_20261128": {
+      "models": [
+        "mj2-midjourney",
+        "mj2-midjourney-blend",
+        "mj2-midjourney-describe"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/v1/images/generations"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/images/generations/{task_id}"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/images/edits"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/images/edits/{task_id}"
+        }
+      ],
+      "contracts": {
+        "mj2-midjourney": {
+          "public_model": "mj2-midjourney",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "n",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1
+            },
+            {
+              "name": "size",
+              "type": "string"
+            },
+            {
+              "name": "response_format",
+              "type": "string",
+              "enum": [
+                "url",
+                "b64_json"
+              ]
+            },
+            {
+              "name": "async",
+              "type": "boolean"
+            },
+            {
+              "name": "images",
+              "type": "array",
+              "maxItems": 5
+            }
+          ],
+          "example": {
+            "model": "mj2-midjourney",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mj2-midjourney-blend": {
+          "public_model": "mj2-midjourney-blend",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "n",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1
+            },
+            {
+              "name": "size",
+              "type": "string"
+            },
+            {
+              "name": "response_format",
+              "type": "string",
+              "enum": [
+                "url",
+                "b64_json"
+              ]
+            },
+            {
+              "name": "async",
+              "type": "boolean"
+            },
+            {
+              "name": "images",
+              "type": "array",
+              "maxItems": 2
+            }
+          ],
+          "example": {
+            "model": "mj2-midjourney-blend",
+            "prompt": "",
+            "images": [
+              "https://example.com/reference.png"
+            ]
+          }
+        },
+        "mj2-midjourney-describe": {
+          "public_model": "mj2-midjourney-describe",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "n",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1
+            },
+            {
+              "name": "response_format",
+              "type": "string",
+              "enum": [
+                "url",
+                "b64_json"
+              ]
+            },
+            {
+              "name": "async",
+              "type": "boolean"
+            },
+            {
+              "name": "images",
+              "type": "array",
+              "maxItems": 1
+            }
+          ],
+          "example": {
+            "model": "mj2-midjourney-describe",
+            "prompt": "",
+            "images": [
+              "https://example.com/reference.png"
+            ]
+          }
+        }
+      },
+      "notes": "需在请求体 model 中填写对应公开调用名；mj2-midjourney-blend 与 mj2-midjourney-describe 的参考素材与原任务查询归属持续核验。",
+      "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "muse_asr_20261128": {
+      "models": [
+        "mu1-muse-asr"
+      ],
+      "method": "POST",
+      "path": "/v1/audio/transcriptions",
+      "content_type": "multipart/form-data",
+      "parameters": [
+        {
+          "name": "model",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "string"
+        },
+        {
+          "name": "prompt",
+          "type": "string"
+        },
+        {
+          "name": "response_format",
+          "type": "string"
+        },
+        {
+          "name": "temperature",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      ],
+      "example": {
+        "model": "mu1-muse-asr",
+        "file": "clip.wav"
+      },
+      "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "video_catalog_20261128": {
+      "models": [
+        "gf1-gemini-omni-1.2-flash",
+        "gf1-gemini-omni-flash",
+        "mu1-muse-podcast",
+        "mu1-muse-video",
+        "mu1-muse-video-20s",
+        "mu1-muse-video-30s",
+        "mu1-muse-video-40s",
+        "mu1-muse-video-50s",
+        "mu1-muse-video-60s",
+        "sd7-seedance-2.0-720p",
+        "sd7-seedance-2.0-1080p",
+        "sd10-seedance-2.0-fast",
+        "sd16-seedance-2.5-4",
+        "sd17-seedance-2.5-6",
+        "sd21-seedance-2.5-3",
+        "sd23-seedance-2.5",
+        "sd23-seedance-2.5-pro",
+        "sd26-seedance-2.5",
+        "sd26-seedance-2.5-flash",
+        "wan8-wan3.0",
+        "wan8-wan3.0-2"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/v1/videos"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/videos/{task_id}"
+        }
+      ],
+      "contracts": {
+        "gf1-gemini-omni-1.2-flash": {
+          "public_model": "gf1-gemini-omni-1.2-flash",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 3,
+              "maximum": 15
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 3
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "gf1-gemini-omni-1.2-flash",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "gf1-gemini-omni-flash": {
+          "public_model": "gf1-gemini-omni-flash",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 3,
+              "maximum": 10
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 2
+            }
+          ],
+          "example": {
+            "model": "gf1-gemini-omni-flash",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-podcast": {
+          "public_model": "mu1-muse-podcast",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 30,
+              "maximum": 1800
+            },
+            {
+              "name": "language",
+              "type": "string"
+            },
+            {
+              "name": "speakers",
+              "type": "string"
+            },
+            {
+              "name": "voices",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-podcast",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-video": {
+          "public_model": "mu1-muse-video",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "camera_movement",
+              "type": "string"
+            },
+            {
+              "name": "custom_skill",
+              "type": "string"
+            },
+            {
+              "name": "custom_style",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 10
+            },
+            {
+              "name": "mute_voice",
+              "type": "string"
+            },
+            {
+              "name": "negative_prompt",
+              "type": "string"
+            },
+            {
+              "name": "script",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "skill_preset",
+              "type": "string"
+            },
+            {
+              "name": "style",
+              "type": "string"
+            },
+            {
+              "name": "style_preset",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 4
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-video",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-video-20s": {
+          "public_model": "mu1-muse-video-20s",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "camera_movement",
+              "type": "string"
+            },
+            {
+              "name": "custom_skill",
+              "type": "string"
+            },
+            {
+              "name": "custom_style",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 20
+            },
+            {
+              "name": "mute_voice",
+              "type": "string"
+            },
+            {
+              "name": "negative_prompt",
+              "type": "string"
+            },
+            {
+              "name": "script",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "skill_preset",
+              "type": "string"
+            },
+            {
+              "name": "style",
+              "type": "string"
+            },
+            {
+              "name": "style_preset",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 4
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 1
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-video-20s",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-video-30s": {
+          "public_model": "mu1-muse-video-30s",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "camera_movement",
+              "type": "string"
+            },
+            {
+              "name": "custom_skill",
+              "type": "string"
+            },
+            {
+              "name": "custom_style",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 30
+            },
+            {
+              "name": "mute_voice",
+              "type": "string"
+            },
+            {
+              "name": "negative_prompt",
+              "type": "string"
+            },
+            {
+              "name": "script",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "skill_preset",
+              "type": "string"
+            },
+            {
+              "name": "style",
+              "type": "string"
+            },
+            {
+              "name": "style_preset",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 4
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 1
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-video-30s",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-video-40s": {
+          "public_model": "mu1-muse-video-40s",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "camera_movement",
+              "type": "string"
+            },
+            {
+              "name": "custom_skill",
+              "type": "string"
+            },
+            {
+              "name": "custom_style",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 40
+            },
+            {
+              "name": "mute_voice",
+              "type": "string"
+            },
+            {
+              "name": "negative_prompt",
+              "type": "string"
+            },
+            {
+              "name": "script",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "skill_preset",
+              "type": "string"
+            },
+            {
+              "name": "style",
+              "type": "string"
+            },
+            {
+              "name": "style_preset",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 4
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 1
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-video-40s",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-video-50s": {
+          "public_model": "mu1-muse-video-50s",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "camera_movement",
+              "type": "string"
+            },
+            {
+              "name": "custom_skill",
+              "type": "string"
+            },
+            {
+              "name": "custom_style",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 50
+            },
+            {
+              "name": "mute_voice",
+              "type": "string"
+            },
+            {
+              "name": "negative_prompt",
+              "type": "string"
+            },
+            {
+              "name": "script",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "skill_preset",
+              "type": "string"
+            },
+            {
+              "name": "style",
+              "type": "string"
+            },
+            {
+              "name": "style_preset",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 4
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 1
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-video-50s",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "mu1-muse-video-60s": {
+          "public_model": "mu1-muse-video-60s",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "camera_movement",
+              "type": "string"
+            },
+            {
+              "name": "custom_skill",
+              "type": "string"
+            },
+            {
+              "name": "custom_style",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 60
+            },
+            {
+              "name": "mute_voice",
+              "type": "string"
+            },
+            {
+              "name": "negative_prompt",
+              "type": "string"
+            },
+            {
+              "name": "script",
+              "type": "string"
+            },
+            {
+              "name": "seed",
+              "type": "string"
+            },
+            {
+              "name": "skill_preset",
+              "type": "string"
+            },
+            {
+              "name": "style",
+              "type": "string"
+            },
+            {
+              "name": "style_preset",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 4
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 1
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "mu1-muse-video-60s",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd7-seedance-2.0-720p": {
+          "public_model": "sd7-seedance-2.0-720p",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 4,
+              "maximum": 15
+            },
+            {
+              "name": "generate_audio",
+              "type": "string"
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 3
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 3
+            }
+          ],
+          "example": {
+            "model": "sd7-seedance-2.0-720p",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd7-seedance-2.0-1080p": {
+          "public_model": "sd7-seedance-2.0-1080p",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 4,
+              "maximum": 15
+            },
+            {
+              "name": "generate_audio",
+              "type": "string"
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 3
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 3
+            }
+          ],
+          "example": {
+            "model": "sd7-seedance-2.0-1080p",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd10-seedance-2.0-fast": {
+          "public_model": "sd10-seedance-2.0-fast",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 4,
+              "maximum": 15
+            },
+            {
+              "name": "resolution",
+              "type": "string",
+              "enum": [
+                "480p",
+                "720p"
+              ]
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 9
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 3
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 3
+            }
+          ],
+          "example": {
+            "model": "sd10-seedance-2.0-fast",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd16-seedance-2.5-4": {
+          "public_model": "sd16-seedance-2.5-4",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "generate_audio",
+              "type": "string"
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 30
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 10
+            }
+          ],
+          "example": {
+            "model": "sd16-seedance-2.5-4",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd17-seedance-2.5-6": {
+          "public_model": "sd17-seedance-2.5-6",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 30
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 10
+            }
+          ],
+          "example": {
+            "model": "sd17-seedance-2.5-6",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd21-seedance-2.5-3": {
+          "public_model": "sd21-seedance-2.5-3",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": true,
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 30
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "sd21-seedance-2.5-3",
+            "duration": 5,
+            "resolution": "720p",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd23-seedance-2.5": {
+          "public_model": "sd23-seedance-2.5",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": true,
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 9
+            }
+          ],
+          "example": {
+            "model": "sd23-seedance-2.5",
+            "aspect_ratio": "16:9",
+            "duration": 5,
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd23-seedance-2.5-pro": {
+          "public_model": "sd23-seedance-2.5-pro",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": true,
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 30
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 10
+            }
+          ],
+          "example": {
+            "model": "sd23-seedance-2.5-pro",
+            "aspect_ratio": "16:9",
+            "duration": 5,
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd26-seedance-2.5": {
+          "public_model": "sd26-seedance-2.5",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 4,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 30
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 10
+            }
+          ],
+          "example": {
+            "model": "sd26-seedance-2.5",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "sd26-seedance-2.5-flash": {
+          "public_model": "sd26-seedance-2.5-flash",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 5
+            }
+          ],
+          "example": {
+            "model": "sd26-seedance-2.5-flash",
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "wan8-wan3.0": {
+          "public_model": "wan8-wan3.0",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": true,
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "wan8-wan3.0",
+            "aspect_ratio": "16:9",
+            "duration": 5,
+            "prompt": "海边灯塔的清晨"
+          }
+        },
+        "wan8-wan3.0-2": {
+          "public_model": "wan8-wan3.0-2",
+          "parameters": [
+            {
+              "name": "model",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "aspect_ratio",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": true,
+              "minimum": 5,
+              "maximum": 30
+            },
+            {
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "name": "reference_image_urls",
+              "type": "array",
+              "maxItems": 10
+            },
+            {
+              "name": "reference_videos",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "reference_audios",
+              "type": "array",
+              "maxItems": 5
+            },
+            {
+              "name": "first_image_url",
+              "type": "string"
+            },
+            {
+              "name": "last_image_url",
+              "type": "string"
+            }
+          ],
+          "example": {
+            "model": "wan8-wan3.0-2",
+            "aspect_ratio": "16:9",
+            "duration": 5,
+            "prompt": "海边灯塔的清晨"
+          }
+        }
+      },
+      "notes": "请直接在 model 字段填写上述公开调用名，查询接口须与原提交任务配合使用。",
+      "price_page": "https://console.yuqitoken.cn/pricing"
     }
   },
   "constraints": {
