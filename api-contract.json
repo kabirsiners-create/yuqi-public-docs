@@ -5574,6 +5574,46 @@
       ],
       "verification": "已列入个人站目录；当前承接路由、模拟单扣与原任务查询归属待核实",
       "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "threed_generations_20261128": {
+      "models": [
+        "tripo3d-p1",
+        "tripo3d-p2",
+        "tripo3d-v3.1"
+      ],
+      "method": "POST",
+      "path": "/v1/3d/generations",
+      "polling_path": "GET /v1/3d/generations/{id}",
+      "idempotency_header": "Idempotency-Key",
+      "response_object": "threed.generation",
+      "statuses": [
+        "queued",
+        "in_progress",
+        "completed",
+        "failed"
+      ],
+      "allowed_response_fields": [
+        "id",
+        "object",
+        "status",
+        "progress",
+        "created_at",
+        "model",
+        "data[].url",
+        "error"
+      ],
+      "artifact_formats": [
+        "GLB",
+        "FBX"
+      ],
+      "download_notes": "任务完成后 data[].url 返回本站 15 分钟签名下载链接（免 API Key 下载；过期可重新查询原任务）。",
+      "capabilities": {
+        "tripo3d-p1": "支持文生、图生和多视图生成三维模型，可限制面数",
+        "tripo3d-p2": "支持文生、图生和多视图生成三维模型，可输出四边面",
+        "tripo3d-v3.1": "支持文生、图生和多视图生成三维模型，可调几何质量、四边面和部件拆分"
+      },
+      "verification": "双站已上架并接入 /v1/3d/generations；隔离回放提交/轮询/下载/退款已通过，真实首单终态计量字段待核（trellis、tripo3d 暂未开售）",
+      "price_page": "https://console.yuqitoken.cn/pricing"
     }
   },
   "constraints": {

@@ -381,6 +381,10 @@ curl -X POST "https://api.yuqitoken.cn/v1/videos" \
   &quot;n&quot;: 1,
   &quot;seconds&quot;: &quot;5&quot;
 }</code></pre>
+<h2 id="threed-20261128">3D 生成模型（公用入口）</h2><p><code>tripo3d-p1</code>、<code>tripo3d-p2</code>、<code>tripo3d-v3.1</code></p><p>提交入口为 <code>POST /v1/3d/generations</code>，轮询入口为 <code>GET /v1/3d/generations/{id}</code>。返回对象为 <code>threed.generation</code>（任务 ID 形如 <code>task_3d_...</code>，状态为 <code>queued</code> / <code>in_progress</code> / <code>completed</code> / <code>failed</code>），完成后 <code>data[].url</code> 返回 15 分钟有效的本站签名下载链接（免 API Key 下载 GLB/FBX，过期可重新查询原单）。客户端重试请保留并回传 <code>Idempotency-Key</code> 请求头以确保同键不重复扣费。三款均支持文生、图生与多视图生成：<code>tripo3d-p1</code> 可限制面数，<code>tripo3d-p2</code> 可输出四边面，<code>tripo3d-v3.1</code> 支持几何质量、四边面与部件拆分；价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p><pre><code>{
+  &quot;model&quot;: &quot;tripo3d-v3.1&quot;,
+  &quot;prompt&quot;: &quot;海边白色灯塔的精细三维模型&quot;
+}</code></pre>
 <h2 id="video-v2v-20261128">视频转视频（公用调用名）</h2><p><code>omni-v2v</code>、<code>omni-v2v-no-water</code></p><p>入口为 <code>POST /v1/videos</code>（参考查询路径 <code>GET /v1/videos/{task_id}</code>）。支持 <code>prompt</code>、<code>aspect_ratio</code>、<code>duration</code>（4–15）、<code>reference_image_urls</code>（最多 5 个）与 <code>reference_videos</code>（最多 2 个）。其中 <code>omni-v2v</code> 已完成模拟提交，<code>omni-v2v-no-water</code> 模拟单扣待核；两款参考素材必填条件与原任务查询归属仍待站端核实。价格见<a href="https://console.yuqitoken.cn/pricing">本站价格页</a>。</p><pre><code>{
   &quot;model&quot;: &quot;omni-v2v&quot;,
   &quot;prompt&quot;: &quot;海边灯塔的清晨&quot;,
@@ -8228,6 +8232,46 @@ print(completion.choices[0].message.content)</code></pre>
         "images"
       ],
       "verification": "已列入个人站目录；当前承接路由、模拟单扣与原任务查询归属待核实",
+      "price_page": "https://console.yuqitoken.cn/pricing"
+    },
+    "threed_generations_20261128": {
+      "models": [
+        "tripo3d-p1",
+        "tripo3d-p2",
+        "tripo3d-v3.1"
+      ],
+      "method": "POST",
+      "path": "/v1/3d/generations",
+      "polling_path": "GET /v1/3d/generations/{id}",
+      "idempotency_header": "Idempotency-Key",
+      "response_object": "threed.generation",
+      "statuses": [
+        "queued",
+        "in_progress",
+        "completed",
+        "failed"
+      ],
+      "allowed_response_fields": [
+        "id",
+        "object",
+        "status",
+        "progress",
+        "created_at",
+        "model",
+        "data[].url",
+        "error"
+      ],
+      "artifact_formats": [
+        "GLB",
+        "FBX"
+      ],
+      "download_notes": "任务完成后 data[].url 返回本站 15 分钟签名下载链接（免 API Key 下载；过期可重新查询原任务）。",
+      "capabilities": {
+        "tripo3d-p1": "支持文生、图生和多视图生成三维模型，可限制面数",
+        "tripo3d-p2": "支持文生、图生和多视图生成三维模型，可输出四边面",
+        "tripo3d-v3.1": "支持文生、图生和多视图生成三维模型，可调几何质量、四边面和部件拆分"
+      },
+      "verification": "双站已上架并接入 /v1/3d/generations；隔离回放提交/轮询/下载/退款已通过，真实首单终态计量字段待核（trellis、tripo3d 暂未开售）",
       "price_page": "https://console.yuqitoken.cn/pricing"
     }
   },

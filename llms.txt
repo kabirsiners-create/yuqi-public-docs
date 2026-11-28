@@ -243,3 +243,10 @@ Status: omni-v2v simulated submission verified; omni-v2v-no-water single-debit p
 Models: doubao-seedream-5-0-lite
 POST /v1/images/generations and POST /v1/images/edits (reference polling GET .../generations/{task_id} or .../edits/{task_id}).
 Fields: model, prompt, optional n (1), size, response_format (url/b64_json), async, images (max 1). Serving route, single-debit, and task query ownership pending verification.
+
+## 3D Generation Models (public endpoint)
+Models: tripo3d-p1, tripo3d-p2, tripo3d-v3.1
+POST /v1/3d/generations -> GET /v1/3d/generations/{id} (object=threed.generation; statuses: queued, in_progress, completed, failed).
+Retry safety: send Idempotency-Key header and keep it unchanged across retries.
+Downloads: completed data[].url provides a 15-minute signed site URL for GLB/FBX (no API key needed; re-query task if expired).
+Capabilities: text-to-3D, image-to-3D, and multi-view (p1: face limit; p2: quad mesh; v3.1: geometry quality, quad mesh, part splitting).
